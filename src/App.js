@@ -10,8 +10,19 @@ import {
 import { AnimatedSection } from "./components/AnimatedSection";
 import { ScrollToTop } from "./components/ScrollToTop";
 import "./App.css";
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 function App() {
+  const navigate = useNavigate();
+  
+const handleClick = () => {
+  navigate('/Auth');
+};
+
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Scroll to Top Button */}
@@ -33,9 +44,13 @@ function App() {
               Home
             </a>
           </nav>
-          <button className="bg-white text-primary text-xs px-3 py-1 rounded">
-            Sign In
-          </button>
+          <button
+  className="bg-white text-primary text-xs px-3 py-1 rounded"
+  onClick={handleClick}
+>
+  Sign In
+</button>
+
         </div>
       </header>
 

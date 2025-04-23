@@ -10,18 +10,16 @@ import {
 import { AnimatedSection } from "./components/AnimatedSection";
 import { ScrollToTop } from "./components/ScrollToTop";
 import "./App.css";
-import { useNavigate } from 'react-router-dom';
-
-
-
+import { useNavigate } from "react-router-dom";
+import PrimaryBtn from "./components/buttons/PrimaryBtn";
+import SecondaryBtn from "./components/buttons/SecondaryBtn";
 
 function App() {
   const navigate = useNavigate();
-  
-const handleClick = () => {
-  navigate('/Auth');
-};
 
+  const handleClick = () => {
+    navigate("/Auth");
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -45,12 +43,11 @@ const handleClick = () => {
             </a>
           </nav>
           <button
-  className="bg-white text-primary text-xs px-3 py-1 rounded"
-  onClick={handleClick}
->
-  Sign In
-</button>
-
+            className="bg-white text-primary text-xs px-3 py-1 rounded"
+            onClick={handleClick}
+          >
+            Sign In
+          </button>
         </div>
       </header>
 
@@ -73,12 +70,9 @@ const handleClick = () => {
                   Fast, Secure, and Frictionless Claim Processing
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <button className="bg-white text-primary px-6 py-2 rounded-sm text-sm font-medium hover:bg-gray-100 transition-colors">
-                    Get Started
-                  </button>
-                  <button className="border border-white text-white px-6 py-2 rounded-sm text-sm font-medium hover:bg-white hover:text-primary transition-colors">
-                    Learn More
-                  </button>
+                  {/** Made a button component for easier styling, editting, and tracking */}
+                  <PrimaryBtn buttonText={"Get Started"} />
+                  <SecondaryBtn buttonText={"Learn More"} />
                 </div>
               </AnimatedSection>
             </div>
@@ -359,9 +353,7 @@ const handleClick = () => {
                 Secure, fast, and claim-centric productivity in just a few
                 steps.
               </p>
-              <button className="bg-white text-primary px-8 py-3 rounded-sm text-sm font-medium hover:bg-gray-100 transition-colors">
-                Get Started
-              </button>
+              <PrimaryBtn buttonText={"Get Started"} />
             </div>
           </AnimatedSection>
         </section>

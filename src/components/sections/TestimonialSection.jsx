@@ -1,7 +1,28 @@
 import React from "react";
 import { AnimatedSection } from "../AnimatedSection";
+import Carousel from "../ui/Carousel";
 
 const TestimonialSection = () => {
+  const testimonialsList = [
+    {
+      author: "John Doe",
+      authorDetails: "Chief Technology Officer, Healthcare Inc.",
+      text: `Vistora has transformed our claims processing workflow. We've
+        reduced processing time by 60% and improved accuracy
+        significantly.`,
+    },
+    {
+      author: "Laura Croft",
+      authorDetails: "Chief Technology Officer, Healthcare Inc.",
+      text: `Since switching to Vistora, our team spends less time on repetitive tasks and more time delivering better service. It’s like we gained an extra set of hands without hiring anyone.`,
+    },
+    {
+      author: "Blue Anthem",
+      authorDetails: "Chief Technology Officer, Healthcare Inc.",
+      text: `Vistora gave us instant visibility into our claims pipeline. Our turnaround time improved dramatically—and our clients noticed. It’s become an essential part of how we operate.`,
+    },
+  ];
+
   return (
     <section
       id="testimonials"
@@ -22,27 +43,7 @@ const TestimonialSection = () => {
           </div>
         </AnimatedSection>
         <AnimatedSection delay={0.2} direction="right">
-          <div className="relative p-6 border border-border-color rounded-lg">
-            <blockquote className="text-gray-700">
-              <p className="mb-4 text-lg italic">
-                "Vistora has transformed our claims processing workflow. We've
-                reduced processing time by 60% and improved accuracy
-                significantly."
-              </p>
-              <footer className="font-medium text-primary">
-                John Doe
-                <br />
-                <span className="text-gray-500 text-sm">
-                  Chief Technology Officer, Healthcare Inc.
-                </span>
-              </footer>
-            </blockquote>
-            <div className="flex mt-6 space-x-2">
-              <button className="w-2 h-2 rounded-full bg-primary"></button>
-              <button className="w-2 h-2 rounded-full bg-gray-300"></button>
-              <button className="w-2 h-2 rounded-full bg-gray-300"></button>
-            </div>
-          </div>
+          <Carousel slideList={testimonialsList} />
         </AnimatedSection>
       </div>
     </section>

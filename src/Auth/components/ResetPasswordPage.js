@@ -1,45 +1,46 @@
-import { useState } from "react"
-import { useAuth } from "../AuthContext"
-import { Eye, EyeOff } from "./Icons"
-import BackButton from "./BackButton"
+import { useState } from "react";
+import { useAuth } from "../AuthContext";
+import { Eye, EyeOff } from "./Icons";
+import BackButton from "./BackButton";
+import FormBtn from "../../components/buttons/FormBtn";
 
 function ResetPasswordPage({ navigate, goBack }) {
-  const { updatePassword, loading } = useAuth()
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState("")
+  const { updatePassword, loading } = useAuth();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     // Validate password
     if (password.length < 10) {
-      setError("Password must be at least 10 characters long")
-      return
+      setError("Password must be at least 10 characters long");
+      return;
     }
 
     if (!/[A-Z]/.test(password)) {
-      setError("Password must contain at least 1 uppercase letter")
-      return
+      setError("Password must contain at least 1 uppercase letter");
+      return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     // Handle password reset
-    const success = await updatePassword(password)
+    const success = await updatePassword(password);
     if (success) {
-      setSubmitted(true)
+      setSubmitted(true);
     } else {
-      setError("Failed to reset password. Please try again.")
+      setError("Failed to reset password. Please try again.");
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
@@ -51,14 +52,22 @@ function ResetPasswordPage({ navigate, goBack }) {
         {!submitted ? (
           <>
             <p className="mb-6 text-center text-sm text-gray-500">
-              Please update your password. Must be 10 characters long and contain at least 1 uppercase.
+              Please update your password. Must be 10 characters long and
+              contain at least 1 uppercase.
             </p>
 
-            {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">{error}</div>}
+            {error && (
+              <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700"
+                >
                   New Password
                 </label>
                 <div className="relative">
@@ -82,7 +91,10 @@ function ResetPasswordPage({ navigate, goBack }) {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium text-gray-700"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -105,19 +117,27 @@ function ResetPasswordPage({ navigate, goBack }) {
                 </div>
               </div>
 
-              <button
+              {loading ? (
+                <FormBtn buttonText={"Updating..."} />
+              ) : (
+                <FormBtn buttonText={"Reset Password"} />
+              )}
+              {/**
+                 * <button
                 type="submit"
                 disabled={loading}
                 className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
               >
                 {loading ? "Updating..." : "Reset Password"}
               </button>
+                 */}
             </form>
           </>
         ) : (
           <div className="text-center">
             <p className="mb-6 text-sm text-gray-600">
-              Your password has been successfully reset. You can now log in with your new password.
+              Your password has been successfully reset. You can now log in with
+              your new password.
             </p>
 
             <button
@@ -132,7 +152,7 @@ function ResetPasswordPage({ navigate, goBack }) {
         <BackButton onClick={goBack} />
       </div>
     </div>
-  )
+  );
 }
 
-export default ResetPasswordPage
+export default ResetPasswordPage;

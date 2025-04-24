@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { AuthProvider } from "./AuthContext"
 import LoginPage from "./components/LoginPage"
@@ -10,27 +8,43 @@ import VerificationPage from "./components/VerificationPage"
 
 function Auth() {
   const [currentPage, setCurrentPage] = useState("login")
+  // Add a history state to track navigation history
+  const [history, setHistory] = useState(["login"])
 
-  // Simple router function to navigate between pages
+  // Update the navigate function to track history
   const navigate = (page) => {
-    setCurrentPage(page)
+    if (page !== currentPage) {
+      setHistory((prev) => [...prev, page])
+      setCurrentPage(page)
+    }
   }
 
-  // Render the appropriate component based on the current page
+  // Add a goBack function
+  const goBack = () => {
+    if (history.length > 1) {
+      const newHistory = [...history]
+      newHistory.pop() // Remove current page
+      const previousPage = newHistory[newHistory.length - 1]
+      setCurrentPage(previousPage)
+      setHistory(newHistory)
+    }
+  }
+
+  // Update the renderPage function to pass goBack to components
   const renderPage = () => {
     switch (currentPage) {
       case "login":
         return <LoginPage navigate={navigate} />
       case "signup":
-        return <SignupPage navigate={navigate} />
+        return <SignupPage navigate={navigate} goBack={goBack} />
       case "signup-step2":
-        return <SignupPage step={2} navigate={navigate} />
+        return <SignupPage step={2} navigate={navigate} goBack={goBack} />
       case "verification":
-        return <VerificationPage navigate={navigate} />
+        return <VerificationPage navigate={navigate} goBack={goBack} />
       case "forgot-password":
-        return <ForgotPasswordPage navigate={navigate} />
+        return <ForgotPasswordPage navigate={navigate} goBack={goBack} />
       case "reset-password":
-        return <ResetPasswordPage navigate={navigate} />
+        return <ResetPasswordPage navigate={navigate} goBack={goBack} />
       default:
         return <LoginPage navigate={navigate} />
     }

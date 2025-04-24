@@ -1,13 +1,11 @@
-"use client"
-
 import { useState } from "react"
 import { useAuth } from "../AuthContext"
 import { Eye, EyeOff } from "./Icons"
 
 function LoginPage({ navigate }) {
   const { login, loading, error } = useAuth()
-  const [email, setEmail] = useState("testuser@gmail.com")
-  const [password, setPassword] = useState("••••••")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [stayLoggedIn, setStayLoggedIn] = useState(false)
   const [formError, setFormError] = useState("")
@@ -34,7 +32,7 @@ function LoginPage({ navigate }) {
     <div className="flex min-h-screen items-center justify-center bg-white">
       <div className="w-full max-w-md px-6">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Login</h1>
+          <h1 className="text-2xl font-bold text-[#6b1d1d]">Login</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -49,8 +47,8 @@ function LoginPage({ navigate }) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-              placeholder="Email"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -65,8 +63,8 @@ function LoginPage({ navigate }) {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-                placeholder="Password"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+                placeholder="Enter your password"
                 required
               />
               <button
@@ -82,7 +80,7 @@ function LoginPage({ navigate }) {
           <div className="text-right">
             <button
               type="button"
-              className="text-sm text-gray-600 hover:underline"
+              className="text-sm text-[#6b1d1d] hover:underline"
               onClick={() => navigate("forgot-password")}
             >
               Forgot Password?
@@ -95,7 +93,7 @@ function LoginPage({ navigate }) {
               type="checkbox"
               checked={stayLoggedIn}
               onChange={(e) => setStayLoggedIn(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-black focus:ring-0"
+              className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
             />
             <label htmlFor="stay-logged-in" className="ml-2 text-sm text-gray-600">
               Stay logged in on this device
@@ -107,7 +105,7 @@ function LoginPage({ navigate }) {
               <input
                 id="recaptcha"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-black focus:ring-0"
+                className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
               />
               <label htmlFor="recaptcha" className="ml-2 text-sm text-gray-600">
                 I am not a robot
@@ -123,7 +121,7 @@ function LoginPage({ navigate }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-black py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-70"
+            className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -131,7 +129,7 @@ function LoginPage({ navigate }) {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <button onClick={() => navigate("signup")} className="font-medium text-black hover:underline">
+          <button onClick={() => navigate("signup")} className="font-medium text-[#6b1d1d] hover:underline">
             Sign Up
           </button>
         </div>

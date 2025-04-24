@@ -1,15 +1,14 @@
-"use client"
-
 import { useState } from "react"
 import { useAuth } from "../AuthContext"
 import { ChevronDown, Eye, EyeOff } from "./Icons"
+import BackButton from "./BackButton"
 
-function SignupPage({ navigate, step = 1 }) {
+function SignupPage({ navigate, goBack, step = 1 }) {
   const { signup, loading } = useAuth()
   const [formData, setFormData] = useState({
-    name: "John Doe",
+    name: "",
     userType: "",
-    email: "testuser@gmail.com",
+    email: "",
     password: "",
     confirmPassword: "",
     acceptTerms: false,
@@ -75,9 +74,9 @@ function SignupPage({ navigate, step = 1 }) {
   if (step === 1) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
-        <div className="w-full max-w-md px-6">
+        <div className="relative w-full max-w-md px-6">
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold">Create Your Account</h1>
+            <h1 className="text-2xl font-bold text-[#6b1d1d]">Create Your Account</h1>
           </div>
 
           <form onSubmit={handleStep1Submit} className="space-y-4">
@@ -90,8 +89,8 @@ function SignupPage({ navigate, step = 1 }) {
                 type="text"
                 value={formData.name}
                 onChange={(e) => updateFormData("name", e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-                placeholder="John Doe"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+                placeholder="Enter your full name"
               />
               {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
             </div>
@@ -103,7 +102,7 @@ function SignupPage({ navigate, step = 1 }) {
               <div className="relative">
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="flex w-full items-center justify-between rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                   {formData.userType || "Select User Type"}
@@ -139,8 +138,8 @@ function SignupPage({ navigate, step = 1 }) {
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData("email", e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-                placeholder="testuser@gmail.com"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+                placeholder="Enter your email"
               />
               {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
             </div>
@@ -155,7 +154,7 @@ function SignupPage({ navigate, step = 1 }) {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => updateFormData("password", e.target.value)}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                   placeholder="••••••"
                 />
                 <button
@@ -179,7 +178,7 @@ function SignupPage({ navigate, step = 1 }) {
                   type={showConfirmPassword ? "text" : "password"}
                   value={formData.confirmPassword}
                   onChange={(e) => updateFormData("confirmPassword", e.target.value)}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                   placeholder="••••••"
                 />
                 <button
@@ -199,7 +198,7 @@ function SignupPage({ navigate, step = 1 }) {
                 type="checkbox"
                 checked={formData.acceptTerms}
                 onChange={(e) => updateFormData("acceptTerms", e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-black focus:ring-0"
+                className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
               />
               <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                 I Accept the Terms & Conditions
@@ -209,7 +208,7 @@ function SignupPage({ navigate, step = 1 }) {
 
             <button
               type="submit"
-              className="w-full rounded-md border border-gray-300 bg-white py-2 text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full rounded-md border border-gray-300 bg-white py-2 text-sm font-medium text-[#6b1d1d] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
             >
               Next Step
             </button>
@@ -217,10 +216,12 @@ function SignupPage({ navigate, step = 1 }) {
 
           <div className="mt-6 text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <button onClick={() => navigate("login")} className="font-medium text-black hover:underline">
+            <button onClick={() => navigate("login")} className="font-medium text-[#6b1d1d] hover:underline">
               Login
             </button>
           </div>
+
+          <BackButton onClick={() => navigate("login")} />
         </div>
       </div>
     )
@@ -229,9 +230,9 @@ function SignupPage({ navigate, step = 1 }) {
   // Step 2: Organization Details
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="w-full max-w-md px-6">
+      <div className="relative w-full max-w-md px-6">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Create Your Account</h1>
+          <h1 className="text-2xl font-bold text-[#6b1d1d]">Create Your Account</h1>
         </div>
 
         <form onSubmit={handleStep2Submit} className="space-y-4">
@@ -244,8 +245,8 @@ function SignupPage({ navigate, step = 1 }) {
               type="text"
               value={formData.organizationDetails}
               onChange={(e) => updateFormData("organizationDetails", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-              placeholder="John Doe"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+              placeholder="Enter organization name"
             />
             {errors.organizationDetails && <p className="text-xs text-red-500">{errors.organizationDetails}</p>}
           </div>
@@ -259,7 +260,7 @@ function SignupPage({ navigate, step = 1 }) {
               type="text"
               value={formData.otherDetails}
               onChange={(e) => updateFormData("otherDetails", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
             />
           </div>
 
@@ -268,7 +269,7 @@ function SignupPage({ navigate, step = 1 }) {
               <input
                 id="recaptcha"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-black focus:ring-0"
+                className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
               />
               <label htmlFor="recaptcha" className="ml-2 text-sm text-gray-600">
                 I am not a robot
@@ -284,7 +285,7 @@ function SignupPage({ navigate, step = 1 }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-black py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-70"
+            className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
           >
             {loading ? "Registering..." : "Register"}
           </button>
@@ -292,10 +293,12 @@ function SignupPage({ navigate, step = 1 }) {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <button onClick={() => navigate("login")} className="font-medium text-black hover:underline">
+          <button onClick={() => navigate("login")} className="font-medium text-[#6b1d1d] hover:underline">
             Login
           </button>
         </div>
+
+        <BackButton onClick={goBack} />
       </div>
     </div>
   )

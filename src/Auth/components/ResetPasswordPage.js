@@ -1,10 +1,9 @@
-"use client"
-
 import { useState } from "react"
 import { useAuth } from "../AuthContext"
 import { Eye, EyeOff } from "./Icons"
+import BackButton from "./BackButton"
 
-function ResetPasswordPage({ navigate }) {
+function ResetPasswordPage({ navigate, goBack }) {
   const { updatePassword, loading } = useAuth()
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -44,9 +43,9 @@ function ResetPasswordPage({ navigate }) {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="w-full max-w-md px-6">
+      <div className="relative w-full max-w-md px-6">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Reset Password</h1>
+          <h1 className="text-2xl font-bold text-[#6b1d1d]">Reset Password</h1>
         </div>
 
         {!submitted ? (
@@ -68,7 +67,7 @@ function ResetPasswordPage({ navigate }) {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                     placeholder="••••••"
                     required
                   />
@@ -92,7 +91,7 @@ function ResetPasswordPage({ navigate }) {
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                     placeholder="••••••"
                     required
                   />
@@ -109,7 +108,7 @@ function ResetPasswordPage({ navigate }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-md bg-black py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-70"
+                className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
               >
                 {loading ? "Updating..." : "Reset Password"}
               </button>
@@ -123,12 +122,14 @@ function ResetPasswordPage({ navigate }) {
 
             <button
               onClick={() => navigate("login")}
-              className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+              className="rounded-md bg-[#6b1d1d] px-4 py-2 text-sm font-medium text-white hover:bg-[#4a0f0f]"
             >
               Go to Login
             </button>
           </div>
         )}
+
+        <BackButton onClick={goBack} />
       </div>
     </div>
   )

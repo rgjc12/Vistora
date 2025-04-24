@@ -1,5 +1,3 @@
-"use client"
-
 import { createContext, useContext, useState, useEffect, useRef } from "react"
 
 const AuthContext = createContext(undefined)

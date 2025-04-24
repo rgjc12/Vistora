@@ -1,11 +1,10 @@
-"use client"
-
 import { useState } from "react"
 import { useAuth } from "../AuthContext"
+import BackButton from "./BackButton"
 
-function ForgotPasswordPage({ navigate }) {
+function ForgotPasswordPage({ navigate, goBack }) {
   const { resetPassword, loading } = useAuth()
-  const [email, setEmail] = useState("useremail@gmail.com")
+  const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
 
@@ -28,9 +27,9 @@ function ForgotPasswordPage({ navigate }) {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="w-full max-w-md px-6">
+      <div className="relative w-full max-w-md px-6">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Reset Password</h1>
+          <h1 className="text-2xl font-bold text-[#6b1d1d]">Reset Password</h1>
         </div>
 
         {!submitted ? (
@@ -51,8 +50,8 @@ function ForgotPasswordPage({ navigate }) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-                  placeholder="useremail@gmail.com"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
+                  placeholder="Enter your registered email"
                   required
                 />
               </div>
@@ -60,7 +59,7 @@ function ForgotPasswordPage({ navigate }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-md bg-black py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-70"
+                className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
               >
                 {loading ? "Sending..." : "Reset Password"}
               </button>
@@ -73,11 +72,13 @@ function ForgotPasswordPage({ navigate }) {
               password. Please check your inbox.
             </p>
 
-            <button onClick={() => navigate("login")} className="text-sm font-medium text-black hover:underline">
+            <button onClick={() => navigate("login")} className="text-sm font-medium text-[#6b1d1d] hover:underline">
               Return to login
             </button>
           </div>
         )}
+
+        <BackButton onClick={goBack} />
       </div>
     </div>
   )

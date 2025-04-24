@@ -8,6 +8,7 @@ import CTASection from "./components/sections/CTASection";
 import ValuePropositionSection from "./components/sections/ValuePropositionSection";
 import TestimonialSection from "./components/sections/TestimonialSection";
 import FeaturesSection from "./components/sections/FeaturesSection";
+import Carousel from "./components/ui/Carousel";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <main className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
+
         {/* Value Propositions */}
         <ValuePropositionSection />
         {/* Testimonials */}

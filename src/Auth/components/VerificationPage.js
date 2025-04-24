@@ -1,5 +1,7 @@
 "use client";
 
+import FormBtnSecondary from "../../components/buttons/FormBtnSecondary";
+
 function VerificationPage({ navigate }) {
   const handleResendEmail = () => {
     console.log("Resending verification email");
@@ -21,18 +23,16 @@ function VerificationPage({ navigate }) {
           </p>
         </div>
 
-        <button
-          onClick={handleResendEmail}
-          className="w-full rounded-md border border-gray-300 bg-white py-2 text-sm font-medium text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
-        >
-          Resend Email
-        </button>
+        <FormBtnSecondary
+          buttonText={"Resend Email"}
+          action={handleResendEmail}
+        />
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <button
             onClick={() => navigate("login")}
-            className="font-medium text-black hover:underline"
+            className="font-medium text-[#6b1d1d] hover:underline"
           >
             Login
           </button>

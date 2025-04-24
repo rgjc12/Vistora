@@ -19,7 +19,6 @@ function App() {
       <main className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
-
         {/* Value Propositions */}
         <ValuePropositionSection />
         {/* Testimonials */}

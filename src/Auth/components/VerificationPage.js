@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 function VerificationPage({ navigate }) {
   const handleResendEmail = () => {
-    console.log("Resending verification email")
+    console.log("Resending verification email");
     // Logic to resend verification email
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
@@ -15,7 +15,8 @@ function VerificationPage({ navigate }) {
 
         <div className="mb-8 rounded-md border border-dashed border-gray-300 p-6">
           <p className="text-sm text-gray-600">
-            We have sent a verification link to the email you used to register with us. Please check your email to{" "}
+            We have sent a verification link to the email you used to register
+            with us. Please check your email to{" "}
             <span className="text-black">finalize your registration</span>.
           </p>
         </div>
@@ -29,13 +30,16 @@ function VerificationPage({ navigate }) {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <button onClick={() => navigate("login")} className="font-medium text-black hover:underline">
+          <button
+            onClick={() => navigate("login")}
+            className="font-medium text-black hover:underline"
+          >
             Login
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default VerificationPage
+export default VerificationPage;

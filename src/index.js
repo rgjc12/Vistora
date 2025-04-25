@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Auth from "./Auth/Auth"; 
 import  "./index.css"
+import FAQ from "./FAQ/FAQ"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -13,7 +14,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/auth" element={<Auth />} />
-      </Routes>
+        <Route path="/FAQ" element={<FAQ />} />
+        </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

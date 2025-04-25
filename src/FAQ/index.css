@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --maroon-50: #fef2f2;
+  --maroon-100: #fee2e2;
+  --maroon-200: #fecaca;
+  --maroon-300: #fca5a5;
+  --maroon-400: #f87171;
+  --maroon-500: #ef4444;
+  --maroon-600: #dc2626;
+  --maroon-700: #b91c1c;
+  --maroon-800: #991b1b;
+  --maroon-900: #7f1d1d;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s infinite;
+}
+
+@layer utilities {
+  .scale-102 {
+    transform: scale(1.02);
+  }
+}

@@ -10,16 +10,17 @@ import TestimonialSection from "./components/sections/TestimonialSection";
 import FeaturesSection from "./components/sections/FeaturesSection";
 import Carousel from "./components/ui/Carousel";
 import FAQ from "./FAQ/FAQ";
+import HeroSectionMain from "./components/sections/HeroSectionMain";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Scroll to Top Button */}
       <ScrollToTop />
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <HeroSection />
+        <HeroSectionMain />
         {/* Value Propositions */}
         <ValuePropositionSection />
         {/* Testimonials */}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer
+      id="footerMain"
       className="marble-bg text-white py-8 px-4 md:px-8"
       style={{ backgroundColor: "#800020" }}
     >

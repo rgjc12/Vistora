@@ -275,3 +275,34 @@ textarea {
   background-color: var(--primary-dark);
 }
 
+
+/* Hero Styles */
+
+#heroMain {
+  background: linear-gradient(0deg, #800020 0%, #1a0007 100%);
+}
+
+#heroCopyContainer {
+  background: linear-gradient(
+    0deg,
+    rgba(128, 0, 32, 0) 0%,
+    rgba(33, 0, 8, 0.3) 99%,
+    #1a0007 100%
+  );
+}
+
+@media only screen and (min-width: 768px) {
+  #heroMain {
+    background: linear-gradient(-90deg, #800020 0%, #1a0007 100%);
+  }
+
+  #heroCopyContainer {
+    background: linear-gradient(
+      270deg,
+      rgba(128, 0, 32, 0) 0%,
+      rgba(33, 0, 8, 0.93) 66.74%,
+      #1a0007 100%
+    );
+  }
+}
+

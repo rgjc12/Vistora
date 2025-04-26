@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useState } from "react"
 
 const FAQItem = ({ question, answer, isOpen, onClick, bulletPoints, index }) => {

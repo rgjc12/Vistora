@@ -9,6 +9,7 @@ import ValuePropositionSection from "./components/sections/ValuePropositionSecti
 import TestimonialSection from "./components/sections/TestimonialSection";
 import FeaturesSection from "./components/sections/FeaturesSection";
 import Carousel from "./components/ui/Carousel";
+import FAQ from "./FAQ/FAQ";
 import HeroSectionMain from "./components/sections/HeroSectionMain";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       </main>
       {/* Footer */}
       <Footer />
+      
     </div>
   );
 }

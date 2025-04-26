@@ -275,6 +275,7 @@ textarea {
   background-color: var(--primary-dark);
 }
 
+
 /* Hero Styles */
 
 #heroMain {
@@ -304,3 +305,4 @@ textarea {
     );
   }
 }
+

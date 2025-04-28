@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatedSection } from "../AnimatedSection";
-import PrimaryBtn from "../buttons/PrimaryBtn";
+import PrimaryButton from "../buttons/PrimaryButton";
 
 const CTASection = () => {
   return (
@@ -19,7 +19,7 @@ const CTASection = () => {
           <p className="text-gray-100 mb-8 max-w-2xl mx-auto">
             Secure, fast, and claim-centric productivity in just a few steps.
           </p>
-          <PrimaryBtn buttonText={"Get Started"} />
+          <PrimaryButton buttonText={"Get Started"} />
         </div>
       </AnimatedSection>
     </section>

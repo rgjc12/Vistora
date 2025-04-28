@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import BackButton from "./BackButton";
-import FormBtn from "../../components/buttons/FormBtn";
+import FormButton from "../../components/buttons/FormButton";
 
 function ForgotPasswordPage({ navigate, goBack }) {
   const { resetPassword, loading } = useAuth();
@@ -66,9 +66,9 @@ function ForgotPasswordPage({ navigate, goBack }) {
               </div>
 
               {loading ? (
-                <FormBtn buttonText={"Sending..."} />
+                <FormButton buttonText={"Sending..."} />
               ) : (
-                <FormBtn buttonText={"Reset Password"} />
+                <FormButton buttonText={"Reset Password"} />
               )}
             </form>
           </>

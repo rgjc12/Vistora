@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PrimaryBtn from "../buttons/PrimaryBtn";
-import SmallerBtn from "../buttons/SmallerBtn";
+import PrimaryButton from "../buttons/PrimaryButton";
+import SmallerButton from "../buttons/SmallerButton";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -26,12 +26,15 @@ const Header = () => {
           </a>
         </div>
         <div className="flex items-center gap-4">
-          <nav className="hidden md:flex items-center space-x-6 text-sm">
-            <a href="#" className="text-gray-200 hover:text-white">
+          <nav className="hidden md:flex items-center space-x-6 text-sm mr-8">
+            <a href="/" className="text-gray-200 hover:text-white">
               Home
             </a>
+            <a href="/faq" className="text-gray-200 hover:text-white">
+              About & FAQ
+            </a>
           </nav>
-          <SmallerBtn
+          <SmallerButton
             primary={true}
             buttonText={"Sign In"}
             action={handleClick}

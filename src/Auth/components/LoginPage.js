@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { Eye, EyeOff } from "./Icons";
-import PrimaryBtn from "../../components/buttons/PrimaryBtn";
-import FormBtn from "../../components/buttons/FormBtn";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
+import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage({ navigate }) {
@@ -155,9 +155,9 @@ function LoginPage({ navigate }) {
               </div>
             </div>
             {loading ? (
-              <FormBtn buttonText={"Logging in..."} />
+              <FormButton buttonText={"Logging in..."} />
             ) : (
-              <FormBtn buttonText={"Login"} />
+              <FormButton buttonText={"Login"} />
             )}
           </form>
 

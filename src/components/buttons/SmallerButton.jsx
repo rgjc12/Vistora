@@ -1,6 +1,6 @@
 import React from "react";
 
-const SmallerBtn = ({
+const SmallerButton = ({
   buttonText,
   primary,
   secondary,
@@ -23,4 +23,4 @@ const SmallerBtn = ({
   );
 };
 
-export default SmallerBtn;
+export default SmallerButton;

@@ -1,6 +1,12 @@
 import React from "react";
 
-const PrimaryBtn = ({ buttonText, bkgColor, textColor, action, rounded }) => {
+const PrimaryButton = ({
+  buttonText,
+  bkgColor,
+  textColor,
+  action,
+  rounded,
+}) => {
   return (
     <button
       onClick={action}
@@ -11,4 +17,4 @@ const PrimaryBtn = ({ buttonText, bkgColor, textColor, action, rounded }) => {
   );
 };
 
-export default PrimaryBtn;
+export default PrimaryButton;

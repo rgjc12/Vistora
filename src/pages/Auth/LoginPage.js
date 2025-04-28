@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../AuthContext";
-import { Eye, EyeOff } from "./Icons";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
+import { Eye, EyeOff } from "../../components/auth/Icons";
 import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginPage({ navigate }) {
   const { login, loading, error } = useAuth();

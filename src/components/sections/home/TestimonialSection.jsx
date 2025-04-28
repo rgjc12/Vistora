@@ -1,6 +1,7 @@
 import React from "react";
-import { AnimatedSection } from "../AnimatedSection";
-import Carousel from "../ui/Carousel";
+
+import { AnimatedSection } from "../../animations/AnimatedSection";
+import Carousel from "../../ui/Carousel";
 
 const TestimonialSection = () => {
   const testimonialsList = [

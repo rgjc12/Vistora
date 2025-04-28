@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { useAuth } from "../AuthContext";
-import { ChevronDown, Eye, EyeOff } from "./Icons";
-import BackButton from "./BackButton";
+
+import { ChevronDown, Eye, EyeOff } from "../../components/auth/Icons";
+
 import FormButtonSecondary from "../../components/buttons/FormButtonSecondary";
 import FormButton from "../../components/buttons/FormButton";
+import BackButton from "../../components/buttons/BackButton";
+import { useAuth } from "../../contexts/AuthContext";
 
 function SignupPage({ navigate, goBack, step = 1 }) {
   const { signup, loading } = useAuth();

@@ -1,4 +1,4 @@
-import { ArrowLeft } from "./Icons";
+import { ArrowLeft } from "../auth/Icons";
 
 function BackButton({ onClick }) {
   return (

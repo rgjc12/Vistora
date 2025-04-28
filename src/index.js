@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./App";
-import Auth from "./Auth/Auth"; 
-import  "./index.css"
-import FAQ from "./FAQ/FAQ"
+import App from "./pages/App";
+import Auth from "./pages/Auth/Auth";
+import "./styles/index.css";
+import FAQ from "./pages/FAQ/FAQ";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -15,7 +15,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/FAQ" element={<FAQ />} />
-        </Routes>
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

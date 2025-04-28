@@ -1,11 +1,8 @@
-import "./index.css";
+import Footer from "../../components/navigation/Footer";
+import Header from "../../components/navigation/Header";
+import CTASection from "../../components/sections/home/CTASection";
+import "../../styles/Faq.css";
 
-import FloatingButton from "./components/FloatingButton";
-import FAQItem from "./components/FAQItem";
-import { ScrollToTop } from "../components/ScrollToTop";
-import Header from "../components/sections/Header";
-import CTASection from "../components/sections/CTASection";
-import Footer from "../components/sections/Footer";
 import FAQPage from "./components/FAQPage.jsx";
 
 function FAQ() {

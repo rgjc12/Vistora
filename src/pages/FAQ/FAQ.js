@@ -7,10 +7,10 @@ import FAQPage from "./components/FAQPage.jsx";
 
 function FAQ() {
   return (
-    <div className="flex flex-col min-h-screen marble-bg">
+    <div className="flex flex-col min-h-screen bg-[#800020]">
       {/* Scroll to Top Button */}
       <Header />
-      <main className="flex-grow border-2 border-yellow-300 bg-white">
+      <main className="flex-grow  mt-[80px] ">
         {/* FAQ Section */}
         <FAQPage />
         {/* CTA */}

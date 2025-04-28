@@ -26,7 +26,7 @@ const FAQPage = () => {
 
   return (
     <div
-      className={`container border-2 border-green-400 mx-auto px-4 py-12 max-w-4xl transition-opacity duration-1000 ${
+      className={`container  mx-auto px-4 py-12 max-w-4xl transition-opacity duration-1000 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
     >

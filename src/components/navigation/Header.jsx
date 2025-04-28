@@ -1,4 +1,5 @@
 import React from "react";
+import "../../styles/index.css";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../buttons/PrimaryButton";
 import SmallerButton from "../buttons/SmallerButton";
@@ -11,7 +12,7 @@ const Header = () => {
   };
 
   return (
-    <header className=" absolute z-50 top-0 w-full h-[80px] flex">
+    <header className="absolute z-50 top-0 w-full h-[80px] flex">
       <div className="text-white py-0 px-4 md:px-8 flex items-center justify-between max-w-[3000px] w-full mx-auto">
         <div className="flex items-center">
           <a

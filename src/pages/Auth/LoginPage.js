@@ -41,7 +41,7 @@ function LoginPage({ navigate }) {
           />
         </a>
 
-        <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
+        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"

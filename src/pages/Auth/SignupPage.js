@@ -79,7 +79,7 @@ function SignupPage({ navigate, goBack, step = 1 }) {
   if (step === 1) {
     return (
       <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
-        <div className="bg-primary w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
+        <div className="bg-[#800020] w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
           <a href="/" className="cursor-pointer ">
             <img
               src="/images/vistora-logo.png"
@@ -88,7 +88,6 @@ function SignupPage({ navigate, goBack, step = 1 }) {
             />
           </a>
 
-          <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
           <img
             src="/images/doctor-bg-auth.jpg"
             alt="Doctor"
@@ -284,7 +283,7 @@ function SignupPage({ navigate, goBack, step = 1 }) {
   // Step 2: Organization Details
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
-      <div className="bg-primary w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
+      <div className="bg-[#800020] w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
         <a href="/" className="cursor-pointer ">
           <img
             src="/images/vistora-logo.png"
@@ -293,7 +292,6 @@ function SignupPage({ navigate, goBack, step = 1 }) {
           />
         </a>
 
-        <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"

@@ -1,4 +1,5 @@
 import "../styles/App.css";
+import "../styles/index.css";
 import Header from "../components/navigation/Header";
 import HeroSectionMain from "../components/sections/home/HeroSectionMain";
 import ValuePropositionSection from "../components/sections/home/ValuePropositionSection";

@@ -3,7 +3,7 @@ import Header from "../../components/navigation/Header";
 import CTASection from "../../components/sections/home/CTASection";
 import "../../styles/Faq.css";
 
-import FAQPage from "./components/FAQPage.jsx";
+import FAQPage from "./FAQPage.jsx";
 
 function FAQ() {
   return (

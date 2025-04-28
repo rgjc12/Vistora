@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import FAQItem from "../../../components/faq/FAQItem";
-import { faqData } from "../data/faqData";
+import FAQItem from "../../components/faq/FAQItem";
+import { faqData } from "./data/faqData";
 import { useNavigate } from "react-router-dom";
 
 const FAQPage = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { AnimatedSection } from "../AnimatedSection";
-import PrimaryBtn from "../buttons/PrimaryBtn";
-import SecondaryBtn from "../buttons/SecondaryBtn";
+import PrimaryButton from "../buttons/PrimaryButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const HeroSection = () => {
   return (
@@ -23,8 +23,8 @@ const HeroSection = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               {/** Made a button component for easier styling, editting, and tracking */}
-              <PrimaryBtn buttonText={"Get Started"} />
-              <SecondaryBtn buttonText={"Learn More"} />
+              <PrimaryButton buttonText={"Get Started"} />
+              <SecondaryButton buttonText={"Learn More"} />
             </div>
           </AnimatedSection>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SecondaryBtn = ({ buttonText, bkgColor, textColor, action }) => {
+const SecondaryButton = ({ buttonText, bkgColor, textColor, action }) => {
   return (
     <button
       onClick={action}
@@ -11,4 +11,4 @@ const SecondaryBtn = ({ buttonText, bkgColor, textColor, action }) => {
   );
 };
 
-export default SecondaryBtn;
+export default SecondaryButton;

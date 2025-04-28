@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { ChevronDown, Eye, EyeOff } from "./Icons";
 import BackButton from "./BackButton";
-import FormBtnSecondary from "../../components/buttons/FormBtnSecondary";
-import FormBtn from "../../components/buttons/FormBtn";
+import FormButtonSecondary from "../../components/buttons/FormButtonSecondary";
+import FormButton from "../../components/buttons/FormButton";
 
 function SignupPage({ navigate, goBack, step = 1 }) {
   const { signup, loading } = useAuth();
@@ -261,7 +261,7 @@ function SignupPage({ navigate, goBack, step = 1 }) {
                 <p className="text-xs text-red-500">{errors.acceptTerms}</p>
               )}
 
-              <FormBtnSecondary buttonText={"Next Step"} />
+              <FormButtonSecondary buttonText={"Next Step"} />
             </form>
 
             <div className="mt-6 text-center text-sm text-gray-600">
@@ -369,9 +369,9 @@ function SignupPage({ navigate, goBack, step = 1 }) {
             </div>
 
             {loading ? (
-              <FormBtn buttonText={"Registering..."} />
+              <FormButton buttonText={"Registering..."} />
             ) : (
-              <FormBtn buttonText={"Register"} />
+              <FormButton buttonText={"Register"} />
             )}
           </form>
 

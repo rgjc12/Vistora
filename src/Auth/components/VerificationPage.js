@@ -1,6 +1,6 @@
 "use client";
 
-import FormBtnSecondary from "../../components/buttons/FormBtnSecondary";
+import FormButtonSecondary from "../../components/buttons/FormButtonSecondary";
 
 function VerificationPage({ navigate }) {
   const handleResendEmail = () => {
@@ -23,7 +23,7 @@ function VerificationPage({ navigate }) {
           </p>
         </div>
 
-        <FormBtnSecondary
+        <FormButtonSecondary
           buttonText={"Resend Email"}
           action={handleResendEmail}
         />

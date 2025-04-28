@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormBtn = ({ buttonText, rounded, action }) => {
+const FormButton = ({ buttonText, rounded, action }) => {
   return (
     <button
       onClick={action}
@@ -11,4 +11,4 @@ const FormBtn = ({ buttonText, rounded, action }) => {
   );
 };
 
-export default FormBtn;
+export default FormButton;

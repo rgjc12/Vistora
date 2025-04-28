@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormBtnSecondary = ({ buttonText, action }) => {
+const FormButtonSecondary = ({ buttonText, action }) => {
   return (
     <button
       onClick={action}
@@ -11,4 +11,4 @@ const FormBtnSecondary = ({ buttonText, action }) => {
   );
 };
 
-export default FormBtnSecondary;
+export default FormButtonSecondary;

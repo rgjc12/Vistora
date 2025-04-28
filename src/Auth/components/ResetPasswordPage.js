@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { Eye, EyeOff } from "./Icons";
 import BackButton from "./BackButton";
-import FormBtn from "../../components/buttons/FormBtn";
+import FormButton from "../../components/buttons/FormButton";
 
 function ResetPasswordPage({ navigate, goBack }) {
   const { updatePassword, loading } = useAuth();
@@ -118,9 +118,9 @@ function ResetPasswordPage({ navigate, goBack }) {
               </div>
 
               {loading ? (
-                <FormBtn buttonText={"Updating..."} />
+                <FormButton buttonText={"Updating..."} />
               ) : (
-                <FormBtn buttonText={"Reset Password"} />
+                <FormButton buttonText={"Reset Password"} />
               )}
               {/**
                  * <button

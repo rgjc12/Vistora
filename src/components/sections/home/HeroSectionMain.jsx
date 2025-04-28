@@ -1,7 +1,8 @@
 import React from "react";
-import { AnimatedSection } from "../AnimatedSection";
-import PrimaryButton from "../buttons/PrimaryButton";
-import SecondaryButton from "../buttons/SecondaryButton";
+
+import { AnimatedSection } from "../../animations/AnimatedSection";
+import PrimaryButton from "../../buttons/PrimaryButton";
+import SecondaryButton from "../../buttons/SecondaryButton";
 
 const HeroSectionMain = () => {
   return (

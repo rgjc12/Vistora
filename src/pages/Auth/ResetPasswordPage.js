@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../AuthContext";
-import { Eye, EyeOff } from "./Icons";
-import BackButton from "./BackButton";
 import FormButton from "../../components/buttons/FormButton";
+import BackButton from "../../components/buttons/BackButton";
+import { useAuth } from "../../contexts/AuthContext";
+import { Eye, EyeOff } from "../../components/auth/Icons";
 
 function ResetPasswordPage({ navigate, goBack }) {
   const { updatePassword, loading } = useAuth();

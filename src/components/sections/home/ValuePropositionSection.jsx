@@ -1,6 +1,7 @@
 import React from "react";
-import { AnimatedSection } from "../AnimatedSection";
+
 import { CheckCircle, Lock, Shield, Zap } from "lucide-react";
+import { AnimatedSection } from "../../animations/AnimatedSection";
 
 const ValuePropositionSection = () => {
   return (

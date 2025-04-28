@@ -1,4 +1,5 @@
 import React from "react";
+import "../../styles/index.css";
 
 const SmallerButton = ({
   buttonText,
@@ -12,7 +13,7 @@ const SmallerButton = ({
     <button
       onClick={action}
       className={`
-      ${primary ? "bg-white text-primary" : ""}
+      ${primary ? "bg-white text-[#800020]" : ""}
       ${
         secondary ? "bg-transparent border-[1px] border-white text-white" : ""
       }      

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../AuthContext";
-import { Eye, EyeOff } from "./Icons";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
+import { Eye, EyeOff } from "../../components/auth/Icons";
 import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginPage({ navigate }) {
   const { login, loading, error } = useAuth();
@@ -42,7 +41,7 @@ function LoginPage({ navigate }) {
           />
         </a>
 
-        <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
+        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"

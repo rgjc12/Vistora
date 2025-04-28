@@ -1,6 +1,6 @@
 import React from "react";
-import { AnimatedSection } from "../AnimatedSection";
-import PrimaryButton from "../buttons/PrimaryButton";
+import { AnimatedSection } from "../../animations/AnimatedSection";
+import PrimaryButton from "../../buttons/PrimaryButton";
 
 const CTASection = () => {
   return (

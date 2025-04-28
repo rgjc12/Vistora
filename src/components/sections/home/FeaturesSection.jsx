@@ -1,6 +1,6 @@
 import React from "react";
-import { AnimatedSection } from "../AnimatedSection";
 import { ArrowRight, BarChart3, Clock } from "lucide-react";
+import { AnimatedSection } from "../../animations/AnimatedSection";
 
 const FeaturesSection = () => {
   return (

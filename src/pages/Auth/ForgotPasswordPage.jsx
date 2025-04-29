@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import FormButton from "../../components/buttons/FormButton";
 import BackButton from "../../components/buttons/BackButton";
 
-function ForgotPasswordPage({ navigate, goBack }) {
+function ForgotPasswordPage() {
   const { resetPassword, loading } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -54,13 +57,7 @@ function ForgotPasswordPage({ navigate, goBack }) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
-        >
-          {loading ? "Sending..." : "Reset Password"}
-        </button>
+        <FormButton buttonText={loading ? "Sending..." : "Reset Password"} />
       </form>
     </>
   );
@@ -73,7 +70,7 @@ function ForgotPasswordPage({ navigate, goBack }) {
       </p>
 
       <button
-        onClick={() => navigate("login")}
+        onClick={() => navigate("/auth/login")}
         className="text-sm font-medium text-[#6b1d1d] hover:underline"
       >
         Return to login
@@ -88,9 +85,12 @@ function ForgotPasswordPage({ navigate, goBack }) {
           <h1 className="text-2xl font-bold text-[#6b1d1d]">Reset Password</h1>
         </div>
 
-        {submitted ? showOnScreenResetPasswordInstruction() : showEmailToResetPasswordInstructions()}
+        {submitted
+          ? showOnScreenResetPasswordInstruction()
+          : showEmailToResetPasswordInstructions()}
 
-        <BackButton onClick={goBack} />
+<BackButton onClick={() => navigate("/auth/login")} />
+
       </div>
     </div>
   );

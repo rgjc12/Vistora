@@ -30,7 +30,7 @@ const TestimonialSection = () => {
       className="py-12 md:py-16 px-4 md:px-8 max-w-7xl mx-auto"
     >
       <AnimatedSection>
-        <h2 className="text-2xl font-bold mb-10 text-center text-primary">
+        <h2 className="text-4xl lg:text-5xl font-light font-poppins mb-10 text-center text-primary">
           Testimonials
         </h2>
       </AnimatedSection>

@@ -88,6 +88,8 @@ function SignupPage({ navigate, goBack, step = 1 }) {
             />
           </a>
 
+          <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
+
           <img
             src="/images/doctor-bg-auth.jpg"
             alt="Doctor"
@@ -291,6 +293,8 @@ function SignupPage({ navigate, goBack, step = 1 }) {
             className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 ease-out duration-300"
           />
         </a>
+
+        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
 
         <img
           src="/images/doctor-bg-auth.jpg"

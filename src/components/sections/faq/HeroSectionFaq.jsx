@@ -39,7 +39,7 @@ const HeroSectionFaq = () => {
       >
         <AnimatedSection>
           <div className="flex flex-col pt-[64px] md:pt-0 md:items-start text-center md:text-left w-full z-10 max-w-[450px] lg:max-w-[600px] min-[2000px]:max-w-[800px]">
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-light tracking-tight mb-4 text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight mb-4 text-white">
               Discover Vistora
             </h1>
             <p className="mb-12 text-gray-200 font-normal text-lg lg:text-2xl">

@@ -13,7 +13,7 @@ const CTASection = () => {
           className="marble-bg p-10 rounded-lg"
           style={{ backgroundColor: "#800020" }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+          <h2 className="text-4xl lg:text-5xl font-md font-poppins mb-4 text-white">
             Join the Future of Healthcare Claims Management
           </h2>
           <p className="text-gray-100 mb-8 max-w-2xl mx-auto">

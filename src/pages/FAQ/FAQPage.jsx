@@ -30,25 +30,25 @@ const FAQPage = () => {
         mounted ? "opacity-100" : "opacity-0"
       }`}
     >
-      <div className="text-center mb-12 animate-fadeIn">
-        <h1 className="text-4xl font-bold text-white mb-4 font-poppins">
+      <div className="text-center mb-12 animate-fadeIn flex flex-col items-center w-full">
+        <h2 className="text-4xl lg:text-5xl font-light mb-4 font-poppins">
           Vistora FAQ
-        </h1>
-        <p className="text-lg text-gray-200 mb-8 font-poppins">
+        </h2>
+        <p className="text-lg mb-8 font-poppins max-w-[600px]">
           Frequently asked questions about Vistora's decentralized AI platform
           for the Ayushman Bharat Scheme
         </p>
 
-        <div className="relative max-w-xl mx-auto mb-12 transform hover:scale-102 transition-transform duration-300">
+        <div className="relative max-w-xl mx-auto mb-12 transform hover:scale-102 transition-transform duration-300 w-full">
           <input
             type="text"
             placeholder="Search FAQs..."
-            className="w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-lg bg-white/90 font-poppins"
+            className="w-full px-4 py-3 rounded-lg border border-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#9a0026] shadow-lg bg-white/90 font-poppins"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <svg
-            className="absolute right-3 top-3 h-6 w-6 text-red-500"
+            className="absolute right-3 top-3 h-6 w-6 text-[#9a0026]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

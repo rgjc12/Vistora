@@ -273,7 +273,8 @@ textarea {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: var(--primary-dark);
+  /*background-color: var(--primary-dark);*/
+  background-color: #600018;
 }
 
 /* Hero Styles */

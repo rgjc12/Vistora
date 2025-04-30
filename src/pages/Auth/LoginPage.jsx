@@ -32,7 +32,7 @@ function LoginPage({ navigate }) {
 
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
-      <div className="bg-primary w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
+      <div className="bg-[#800020] w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
         <a href="/" className="cursor-pointer ">
           <img
             src="/images/vistora-logo.png"

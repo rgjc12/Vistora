@@ -1,5 +1,6 @@
 import Footer from "../../components/navigation/Footer";
 import Header from "../../components/navigation/Header";
+import HeroSectionFaq from "../../components/sections/faq/HeroSectionFaq";
 import CTASection from "../../components/sections/home/CTASection";
 import "../../styles/Faq.css";
 
@@ -7,10 +8,12 @@ import FAQPage from "./FAQPage.jsx";
 
 function FAQ() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#800020]">
+    <div className="flex flex-col min-h-screen ">
       {/* Scroll to Top Button */}
       <Header />
-      <main className="flex-grow  mt-[80px] ">
+      <main className="flex-grow">
+        {/* Hero FAQ Section */}
+        <HeroSectionFaq />
         {/* FAQ Section */}
         <FAQPage />
         {/* CTA */}

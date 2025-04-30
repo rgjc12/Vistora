@@ -19,15 +19,6 @@ const HeroSectionFaq = () => {
             className="h-full w-full object-cover"
           />
         </picture>
-        {/**
- * <img
-      src="/images/hero-wet-flower-big.png" // fallback image
-      srcSet="/images/hero-wet-small.png 767w, /images/hero-wet-flower-big.png 768w"
-      sizes="(max-width: 767px) 100vw, 768px"
-      alt="Hero"
-      className="h-full w-full object-cover object-bottom md:object-center"
-    />
- */}
       </div>
       <div
         id="heroFAQOverlay"

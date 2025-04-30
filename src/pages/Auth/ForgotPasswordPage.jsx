@@ -29,7 +29,8 @@ function ForgotPasswordPage({ navigate, goBack }) {
   const showEmailToResetPasswordInstructions = () => (
     <>
       <p className="mb-6 text-center text-sm text-gray-500">
-        Please enter the email linked to your account so we can send you a link to reset your password.
+        Please enter the email linked to your account so we can send you a link
+        to reset your password.
       </p>
 
       {error && (
@@ -68,8 +69,8 @@ function ForgotPasswordPage({ navigate, goBack }) {
   const showOnScreenResetPasswordInstruction = () => (
     <div className="text-center">
       <p className="mb-6 text-sm text-gray-600">
-        If an account exists with the email <strong>{email}</strong>, we've sent instructions to reset your
-        password. Please check your inbox.
+        If an account exists with the email <strong>{email}</strong>, we've sent
+        instructions to reset your password. Please check your inbox.
       </p>
 
       <button
@@ -82,15 +83,37 @@ function ForgotPasswordPage({ navigate, goBack }) {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="relative w-full max-w-md px-6">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-[#6b1d1d]">Reset Password</h1>
+    <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
+      <div className="bg-[#800020] w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
+        <a href="/" className="cursor-pointer ">
+          <img
+            src="/images/vistora-logo.png"
+            alt="Vistora Technologies"
+            className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 ease-out duration-300"
+          />
+        </a>
+
+        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
+        <img
+          src="/images/doctor-bg-auth.jpg"
+          alt="Doctor"
+          className="w-full h-auto object-cover object-center hidden min-[900px]:block"
+        />
+      </div>
+      <div className="w-full flex items-center justify-center">
+        <div className="relative w-full max-w-md px-6">
+          <div className="mb-8 text-center">
+            <h1 className="text-2xl font-bold text-[#6b1d1d]">
+              Reset Password
+            </h1>
+          </div>
+
+          {submitted
+            ? showOnScreenResetPasswordInstruction()
+            : showEmailToResetPasswordInstructions()}
+
+          <BackButton onClick={goBack} />
         </div>
-
-        {submitted ? showOnScreenResetPasswordInstruction() : showEmailToResetPasswordInstructions()}
-
-        <BackButton onClick={goBack} />
       </div>
     </div>
   );

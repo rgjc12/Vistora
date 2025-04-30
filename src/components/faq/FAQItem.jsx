@@ -39,15 +39,15 @@ const FAQItem = ({
             : "white",
         }}
       >
-        <span className="font-medium text-[0.85rem] sm:text-lg text-red-900 font-poppins group-hover:text-red-700 transition-colors duration-300">
+        <span className="font-medium text-[0.85rem] sm:text-lg text-primary-dark font-poppins group-hover:text-primary-light transition-colors duration-300">
           {question}
         </span>
         <div
           className={`w-8 h-8 rounded-full flex items-center justify-center bg-[#9a0026] bg-opacity-30 group-hover:bg-opacity-20 transition-all duration-300 
-          ${isOpen ? "bg-red-200" : ""}`}
+          ${isOpen ? "bg-[#9a0026]" : ""}`}
         >
           <svg
-            className={`w-5 h-5 text-[#9a0026] transform transition-transform duration-500 ease-in-out ${
+            className={`w-5 h-5 text-primary-dark transform transition-transform duration-500 ease-in-out ${
               isOpen ? "rotate-180" : ""
             }`}
             fill="none"
@@ -70,14 +70,14 @@ const FAQItem = ({
           isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="p-5 border-t border-red-100">
+        <div className="p-5 border-t border-primary-dark">
           <p className="text-gray-700 mb-4 font-poppins">{answer}</p>
 
           {bulletPoints && bulletPoints.length > 0 && (
             <ul className="space-y-2 text-gray-700 font-poppins">
               {bulletPoints.map((point, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="inline-block w-2 h-2 rounded-full bg-red-500 mt-2 mr-2"></span>
+                  <span className="inline-block w-2 h-2 rounded-full bg-primary-dark mt-2 mr-2"></span>
                   <span>{point}</span>
                 </li>
               ))}

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "../../styles/index.css";
 // import Swiper styles
 import "swiper/css";
 // core version + navigation, pagination modules:
@@ -15,6 +14,8 @@ import {
   A11y,
 } from "swiper/modules";
 import SwiperButtons from "./SwiperButtons";
+
+import "../../styles/index.css";
 
 function Carousel({ slideList }) {
   return (

@@ -76,7 +76,7 @@ function SignupPage() {
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
       {/* Left Side with Image */}
-      <div className="bg-[#800020] w-full min-[900px]:max-w-[800px] h-[80px] min-[900px]:h-full flex relative">
+      <div className="bg-primary w-full min-[900px]:max-w-[800px] h-[80px] min-[900px]:h-full flex relative">
         <a href="/" className="cursor-pointer">
           <img
             src="/images/vistora-logo.png"
@@ -84,6 +84,7 @@ function SignupPage() {
             className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 transition-all"
           />
         </a>
+        <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"

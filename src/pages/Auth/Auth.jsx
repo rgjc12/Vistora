@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { AuthProvider } from "../../contexts/AuthContext";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
@@ -9,10 +8,8 @@ import ResetPasswordPage from "./ResetPasswordPage";
 
 function Auth() {
   const [currentPage, setCurrentPage] = useState("login");
-  // Add a history state to track navigation history
   const [history, setHistory] = useState(["login"]);
 
-  // Update the navigate function to track history
   const navigate = (page) => {
     if (page !== currentPage) {
       setHistory((prev) => [...prev, page]);
@@ -20,18 +17,16 @@ function Auth() {
     }
   };
 
-  // Add a goBack function
   const goBack = () => {
     if (history.length > 1) {
       const newHistory = [...history];
-      newHistory.pop(); // Remove current page
-      const previousPage = newHistory[newHistory.length - 1];
-      setCurrentPage(previousPage);
+      newHistory.pop(); // remove current page
+      const previous = newHistory[newHistory.length - 1];
       setHistory(newHistory);
+      setCurrentPage(previous);
     }
   };
 
-  // Update the renderPage function to pass goBack to components
   const renderPage = () => {
     switch (currentPage) {
       case "login":
@@ -51,7 +46,7 @@ function Auth() {
     }
   };
 
-  return <AuthProvider navigate={navigate}>{renderPage()}</AuthProvider>;
+  return <AuthProvider>{renderPage()}</AuthProvider>;
 }
 
 export default Auth;

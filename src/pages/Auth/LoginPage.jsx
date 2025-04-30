@@ -4,8 +4,10 @@ import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-function LoginPage({ navigate }) {
+function LoginPage() {
+  const navigate = useNavigate();
   const { login, loading, error } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,32 +24,31 @@ function LoginPage({ navigate }) {
     }
 
     const success = await login(email, password);
-    if (success) {
-      // Navigate to dashboard or home page in a real app
-      console.log("Login successful");
-    } else {
+    if (!success) {
       setFormError(error || "Login failed. Please check your credentials.");
     }
   };
 
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
-      <div className="bg-[#800020] w-full max-w-none min-[900px]:max-w-[800px] mb-8 min-[900px]:mb-0 h-[80px] min-[900px]:h-full flex relative">
-        <a href="/" className="cursor-pointer ">
+      {/* Left side with logo and image */}
+      <div className="bg-primary w-full min-[900px]:max-w-[800px] h-[80px] min-[900px]:h-full flex relative mb-8 min-[900px]:mb-0">
+        <a href="/" className="cursor-pointer">
           <img
             src="/images/vistora-logo.png"
             alt="Vistora Technologies"
-            className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 ease-out duration-300"
+            className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 transition-transform duration-300"
           />
         </a>
-
-        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
+        <div className="bg-[#800020] opacity-0 min-[900px]:opacity-45 absolute inset-0" />
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"
           className="w-full h-auto object-cover object-center hidden min-[900px]:block"
         />
       </div>
+
+      {/* Right side form */}
       <div className="w-full flex items-center justify-center">
         <div className="w-full max-w-md xl:max-w-[600px] px-6">
           <div className="mb-8 text-center">
@@ -96,7 +97,6 @@ function LoginPage({ navigate }) {
                   placeholder="Enter your password"
                   required
                 />
-
                 <button
                   type="button"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
@@ -111,7 +111,7 @@ function LoginPage({ navigate }) {
               <button
                 type="button"
                 className="text-sm text-[#6b1d1d] hover:underline"
-                onClick={() => navigate("forgot-password")}
+                onClick={() => navigate("/auth/forgot-password")}
               >
                 Forgot Password?
               </button>
@@ -146,24 +146,19 @@ function LoginPage({ navigate }) {
                 >
                   I am not a robot
                 </label>
-                <div className="ml-auto">
-                  <div className="h-10 w-10 bg-gray-100 text-[8px] text-gray-400 flex items-center justify-center">
-                    reCAPTCHA
-                  </div>
+                <div className="ml-auto h-10 w-10 bg-gray-100 text-[8px] text-gray-400 flex items-center justify-center">
+                  reCAPTCHA
                 </div>
               </div>
             </div>
-            {loading ? (
-              <FormButton buttonText={"Logging in..."} />
-            ) : (
-              <FormButton buttonText={"Login"} />
-            )}
+
+            <FormButton buttonText={loading ? "Logging in..." : "Login"} />
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{" "}
             <button
-              onClick={() => navigate("signup")}
+              onClick={() => navigate("/signup")}
               className="font-medium text-[#6b1d1d] hover:underline"
             >
               Sign Up

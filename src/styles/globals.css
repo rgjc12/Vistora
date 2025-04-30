@@ -101,6 +101,15 @@ body {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+  @keyframes fade-in-out {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+  }
+  
+  .animate-fade-in-out {
+    animation: fade-in-out 3s ease-in-out;
+  }
+  
 }
 
 @layer base {

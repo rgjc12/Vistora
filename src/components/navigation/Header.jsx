@@ -28,10 +28,16 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex items-center space-x-6 text-sm mr-8">
-            <a href="/" className="text-gray-200 hover:text-white">
+            <a
+              href="/"
+              className="text-gray-200 hover:text-white hover:underline hover:underline-offset-8"
+            >
               Home
             </a>
-            <a href="/faq" className="text-gray-200 hover:text-white">
+            <a
+              href="/faq"
+              className="text-gray-200 hover:text-white  hover:underline hover:underline-offset-8"
+            >
               About & FAQ
             </a>
           </nav>

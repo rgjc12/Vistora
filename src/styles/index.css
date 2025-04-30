@@ -7,8 +7,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
 :root {
-  --primary-color: #800020; /* Burgundy/maroon color */
+  --primary-color: #800020; 
   --primary-dark: #600018;
   --primary-light: #9a0026;
   --primary: #800020;
@@ -16,7 +17,7 @@
   --background-color: #ffffff;
   --form-background: #f8f8f8;
   --border-color: #e0e0e0;
-}
+}*/
 
 html {
   scroll-behavior: smooth;
@@ -52,6 +53,7 @@ textarea {
   font-family: "Poppins", sans-serif;
 }
 
+/*
 .bg-primary {
   background-color: var(--primary-color);
 }
@@ -98,6 +100,7 @@ textarea {
   outline: none;
   border-color: var(--primary-color);
 }
+*/
 
 /* CSS-only marble effect */
 .marble-bg {
@@ -268,13 +271,14 @@ textarea {
 /* Swiper Pagination Color adjustment */
 
 .swiper-pagination-bullet {
-  background-color: oklch(87.2% 0.01 258.338);
+  background-color: rgb(240, 186, 186);
   opacity: 1;
 }
 
 .swiper-pagination-bullet-active {
   /*background-color: var(--primary-dark);*/
-  background-color: #600018;
+  background-color: #800020 !important;
+  opacity: 1 !important;
 }
 
 /* Hero Styles */

@@ -41,7 +41,7 @@ const TestimonialSection = () => {
             style={{ backgroundColor: "#800020" }}
           >
             <img
-              src="/images/testimonial-placeholder.jpg"
+              src="/images/testimonial.jpg"
               alt="testimonial"
               className="w-full h-full object-cover"
             />

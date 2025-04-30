@@ -1,8 +1,11 @@
 import React from "react";
 import { AnimatedSection } from "../../animations/AnimatedSection";
 import PrimaryButton from "../../buttons/PrimaryButton";
+import { useNavigate } from "react-router-dom";
 
 const CTASection = () => {
+  const navigate = useNavigate();
+
   return (
     <section
       id="cta"
@@ -19,7 +22,10 @@ const CTASection = () => {
           <p className="text-gray-100 mb-8 max-w-2xl mx-auto">
             Secure, fast, and claim-centric productivity in just a few steps.
           </p>
-          <PrimaryButton buttonText={"Get Started"} />
+          <PrimaryButton
+            buttonText={"Get Started"}
+            action={() => navigate("/auth")}
+          />
         </div>
       </AnimatedSection>
     </section>

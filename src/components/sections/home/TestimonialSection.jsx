@@ -40,7 +40,12 @@ const TestimonialSection = () => {
             className="marble-bg aspect-square w-full rounded-lg flex items-center justify-center"
             style={{ backgroundColor: "#800020" }}
           >
-            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-200"></div>
+            <img
+              src="/images/testimonial-placeholder.jpg"
+              alt="testimonial"
+              className="w-full h-full object-cover"
+            />
+            <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-200 hidden"></div>
           </div>
         </AnimatedSection>
         <AnimatedSection delay={0.2} direction="right">

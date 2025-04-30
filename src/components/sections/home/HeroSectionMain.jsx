@@ -3,8 +3,11 @@ import React from "react";
 import { AnimatedSection } from "../../animations/AnimatedSection";
 import PrimaryButton from "../../buttons/PrimaryButton";
 import SecondaryButton from "../../buttons/SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
 const HeroSectionMain = () => {
+  const navigate = useNavigate();
+
   return (
     <section
       id="heroMain"
@@ -46,8 +49,14 @@ const HeroSectionMain = () => {
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-4 w-full">
               {/** Made a button component for easier styling, editting, and tracking */}
-              <PrimaryButton buttonText={"Get Started"} />
-              <SecondaryButton buttonText={"Learn More"} />
+              <PrimaryButton
+                buttonText={"Get Started"}
+                action={() => navigate("/auth")}
+              />
+              <SecondaryButton
+                buttonText={"Learn More"}
+                action={() => navigate("/faq")}
+              />
             </div>
           </div>
         </AnimatedSection>

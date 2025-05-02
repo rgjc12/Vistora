@@ -70,9 +70,11 @@ const FAQItem = ({
           ${isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="p-5 border-t border-primary-dark">
-          <p className="text-gray-700 mb-4 font-poppins">{answer}</p>
+          <p className="text-gray-700 mb-4 font-poppins">
+            {answer ? answer : ""}
+          </p>
 
-          {bulletPoints.length > 0 && (
+          {bulletPoints && bulletPoints.length > 0 && (
             <ul className="space-y-2 text-gray-700 font-poppins">
               {bulletPoints.map((point, index) => (
                 <li key={index} className="flex items-start">

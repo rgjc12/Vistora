@@ -10,6 +10,7 @@ const FAQItem = ({
 }) => {
   const [mounted, setMounted] = useState(false);
 
+  // Add staggered animation effect on mount
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
@@ -31,8 +32,8 @@ const FAQItem = ({
       }}
     >
       <button
-        className="flex justify-between items-center w-full p-5 text-left focus:outline-none group"
         onClick={onClick}
+        className="flex justify-between items-center w-full p-5 text-left focus:outline-none group"
         style={{
           background: isOpen
             ? "linear-gradient(to right, #f8f8f8, white)"
@@ -53,7 +54,6 @@ const FAQItem = ({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
           >
             <path
               strokeLinecap="round"
@@ -66,14 +66,13 @@ const FAQItem = ({
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-500 ease-in-out 
+          ${isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="p-5 border-t border-primary-dark">
           <p className="text-gray-700 mb-4 font-poppins">{answer}</p>
 
-          {bulletPoints && bulletPoints.length > 0 && (
+          {bulletPoints.length > 0 && (
             <ul className="space-y-2 text-gray-700 font-poppins">
               {bulletPoints.map((point, index) => (
                 <li key={index} className="flex items-start">

@@ -24,7 +24,7 @@ const CTASection = () => {
           </p>
           <PrimaryButton
             buttonText={"Get Started"}
-            action={() => navigate("/auth")}
+            action={() => navigate("/signup")}
           />
         </div>
       </AnimatedSection>

@@ -93,7 +93,7 @@ function SignupPage() {
       </div>
 
       {/* Form Content */}
-      <div className="flex w-full items-center justify-center bg-white">
+      <div className="flex w-full py-12 min-[900px]:py-0 items-center justify-center bg-white">
         <div className="relative w-full max-w-md xl:max-w-[600px] px-6">
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-[#6b1d1d]">

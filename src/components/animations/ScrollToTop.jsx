@@ -28,7 +28,7 @@ export function ScrollToTop() {
 
   return (
     <div
-      className={`scroll-to-top ${isVisible ? "visible" : ""}`}
+      className={`scroll-to-top bg-primary ${isVisible ? "visible" : ""}`}
       onClick={scrollToTop}
       aria-label="Scroll to top"
     >

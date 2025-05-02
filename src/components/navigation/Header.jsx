@@ -3,6 +3,8 @@ import "../../styles/index.css";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../buttons/PrimaryButton";
 import SmallerButton from "../buttons/SmallerButton";
+import { AlignJustify } from "lucide-react";
+import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,8 +14,8 @@ const Header = () => {
   };
 
   return (
-    <header className="absolute z-50 top-0 w-full h-[80px] flex">
-      <div className="text-white py-0 px-4 md:px-8 flex items-center justify-between max-w-[3000px] w-full mx-auto">
+    <header className="absolute z-50 top-0 w-full h-[80px] flex max-w-[3000px] mx-auto py-0 px-4 md:px-8 ">
+      <div className="text-white flex items-center justify-between w-full ">
         <div className="flex items-center">
           <a
             href="/"
@@ -26,7 +28,7 @@ const Header = () => {
             />
           </a>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <nav className="hidden md:flex items-center space-x-6 text-sm mr-8">
             <a
               href="/"
@@ -47,6 +49,7 @@ const Header = () => {
             action={handleClick}
           />
         </div>
+        <MobileMenu />
       </div>
     </header>
   );

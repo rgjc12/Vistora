@@ -76,7 +76,7 @@ function SignupPage() {
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
       {/* Left Side with Image */}
-      <div className="bg-[#800020] w-full min-[900px]:max-w-[800px] h-[80px] min-[900px]:h-full flex relative">
+      <div className="bg-primary w-full min-[900px]:max-w-[800px] h-[80px] min-[900px]:h-full flex relative">
         <a href="/" className="cursor-pointer">
           <img
             src="/images/vistora-logo.png"
@@ -84,6 +84,7 @@ function SignupPage() {
             className="w-full max-w-[200px] h-auto absolute top-0 min-[900px]:top-4 left-2 min-[900px]:left-4 z-20 hover:scale-105 transition-all"
           />
         </a>
+        <div className="bg-primary opacity-0 min-[900px]:opacity-45 absolute top-0 left-0 right-0 bottom-0 "></div>
         <img
           src="/images/doctor-bg-auth.jpg"
           alt="Doctor"
@@ -92,14 +93,19 @@ function SignupPage() {
       </div>
 
       {/* Form Content */}
-      <div className="flex w-full items-center justify-center bg-white">
+      <div className="flex w-full py-12 min-[900px]:py-0 items-center justify-center bg-white">
         <div className="relative w-full max-w-md xl:max-w-[600px] px-6">
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold text-[#6b1d1d]">Create Your Account</h1>
+            <h1 className="text-2xl font-bold text-[#6b1d1d]">
+              Create Your Account
+            </h1>
           </div>
 
           {/* Unified form element to avoid focus-loss on re-renders */}
-          <form onSubmit={step === 1 ? handleStep1Submit : handleStep2Submit} className="space-y-4">
+          <form
+            onSubmit={step === 1 ? handleStep1Submit : handleStep2Submit}
+            className="space-y-4"
+          >
             {step === 1 ? (
               <>
                 {/* Name */}
@@ -113,7 +119,12 @@ function SignupPage() {
 
                 {/* User Type Dropdown */}
                 <div>
-                  <label htmlFor="userType" className="text-sm font-medium text-gray-700">Select User Type</label>
+                  <label
+                    htmlFor="userType"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Select User Type
+                  </label>
                   <div className="relative">
                     <button
                       type="button"
@@ -169,9 +180,13 @@ function SignupPage() {
                   label="Confirm Password"
                   id="confirmPassword"
                   value={formData.confirmPassword}
-                  onChange={(e) => updateFormData("confirmPassword", e.target.value)}
+                  onChange={(e) =>
+                    updateFormData("confirmPassword", e.target.value)
+                  }
                   show={showConfirmPassword}
-                  toggleShow={() => setShowConfirmPassword(!showConfirmPassword)}
+                  toggleShow={() =>
+                    setShowConfirmPassword(!showConfirmPassword)
+                  }
                   error={errors.confirmPassword}
                 />
 
@@ -181,14 +196,18 @@ function SignupPage() {
                     id="terms"
                     type="checkbox"
                     checked={formData.acceptTerms}
-                    onChange={(e) => updateFormData("acceptTerms", e.target.checked)}
+                    onChange={(e) =>
+                      updateFormData("acceptTerms", e.target.checked)
+                    }
                     className="h-4 w-4 border rounded"
                   />
                   <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                     I Accept the Terms & Conditions
                   </label>
                 </div>
-                {errors.acceptTerms && <ErrorText message={errors.acceptTerms} />}
+                {errors.acceptTerms && (
+                  <ErrorText message={errors.acceptTerms} />
+                )}
 
                 <FormButtonSecondary buttonText="Next Step" />
               </>
@@ -198,7 +217,9 @@ function SignupPage() {
                   label="Organization Details"
                   id="organizationDetails"
                   value={formData.organizationDetails}
-                  onChange={(e) => updateFormData("organizationDetails", e.target.value)}
+                  onChange={(e) =>
+                    updateFormData("organizationDetails", e.target.value)
+                  }
                   error={errors.organizationDetails}
                 />
 
@@ -206,10 +227,14 @@ function SignupPage() {
                   label="Other Details"
                   id="otherDetails"
                   value={formData.otherDetails}
-                  onChange={(e) => updateFormData("otherDetails", e.target.value)}
+                  onChange={(e) =>
+                    updateFormData("otherDetails", e.target.value)
+                  }
                 />
 
-                <FormButton buttonText={loading ? "Registering..." : "Register"} />
+                <FormButton
+                  buttonText={loading ? "Registering..." : "Register"}
+                />
                 <BackButton onClick={() => setStep(1)} />
               </>
             )}
@@ -253,10 +278,20 @@ function Input({ label, id, value, onChange, type = "text", error }) {
 }
 
 // ✅ Reusable Password Input with toggle
-function PasswordInput({ label, id, value, onChange, show, toggleShow, error }) {
+function PasswordInput({
+  label,
+  id,
+  value,
+  onChange,
+  show,
+  toggleShow,
+  error,
+}) {
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-medium text-gray-700">{label}</label>
+      <label htmlFor={id} className="text-sm font-medium text-gray-700">
+        {label}
+      </label>
       <div className="relative">
         <input
           id={id}

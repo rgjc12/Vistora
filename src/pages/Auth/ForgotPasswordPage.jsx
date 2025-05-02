@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import FormButton from "../../components/buttons/FormButton";
 import BackButton from "../../components/buttons/BackButton";
 
-function ForgotPasswordPage({ goBack }) {
-  const navigate = useNavigate();
+function ForgotPasswordPage({ navigate, goBack }) {
   const { resetPassword, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -76,11 +74,11 @@ function ForgotPasswordPage({ goBack }) {
       </p>
 
       <button
-              onClick={() => navigate("/auth/login")}
-              className="font-medium text-[#6b1d1d] hover:underline"
-            >
-           Return to Login
-            </button>
+        onClick={() => navigate("login")}
+        className="text-sm font-medium text-[#6b1d1d] hover:underline"
+      >
+        Return to login
+      </button>
     </div>
   );
 

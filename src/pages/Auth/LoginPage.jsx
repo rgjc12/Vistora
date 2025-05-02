@@ -63,7 +63,10 @@ function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -78,7 +81,10 @@ function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="relative">
@@ -119,7 +125,10 @@ function LoginPage() {
                 onChange={(e) => setStayLoggedIn(e.target.checked)}
                 className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
               />
-              <label htmlFor="stay-logged-in" className="ml-2 text-sm text-gray-600">
+              <label
+                htmlFor="stay-logged-in"
+                className="ml-2 text-sm text-gray-600"
+              >
                 Stay logged in on this device
               </label>
             </div>
@@ -131,7 +140,10 @@ function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
                 />
-                <label htmlFor="recaptcha" className="ml-2 text-sm text-gray-600">
+                <label
+                  htmlFor="recaptcha"
+                  className="ml-2 text-sm text-gray-600"
+                >
                   I am not a robot
                 </label>
                 <div className="ml-auto h-10 w-10 bg-gray-100 text-[8px] text-gray-400 flex items-center justify-center">
@@ -146,12 +158,11 @@ function LoginPage() {
           <div className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{" "}
             <button
-  onClick={() => navigate("/signup")}
-  className="font-medium text-[#6b1d1d] hover:underline"
->
-  Sign Up
-</button>
-
+              onClick={() => navigate("/signup")}
+              className="font-medium text-[#6b1d1d] hover:underline"
+            >
+              Sign Up
+            </button>
           </div>
         </div>
       </div>

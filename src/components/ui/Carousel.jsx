@@ -15,6 +15,8 @@ import {
 } from "swiper/modules";
 import SwiperButtons from "./SwiperButtons";
 
+import "../../styles/index.css";
+
 function Carousel({ slideList }) {
   return (
     <div className="relative w-full p-2">

@@ -9,7 +9,7 @@ const FeaturesSection = () => {
       className="py-12 md:py-16 px-4 md:px-8 max-w-7xl mx-auto"
     >
       <AnimatedSection>
-        <h2 className="text-2xl font-bold mb-10 text-center text-primary">
+        <h2 className="text-4xl lg:text-5xl font-light font-poppins mb-10 text-center text-foreground">
           Overview of Features
         </h2>
       </AnimatedSection>
@@ -22,7 +22,7 @@ const FeaturesSection = () => {
           </AnimatedSection>
           <AnimatedSection delay={0.2} direction="right">
             <div>
-              <h3 className="text-xl font-bold mb-4 text-primary">
+              <h3 className="text-xl font-bold mb-4 text-foreground">
                 Real-time Claim Tracking
               </h3>
               <p className="text-gray-600 mb-4">
@@ -54,7 +54,7 @@ const FeaturesSection = () => {
             className="order-2 md:order-1"
           >
             <div>
-              <h3 className="text-xl font-bold mb-4 text-primary">
+              <h3 className="text-xl font-bold mb-4 text-foreground">
                 Smart Contract Automation
               </h3>
               <p className="text-gray-600 mb-4">
@@ -116,7 +116,7 @@ const FeaturesSection = () => {
           </AnimatedSection>
           <AnimatedSection delay={0.2} direction="right">
             <div>
-              <h3 className="text-xl font-bold mb-4 text-primary">
+              <h3 className="text-xl font-bold mb-4 text-foreground">
                 Advanced Analytics Dashboard
               </h3>
               <p className="text-gray-600 mb-4">

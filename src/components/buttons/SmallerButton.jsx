@@ -13,7 +13,7 @@ const SmallerButton = ({
     <button
       onClick={action}
       className={`
-      ${primary ? "bg-white text-[#800020]" : ""}
+      ${primary ? "bg-white text-primary" : ""}
       ${
         secondary ? "bg-transparent border-[1px] border-white text-white" : ""
       }      

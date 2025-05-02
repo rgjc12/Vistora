@@ -24,13 +24,14 @@ body {
 
 @layer base {
   :root {
+    /*
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --primary: 345, 100%, 25%; 
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
@@ -57,6 +58,14 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 20%; /* #333333 */
+    --primary: 345 100% 25%; /* #800020 */
+    --primary-dark: 345 100% 18%; /* #600018 */
+    --primary-light: 345 100% 35%; /* #9a0026 */
+
+    --primary-foreground: 0 0% 100%;
   }
   .dark {
     --background: 0 0% 3.9%;

@@ -67,10 +67,16 @@ function SignupPage() {
     e.preventDefault();
     if (validateStep2()) {
       const success = await signup(formData);
-      if (success) navigate("/verification");
+      console.log("Signup success value:", success); // Debug log
+  
+      if (success) {
+        navigate("/verification"); 
+      } else {
+        alert("Signup failed — please check your input or try again.");
+      }
     }
   };
-
+  
   const handleLoginClick = () => navigate("/auth/login");
 
   return (

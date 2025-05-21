@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { Search, Bell, Plus, Upload, FileText } from "lucide-react"
+import { Search, Plus, Upload, FileText } from "lucide-react"
 import { BarChart, PieChart } from "./Charts.jsx"
+import PageHeader from "./PageHeader.jsx"
 
-const ClaimsSummary = () => {
+const Claims = () => {
   const [searchQuery, setSearchQuery] = useState("")
 
   const claimStats = [
@@ -43,10 +44,7 @@ const ClaimsSummary = () => {
 
   return (
     <div className="p-6 h-full">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold">Claims Summary</h1>
-        <Bell size={20} className="cursor-pointer" />
-      </div>
+      <PageHeader title="Claims Summary" />
 
       {/* Search Bar */}
       <div className="relative mb-6">
@@ -61,7 +59,7 @@ const ClaimsSummary = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {claimStats.map((stat, index) => (
           <div key={index} className={`${stat.color} p-4 rounded-md`}>
             <div className="text-sm text-gray-600">Total Claims:</div>
@@ -71,7 +69,7 @@ const ClaimsSummary = () => {
       </div>
 
       {/* Claims Table */}
-      <div className="bg-white rounded-md shadow mb-6">
+      <div className="bg-white rounded-md shadow mb-6 overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b">
@@ -106,7 +104,7 @@ const ClaimsSummary = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex flex-wrap gap-4 mb-6">
         <button className="flex items-center bg-gray-600 text-white px-4 py-2 rounded">
           <Plus size={16} className="mr-2" />
           Submit New Claim
@@ -127,18 +125,18 @@ const ClaimsSummary = () => {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <h3 className="text-lg font-medium mb-4">Traffic by Device</h3>
           <BarChart data={deviceData} />
         </div>
         <div>
           <h3 className="text-lg font-medium mb-4">Traffic by Location</h3>
-          <div className="flex">
-            <div className="w-1/2">
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/2">
               <PieChart data={locationData} />
             </div>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <ul>
                 {locationData.labels.map((label, index) => (
                   <li key={index} className="flex justify-between mb-2">
@@ -155,4 +153,4 @@ const ClaimsSummary = () => {
   )
 }
 
-export default ClaimsSummary
+export default Claims

@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { User, FileText, Bell, Users, HelpCircle, Settings, LogOut } from "lucide-react"
 
@@ -31,6 +29,17 @@ const Sidebar = ({ activePage, setActivePage }) => {
     }
   }
 
+  const handleNavigation = (pageName) => {
+    if (pageName !== "Logout") {
+      setActivePage(pageName)
+    } else {
+      // Handle logout logic here
+      console.log("Logging out...")
+      // For demo purposes, just navigate to Profile
+      setActivePage("Profile")
+    }
+  }
+
   return (
     <div className="w-[120px] md:w-[200px] bg-black text-white flex flex-col h-full">
       <div className="flex-1">
@@ -40,17 +49,17 @@ const Sidebar = ({ activePage, setActivePage }) => {
             <div key={index}>
               <div
                 className={`flex items-center px-4 py-3 cursor-pointer ${
-                  activePage === item.name ? "bg-gray-800" : "hover:bg-gray-900"
+                  activePage === item.name ? "bg-gray-800 text-blue-400" : "hover:bg-gray-900"
                 }`}
                 onClick={() => {
                   if (item.submenu) {
                     toggleSubmenu(item.name)
                   } else if (item.type !== "header") {
-                    setActivePage(item.name)
+                    handleNavigation(item.name)
                   }
                 }}
               >
-                <div className="mr-3">{item.icon}</div>
+                <div className={`mr-3 ${activePage === item.name ? "text-blue-400" : ""}`}>{item.icon}</div>
                 <span className="text-sm hidden md:block">{item.name}</span>
                 {item.submenu && (
                   <span className="ml-auto hidden md:block">{expandedMenu === item.name ? "▲" : "▼"}</span>
@@ -65,7 +74,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
                       className={`py-2 cursor-pointer ${
                         activePage === subItem.name ? "text-blue-400" : "hover:text-blue-300"
                       }`}
-                      onClick={() => setActivePage(subItem.name)}
+                      onClick={() => handleNavigation(subItem.name)}
                     >
                       {subItem.name}
                     </div>
@@ -83,7 +92,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
           <div
             key={index}
             className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-900"
-            onClick={() => setActivePage(item.name)}
+            onClick={() => handleNavigation(item.name)}
           >
             <div className="mr-3">{item.icon}</div>
             <span className="text-sm hidden md:block">{item.name}</span>

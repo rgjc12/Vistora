@@ -4,6 +4,7 @@ import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
+
 function LoginPage() {
   const navigate = useNavigate();
   const { login, loading, error } = useAuth();
@@ -17,17 +18,20 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-
+  
     if (!email || !password) {
       setFormError("Please enter both email and password");
       return;
     }
-
+  
     const success = await login(email, password);
     if (!success) {
       setFormError(error || "Login failed. Please check your credentials.");
+    } else {
+      navigate("/profile"); // wherever you want to go after login
     }
   };
+  
 
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">

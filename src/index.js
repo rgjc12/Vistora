@@ -11,6 +11,7 @@ import "./styles/index.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import SignupPage from "./pages/Auth/SignupPage";
 import VerificationPage from "./pages/Auth/VerificationPage";
+import Profile from "./pages/Profile/Profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,7 +28,7 @@ root.render(
         <Route path="/FAQ" element={<FAQ />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/verification" element={<VerificationPage />} />
-
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

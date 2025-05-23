@@ -4,7 +4,7 @@ import FormButton from "../../components/buttons/FormButton";
 import BackButton from "../../components/buttons/BackButton";
 
 function ForgotPasswordPage({ navigate, goBack }) {
-  const { resetPassword, loading } = useAuth();
+  //const { resetPassword, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -18,12 +18,13 @@ function ForgotPasswordPage({ navigate, goBack }) {
       return;
     }
 
+    /*
     const success = await resetPassword(email);
     if (success) {
       setSubmitted(true);
     } else {
       setError("Failed to send reset email. Please try again.");
-    }
+    }*/
   };
 
   const showEmailToResetPasswordInstructions = () => (
@@ -57,10 +58,10 @@ function ForgotPasswordPage({ navigate, goBack }) {
 
         <button
           type="submit"
-          disabled={loading}
+          //disabled={loading}
           className="w-full rounded-md bg-[#6b1d1d] py-2 text-sm font-medium text-white hover:bg-[#4a0f0f] focus:outline-none focus:ring-2 focus:ring-[#6b1d1d] disabled:opacity-70"
         >
-          {loading ? "Sending..." : "Reset Password"}
+          {false ? "Sending..." : "Reset Password"}
         </button>
       </form>
     </>

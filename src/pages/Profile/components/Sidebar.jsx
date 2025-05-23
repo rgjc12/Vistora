@@ -1,105 +1,107 @@
-import { useState } from "react"
-import { User, FileText, Bell, Users, HelpCircle, Settings, LogOut } from "lucide-react"
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setActiveTab, toggleHelpSubmenu } from '../store/slices/uiSlice';
 
-const Sidebar = ({ activePage, setActivePage }) => {
-  const menuItems = [
-    { name: "Company Name", icon: <div className="w-6 h-6 rounded-full bg-white"></div>, type: "header" },
-    { name: "User Name", icon: <div className="w-6 h-6 rounded-full bg-white"></div>, type: "header" },
-    { name: "Profile", icon: <User size={20} /> },
-    { name: "Tasks", icon: <FileText size={20} /> },
-    { name: "Notifications", icon: <Bell size={20} /> },
-    { name: "Claims Summary", icon: <FileText size={20} /> },
-    { name: "Community Forum", icon: <Users size={20} /> },
-    {
-      name: "Help and Support",
-      icon: <HelpCircle size={20} />,
-      submenu: [{ name: "FAQs" }, { name: "Contact" }, { name: "Feedback" }],
-    },
-    { name: "Settings", icon: <Settings size={20} /> },
-    { name: "Logout", icon: <LogOut size={20} />, type: "footer" },
-  ]
+const Sidebar = () => {
+  const dispatch = useDispatch();
+  const { activeTab, helpSubmenuOpen } = useSelector(state => state.ui);
+  const unreadCount = useSelector(state => state.notifications.unreadCount);
 
-  const [expandedMenu, setExpandedMenu] = useState("Help and Support")
-
-  const toggleSubmenu = (menuName) => {
-    if (expandedMenu === menuName) {
-      setExpandedMenu(null)
-    } else {
-      setExpandedMenu(menuName)
-    }
-  }
-
-  const handleNavigation = (pageName) => {
-    if (pageName !== "Logout") {
-      setActivePage(pageName)
-    } else {
-      // Handle logout logic here
-      console.log("Logging out...")
-      // For demo purposes, just navigate to Profile
-      setActivePage("Profile")
-    }
-  }
+  const sidebarItems = [
+    { id: 'profile', label: 'Profile', icon: '👤' },
+    { id: 'tasks', label: 'Tasks', icon: '📋' },
+    { id: 'notifications', label: 'Notifications', icon: '🔔', badge: unreadCount > 0 ? unreadCount : null },
+    { id: 'claims-summary', label: 'Claims Summary', icon: '📊' },
+    { id: 'community-forum', label: 'Community Forum', icon: '💬' },
+    { id: 'help-support', label: 'Help and Support', icon: '❓', hasSubmenu: true },
+    { id: 'settings', label: 'Settings', icon: '⚙️' }
+  ];
 
   return (
-    <div className="w-[120px] md:w-[200px] bg-black text-white flex flex-col h-full">
-      <div className="flex-1">
-        {menuItems
-          .filter((item) => item.type !== "footer")
-          .map((item, index) => (
-            <div key={index}>
-              <div
-                className={`flex items-center px-4 py-3 cursor-pointer ${
-                  activePage === item.name ? "bg-gray-800 text-blue-400" : "hover:bg-gray-900"
-                }`}
-                onClick={() => {
-                  if (item.submenu) {
-                    toggleSubmenu(item.name)
-                  } else if (item.type !== "header") {
-                    handleNavigation(item.name)
-                  }
-                }}
-              >
-                <div className={`mr-3 ${activePage === item.name ? "text-blue-400" : ""}`}>{item.icon}</div>
-                <span className="text-sm hidden md:block">{item.name}</span>
-                {item.submenu && (
-                  <span className="ml-auto hidden md:block">{expandedMenu === item.name ? "▲" : "▼"}</span>
-                )}
-              </div>
-
-              {item.submenu && expandedMenu === item.name && (
-                <div className="bg-gray-800 pl-12 hidden md:block">
-                  {item.submenu.map((subItem, subIndex) => (
-                    <div
-                      key={subIndex}
-                      className={`py-2 cursor-pointer ${
-                        activePage === subItem.name ? "text-blue-400" : "hover:text-blue-300"
-                      }`}
-                      onClick={() => handleNavigation(subItem.name)}
-                    >
-                      {subItem.name}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+    <div className="w-64 bg-gray-900 text-white">
+      <div className="p-4">
+        <div className="flex items-center space-x-3 mb-8">
+          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+            <span className="text-gray-900 text-sm font-bold">C</span>
+          </div>
+          <span className="font-medium">Company Name</span>
+        </div>
+        
+        <div className="flex items-center space-x-3 mb-8">
+          <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm">U</span>
+          </div>
+          <span className="text-sm">User Name</span>
+        </div>
       </div>
 
-      {/* Footer item */}
-      {menuItems
-        .filter((item) => item.type === "footer")
-        .map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-900"
-            onClick={() => handleNavigation(item.name)}
-          >
-            <div className="mr-3">{item.icon}</div>
-            <span className="text-sm hidden md:block">{item.name}</span>
+      <nav className="px-4">
+        {sidebarItems.map((item) => (
+          <div key={item.id}>
+            <button
+              onClick={() => {
+                if (item.id === 'help-support') {
+                  dispatch(toggleHelpSubmenu());
+                } else {
+                  dispatch(setActiveTab(item.id));
+                }
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-left text-sm mb-1 transition-colors ${
+                activeTab === item.id
+                  ? 'bg-gray-700 text-white'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <span>{item.icon}</span>
+                <span>{item.label}</span>
+              </div>
+              {item.badge && (
+                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+                  {item.badge}
+                </span>
+              )}
+              {item.hasSubmenu && (
+                <span className={`transform transition-transform ${helpSubmenuOpen ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              )}
+            </button>
+            
+            {item.id === 'help-support' && helpSubmenuOpen && (
+              <div className="ml-6 space-y-1">
+                <button
+                  onClick={() => dispatch(setActiveTab('faqs'))}
+                  className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-md"
+                >
+                  FAQs
+                </button>
+                <button
+                  onClick={() => dispatch(setActiveTab('contact'))}
+                  className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-md"
+                >
+                  Contact
+                </button>
+                <button
+                  onClick={() => dispatch(setActiveTab('feedback'))}
+                  className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-md"
+                >
+                  Feedback
+                </button>
+              </div>
+            )}
           </div>
         ))}
-    </div>
-  )
-}
+      </nav>
 
-export default Sidebar
+      <div className="absolute bottom-4 left-4">
+        <button className="flex items-center space-x-2 text-gray-300 hover:text-white text-sm">
+          <span>🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

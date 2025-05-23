@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "../../components/auth/Icons";
 import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -15,23 +14,31 @@ function LoginPage() {
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [formError, setFormError] = useState("");
 
+  // Sync external auth error to formError state
+  useEffect(() => {
+    if (error) {
+      setFormError(error);
+    } else {
+      setFormError("");
+    }
+  }, [error]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-  
+
     if (!email || !password) {
       setFormError("Please enter both email and password");
       return;
     }
-  
+
     const success = await login(email, password);
-    if (!success) {
-      setFormError(error || "Login failed. Please check your credentials.");
+    if (success) {
+      navigate("/profile"); // Redirect on success
     } else {
-      navigate("/profile"); // wherever you want to go after login
+      setFormError(error || "Login failed. Please check your credentials.");
     }
   };
-  
 
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
@@ -80,6 +87,7 @@ function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                 placeholder="Enter your email"
+                disabled={loading}
                 required
               />
             </div>
@@ -99,12 +107,14 @@ function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                   placeholder="Enter your password"
+                  disabled={loading}
                   required
                 />
                 <button
                   type="button"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
                   onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
                 </button>
@@ -116,6 +126,7 @@ function LoginPage() {
                 type="button"
                 className="text-sm text-[#6b1d1d] hover:underline"
                 onClick={() => navigate("/auth/forgot-password")}
+                disabled={loading}
               >
                 Forgot Password?
               </button>
@@ -128,6 +139,7 @@ function LoginPage() {
                 checked={stayLoggedIn}
                 onChange={(e) => setStayLoggedIn(e.target.checked)}
                 className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
+                disabled={loading}
               />
               <label
                 htmlFor="stay-logged-in"
@@ -143,6 +155,7 @@ function LoginPage() {
                   id="recaptcha"
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
+                  disabled={loading}
                 />
                 <label
                   htmlFor="recaptcha"
@@ -156,7 +169,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <FormButton buttonText={loading ? "Logging in..." : "Login"} />
+            <FormButton buttonText={loading ? "Logging in..." : "Login"} disabled={loading} />
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
@@ -164,6 +177,7 @@ function LoginPage() {
             <button
               onClick={() => navigate("/signup")}
               className="font-medium text-[#6b1d1d] hover:underline"
+              disabled={loading}
             >
               Sign Up
             </button>

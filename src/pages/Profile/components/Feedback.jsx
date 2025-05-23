@@ -1,5 +1,5 @@
 import { useState } from "react"
-import PageHeader from "./components/PageHeader.jsx"
+import PageHeader from "./PageHeader.jsx"
 import { Star, Send } from "lucide-react"
 
 const Feedback = () => {

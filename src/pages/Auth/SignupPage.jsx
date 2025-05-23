@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Eye, EyeOff } from "../../components/auth/Icons";
 import FormButtonSecondary from "../../components/buttons/FormButtonSecondary";
 import FormButton from "../../components/buttons/FormButton";
@@ -27,7 +27,13 @@ function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  // New state for signup failure message
+  const [signupError, setSignupError] = useState("");
+
   const userTypes = ["Admin", "Healthcare Provider", "Patient"];
+
+  // Ref for dropdown container to handle outside clicks
+  const dropdownRef = useRef(null);
 
   const updateFormData = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -60,11 +66,13 @@ function SignupPage() {
 
   const handleStep1Submit = (e) => {
     e.preventDefault();
+    setSignupError(""); // clear previous errors
     if (validateStep1()) setStep(2);
   };
 
   const handleStep2Submit = async (e) => {
     e.preventDefault();
+    setSignupError(""); // clear previous errors
     if (validateStep2()) {
       const success = await signup(formData);
       console.log("Signup success value:", success); // Debug log
@@ -72,12 +80,33 @@ function SignupPage() {
       if (success) {
         navigate("/verification"); 
       } else {
-        alert("Signup failed — please check your input or try again.");
+        // Show inline error instead of alert
+        setSignupError("Signup failed — please check your input or try again.");
       }
     }
   };
   
   const handleLoginClick = () => navigate("/auth/login");
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   return (
     <div className="flex flex-col min-[900px]:flex-row min-h-[800px] h-screen items-center bg-white w-full">
@@ -107,7 +136,11 @@ function SignupPage() {
             </h1>
           </div>
 
-          {/* Unified form element to avoid focus-loss on re-renders */}
+          {/* Signup failure message */}
+          {signupError && (
+            <p className="text-center text-sm text-red-600 mb-4">{signupError}</p>
+          )}
+
           <form
             onSubmit={step === 1 ? handleStep1Submit : handleStep2Submit}
             className="space-y-4"
@@ -121,10 +154,11 @@ function SignupPage() {
                   value={formData.name}
                   onChange={(e) => updateFormData("name", e.target.value)}
                   error={errors.name}
+                  disabled={loading}
                 />
 
                 {/* User Type Dropdown */}
-                <div>
+                <div ref={dropdownRef}>
                   <label
                     htmlFor="userType"
                     className="text-sm font-medium text-gray-700"
@@ -136,6 +170,8 @@ function SignupPage() {
                       type="button"
                       className="w-full flex justify-between items-center border px-3 py-2 rounded-md text-sm"
                       onClick={() => setDropdownOpen(!dropdownOpen)}
+                      aria-expanded={dropdownOpen}
+                      disabled={loading}
                     >
                       {formData.userType || "Select User Type"}
                       <ChevronDown />
@@ -168,6 +204,7 @@ function SignupPage() {
                   value={formData.email}
                   onChange={(e) => updateFormData("email", e.target.value)}
                   error={errors.email}
+                  disabled={loading}
                 />
 
                 {/* Password */}
@@ -179,6 +216,7 @@ function SignupPage() {
                   show={showPassword}
                   toggleShow={() => setShowPassword(!showPassword)}
                   error={errors.password}
+                  disabled={loading}
                 />
 
                 {/* Confirm Password */}
@@ -194,6 +232,7 @@ function SignupPage() {
                     setShowConfirmPassword(!showConfirmPassword)
                   }
                   error={errors.confirmPassword}
+                  disabled={loading}
                 />
 
                 {/* Terms Checkbox */}
@@ -206,6 +245,7 @@ function SignupPage() {
                       updateFormData("acceptTerms", e.target.checked)
                     }
                     className="h-4 w-4 border rounded"
+                    disabled={loading}
                   />
                   <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                     I Accept the Terms & Conditions
@@ -215,7 +255,10 @@ function SignupPage() {
                   <ErrorText message={errors.acceptTerms} />
                 )}
 
-                <FormButtonSecondary buttonText="Next Step" />
+                <FormButtonSecondary
+                  buttonText="Next Step"
+                  disabled={loading}
+                />
               </>
             ) : (
               <>
@@ -227,6 +270,7 @@ function SignupPage() {
                     updateFormData("organizationDetails", e.target.value)
                   }
                   error={errors.organizationDetails}
+                  disabled={loading}
                 />
 
                 <Input
@@ -236,12 +280,14 @@ function SignupPage() {
                   onChange={(e) =>
                     updateFormData("otherDetails", e.target.value)
                   }
+                  disabled={loading}
                 />
 
                 <FormButton
                   buttonText={loading ? "Registering..." : "Register"}
+                  disabled={loading}
                 />
-                <BackButton onClick={() => setStep(1)} />
+                <BackButton onClick={() => setStep(1)} disabled={loading} />
               </>
             )}
           </form>
@@ -252,6 +298,7 @@ function SignupPage() {
             <button
               onClick={handleLoginClick}
               className="font-medium text-[#6b1d1d] hover:underline"
+              disabled={loading}
             >
               Login
             </button>
@@ -265,7 +312,7 @@ function SignupPage() {
 export default SignupPage;
 
 // ✅ Reusable Input Component
-function Input({ label, id, value, onChange, type = "text", error }) {
+function Input({ label, id, value, onChange, type = "text", error, disabled }) {
   return (
     <div>
       <label htmlFor={id} className="text-sm font-medium text-gray-700">
@@ -276,7 +323,10 @@ function Input({ label, id, value, onChange, type = "text", error }) {
         type={type}
         value={value}
         onChange={onChange}
-        className="w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-[#6b1d1d]"
+        disabled={disabled}
+        className={`w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-[#6b1d1d] ${
+          disabled ? "bg-gray-100 cursor-not-allowed" : ""
+        }`}
       />
       {error && <ErrorText message={error} />}
     </div>
@@ -292,6 +342,7 @@ function PasswordInput({
   show,
   toggleShow,
   error,
+  disabled,
 }) {
   return (
     <div>
@@ -304,12 +355,17 @@ function PasswordInput({
           type={show ? "text" : "password"}
           value={value}
           onChange={onChange}
-          className="w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-[#6b1d1d]"
+          disabled={disabled}
+          className={`w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-[#6b1d1d] ${
+            disabled ? "bg-gray-100 cursor-not-allowed" : ""
+          }`}
         />
         <button
           type="button"
           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
           onClick={toggleShow}
+          disabled={disabled}
+          tabIndex={-1} // avoid tabbing to toggle button when disabled
         >
           {show ? <EyeOff /> : <Eye />}
         </button>

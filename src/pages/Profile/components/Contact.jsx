@@ -1,4 +1,4 @@
-import PageHeader from "./components/PageHeader.jsx"
+import PageHeader from "./PageHeader.jsx"
 import { Mail, Phone, MessageSquare } from "lucide-react"
 
 const Contact = () => {

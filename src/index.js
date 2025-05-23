@@ -12,15 +12,18 @@ import { AuthProvider } from "./contexts/AuthContext";
 import SignupPage from "./pages/Auth/SignupPage";
 import VerificationPage from "./pages/Auth/VerificationPage";
 import Profile from "./pages/Profile/Profile";
+import { Provider } from 'react-redux';
+import store from './pages/Profile/store/StoreIndex';
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
+    <Provider store ={store}>
     <BrowserRouter>
     <AuthProvider> 
       <Routes>
-        
         <Route path="/" element={<App />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/auth/login" element={<LoginPage />} /> {/* Optional */}
@@ -32,5 +35,6 @@ root.render(
       </Routes>
       </AuthProvider>
     </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

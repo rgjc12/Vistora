@@ -1,100 +1,86 @@
-import { useState } from "react"
-import { Search, Plus, Upload, FileText } from "lucide-react"
-import { BarChart, PieChart } from "./Charts.jsx"
-import PageHeader from "./PageHeader.jsx"
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchClaims, setSearchQuery } from '../store/slices/claimsSlice';
+import SearchBar from '../components/SearchBar';
 
-const Claims = () => {
-  const [searchQuery, setSearchQuery] = useState("")
+const ClaimsSummary = () => {
+  const dispatch = useDispatch();
+  const { claims, stats, loading, error } = useSelector(state => state.claims);
 
-  const claimStats = [
-    { count: 311, color: "bg-blue-100" },
-    { count: 42, color: "bg-green-100" },
-    { count: 60, color: "bg-yellow-100" },
-    { count: 86, color: "bg-red-100" },
-  ]
+  useEffect(() => {
+    dispatch(fetchClaims());
+  }, [dispatch]);
 
-  const claimData = [
-    {
-      id: 1,
-      name: "Alexander",
-      provider: "Foley",
-      details: "alexander.foley@gmail.com",
-      status: "Completed",
-      statusColor: "text-green-600",
-    },
-    {
-      id: 2,
-      name: "Alexander",
-      provider: "Foley",
-      details: "alexander.foley@gmail.com",
-      status: "Active",
-      statusColor: "text-yellow-600",
-    },
-  ]
-
-  const deviceData = {
-    labels: ["Tablet", "Mac", "iPhone", "Windows", "Android", "Other"],
-    data: [15, 25, 30, 20, 10, 15],
+  if (loading) {
+    return <div className="text-center py-12">Loading claims data...</div>;
   }
 
-  const locationData = {
-    labels: ["United States", "Canada", "Mexico", "Other"],
-    data: [52.1, 22.8, 13.9, 11.2],
+  if (error) {
+    return <div className="text-center py-12 text-red-500">Error: {error}</div>;
   }
 
   return (
-    <div className="p-6 h-full">
-      <PageHeader title="Claims Summary" />
-
-      {/* Search Bar */}
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full pl-10 pr-4 py-2 border rounded-md"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">Claims Summary</h1>
+        <button className="p-2 text-gray-400 hover:text-gray-600">
+          🔔
+        </button>
       </div>
 
+      <SearchBar searchAction={setSearchQuery} />
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {claimStats.map((stat, index) => (
-          <div key={index} className={`${stat.color} p-4 rounded-md`}>
-            <div className="text-sm text-gray-600">Total Claims:</div>
-            <div className="text-2xl font-bold">{stat.count}</div>
-          </div>
-        ))}
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-blue-50 p-4 rounded-lg text-center">
+          <div className="text-sm text-gray-600">Total Claims:</div>
+          <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
+        </div>
+        <div className="bg-green-50 p-4 rounded-lg text-center">
+          <div className="text-sm text-gray-600">Active Claims:</div>
+          <div className="text-2xl font-bold text-green-600">{stats.active}</div>
+        </div>
+        <div className="bg-yellow-50 p-4 rounded-lg text-center">
+          <div className="text-sm text-gray-600">Pending Claims:</div>
+          <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
+        </div>
+        <div className="bg-pink-50 p-4 rounded-lg text-center">
+          <div className="text-sm text-gray-600">Rejected Claims:</div>
+          <div className="text-2xl font-bold text-pink-600">{stats.rejected}</div>
+        </div>
       </div>
 
       {/* Claims Table */}
-      <div className="bg-white rounded-md shadow mb-6 overflow-x-auto">
+      <div className="bg-white rounded-lg border">
         <table className="w-full">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 text-sm font-medium text-gray-500">Name</th>
-              <th className="text-left p-3 text-sm font-medium text-gray-500">Provider</th>
-              <th className="text-left p-3 text-sm font-medium text-gray-500">Claim Details</th>
-              <th className="text-left p-3 text-sm font-medium text-gray-500">Status</th>
-              <th className="text-left p-3 text-sm font-medium text-gray-500">Actions</th>
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Provider</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Claim Details</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {claimData.map((claim) => (
-              <tr key={claim.id} className="border-b">
-                <td className="p-3">{claim.name}</td>
-                <td className="p-3">{claim.provider}</td>
-                <td className="p-3">{claim.details}</td>
-                <td className={`p-3 ${claim.statusColor}`}>{claim.status}</td>
-                <td className="p-3">
-                  {claim.status === "Completed" ? (
-                    <button className="bg-blue-50 text-blue-600 px-4 py-1 rounded">Details</button>
-                  ) : (
-                    <div className="flex space-x-2">
-                      <button className="bg-blue-50 text-blue-600 px-4 py-1 rounded">Details</button>
-                      <button className="bg-red-500 text-white px-4 py-1 rounded">Withdraw</button>
-                    </div>
+          <tbody className="divide-y divide-gray-200">
+            {claims.slice(0, 2).map(claim => (
+              <tr key={claim.id}>
+                <td className="px-6 py-4 text-sm text-gray-900">{claim.name}</td>
+                <td className="px-6 py-4 text-sm text-gray-900">{claim.provider}</td>
+                <td className="px-6 py-4 text-sm text-gray-900">{claim.details}</td>
+                <td className="px-6 py-4">
+                  <span className={`px-2 py-1 text-xs font-medium rounded ${
+                    claim.status === 'Completed' ? 'bg-green-100 text-green-800' : 
+                    claim.status === 'Active' ? 'bg-yellow-100 text-yellow-800' : 
+                    claim.status === 'Inactive' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                  }`}>
+                    {claim.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 space-x-2">
+                  <button className="text-blue-600 hover:text-blue-800 text-sm">Details</button>
+                  {claim.status !== 'Completed' && (
+                    <button className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">REMOVE</button>
                   )}
                 </td>
               </tr>
@@ -104,53 +90,35 @@ const Claims = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap gap-4 mb-6">
-        <button className="flex items-center bg-gray-600 text-white px-4 py-2 rounded">
-          <Plus size={16} className="mr-2" />
-          Submit New Claim
+      <div className="flex space-x-4">
+        <button className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+          Submit New Claim +
         </button>
-        <button className="flex items-center bg-gray-600 text-white px-4 py-2 rounded">
-          <Upload size={16} className="mr-2" />
-          Upload Medical Records
+        <button className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+          Upload Medical Records +
         </button>
-        <button className="flex items-center bg-gray-600 text-white px-4 py-2 rounded">
-          <FileText size={16} className="mr-2" />
+        <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50">
           View Reports
         </button>
-        <div className="ml-auto">
-          <a href="#" className="text-blue-600 hover:underline">
-            See All Claims →
-          </a>
-        </div>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Charts Section */}
+      <div className="grid grid-cols-2 gap-6">
         <div>
           <h3 className="text-lg font-medium mb-4">Traffic by Device</h3>
-          <BarChart data={deviceData} />
+          <div className="bg-gray-100 h-48 rounded flex items-center justify-center">
+            <span className="text-gray-500">Bar Chart Placeholder</span>
+          </div>
         </div>
         <div>
           <h3 className="text-lg font-medium mb-4">Traffic by Location</h3>
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2">
-              <PieChart data={locationData} />
-            </div>
-            <div className="w-full md:w-1/2">
-              <ul>
-                {locationData.labels.map((label, index) => (
-                  <li key={index} className="flex justify-between mb-2">
-                    <span>• {label}</span>
-                    <span>{locationData.data[index]}%</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="bg-gray-100 h-48 rounded flex items-center justify-center">
+            <span className="text-gray-500">Pie Chart Placeholder</span>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Claims
+export default ClaimsSummary;

@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "../../components/auth/Icons";
 import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebase";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login, loading, error } = useAuth();
+  //const { login, loading, error } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,14 +15,29 @@ function LoginPage() {
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // Sync external auth error to formError state
-  useEffect(() => {
-    if (error) {
-      setFormError(error);
-    } else {
-      setFormError("");
+  const handleFirebaseAuthError = (error) => {
+    const errorCode = error.code;
+
+    switch (errorCode) {
+      case "auth/user-not-found":
+        alert("No account found with this email.");
+        break;
+      case "auth/wrong-password":
+        alert("Incorrect password. Please try again.");
+        break;
+      case "auth/invalid-email":
+        alert("The email address is not valid.");
+        break;
+      case "auth/too-many-requests":
+        alert("Too many login attempts. Please wait and try again.");
+        break;
+      case "auth/email-not-verified":
+        alert("Please verify your email before logging in.");
+        break;
+      default:
+        alert("Login failed. Please check your credentials and try again.");
     }
-  }, [error]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,12 +48,19 @@ function LoginPage() {
       return;
     }
 
-    const success = await login(email, password);
-    if (success) {
-      navigate("/profile"); // Redirect on success
-    } else {
-      setFormError(error || "Login failed. Please check your credentials.");
-    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (!user.emailVerified) {
+          throw new Error("Email not verified");
+        } else {
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => {
+        console.log("An error occured: ", error);
+        handleFirebaseAuthError(error);
+      });
   };
 
   return (
@@ -169,7 +192,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <FormButton buttonText={loading ? "Logging in..." : "Login"} disabled={loading} />
+            <FormButton buttonText={false ? "Logging in..." : "Login"} />
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">

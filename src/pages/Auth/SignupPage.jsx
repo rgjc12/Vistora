@@ -3,12 +3,19 @@ import { ChevronDown, Eye, EyeOff } from "../../components/auth/Icons";
 import FormButtonSecondary from "../../components/buttons/FormButtonSecondary";
 import FormButton from "../../components/buttons/FormButton";
 import BackButton from "../../components/buttons/BackButton";
-import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase/firebase";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 function SignupPage() {
-  const { signup, loading } = useAuth();
+  //const { signup, loading } = useAuth();
   const navigate = useNavigate();
+  const { loading, setLoading } = useState(false);
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -45,6 +52,8 @@ function SignupPage() {
     if (!formData.userType) newErrors.userType = "User type is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
+    if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters long";
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
@@ -72,29 +81,64 @@ function SignupPage() {
 
   const handleStep2Submit = async (e) => {
     e.preventDefault();
-    setSignupError(""); // clear previous errors
+
     if (validateStep2()) {
-      const success = await signup(formData);
-      console.log("Signup success value:", success); // Debug log
-  
-      if (success) {
-        navigate("/verification"); 
-      } else {
-        // Show inline error instead of alert
-        setSignupError("Signup failed — please check your input or try again.");
-      }
+      //const success = await signup(formData);
+      //console.log("Signup success value:", success); // Debug log
+      handleFinalSignUp(formData);
     }
   };
-  
+
+  /* handle official sign up with firebase */
+  const handleFinalSignUp = async (formData) => {
+    const { email, password, name, userType, organizationDetails } = formData;
+
+    try {
+      // Check if user already exists in Firestore
+      const userSnapshot = await getDoc(doc(db, "users", email));
+      if (userSnapshot.exists()) {
+        alert("An account with this email already exists.");
+        return;
+      }
+
+      // Create user in Firebase Auth
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const uid = result.user.uid;
+      const token = await result.user.getIdToken();
+      const user = result.user;
+
+      // Store user data in Firestore
+      await setDoc(doc(db, "users", uid), {
+        uid,
+        name,
+        email,
+        userType,
+        organizationDetails,
+        createdAt: new Date().toISOString(),
+      });
+
+      //verification
+      await sendEmailVerification(user);
+
+      // Redirect based on user type
+      //navigate(userType === "admin" ? "/admin-dashboard" : "/user-dashboard");
+      navigate("/verification");
+    } catch (err) {
+      console.error("Signup error:", err.message);
+      alert("Something went wrong. Try again.");
+    }
+  };
+
   const handleLoginClick = () => navigate("/auth/login");
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
     }
@@ -138,7 +182,9 @@ function SignupPage() {
 
           {/* Signup failure message */}
           {signupError && (
-            <p className="text-center text-sm text-red-600 mb-4">{signupError}</p>
+            <p className="text-center text-sm text-red-600 mb-4">
+              {signupError}
+            </p>
           )}
 
           <form

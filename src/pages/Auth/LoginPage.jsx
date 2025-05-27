@@ -4,10 +4,14 @@ import FormButton from "../../components/buttons/FormButton";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/authSlice";
+import { getUserProfile } from "../../firebase/utils/getUserProfile";
 
 function LoginPage() {
   const navigate = useNavigate();
   //const { login, loading, error } = useAuth();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,20 +52,39 @@ function LoginPage() {
       return;
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (!user.emailVerified) {
-          throw new Error("Email not verified");
-        } else {
-          navigate("/dashboard");
-          //navigate("/profile");
-        }
-      })
-      .catch((error) => {
-        console.log("An error occured: ", error);
-        handleFirebaseAuthError(error);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      const token = await user.getIdToken(); // now valid
+
+      // ✅ Fetch profile from Firestore
+      const profileData = await getUserProfile(user.uid);
+
+      dispatch(
+        login({
+          user: {
+            name: user.displayName || "No name",
+            email: user.email,
+            uid: user.uid,
+            role: "admin",
+          },
+          token,
+        })
+      );
+
+      if (!user.emailVerified) {
+        throw new Error("Email not verified");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.log("An error occurred: ", error);
+      handleFirebaseAuthError(error);
+    }
   };
 
   return (

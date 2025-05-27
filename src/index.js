@@ -17,6 +17,7 @@ import { Provider } from "react-redux";
 import ClaimsSummaryPage from "./pages/Dashboard/ClaimsSummaryPage";
 import DasboardSettingsPage from "./pages/Dashboard/DasboardSettingsPage";
 import TasksPage from "./pages/Dashboard/TasksPage";
+import AppWrapper from "./pages/AppWrapper/AppWrapper";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,29 +25,32 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/auth/login" element={<LoginPage />} /> {/* Optional */}
-          <Route
-            path="/auth/forgot-password"
-            element={<ForgotPasswordPage />}
-          />
-          <Route path="/FAQ" element={<FAQ />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/verification" element={<VerificationPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<DashboardMainPage />} />
-          <Route
-            path="/dashboard/claims-summary"
-            element={<ClaimsSummaryPage />}
-          />
-          <Route
-            path="/dashboard/settings"
-            element={<DasboardSettingsPage />}
-          />
-          <Route path="/dashboard/tasks" element={<TasksPage />} />
-        </Routes>
+        <AppWrapper>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/login" element={<LoginPage />} />{" "}
+            {/* Optional */}
+            <Route
+              path="/auth/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+            <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/verification" element={<VerificationPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<DashboardMainPage />} />
+            <Route
+              path="/dashboard/claims-summary"
+              element={<ClaimsSummaryPage />}
+            />
+            <Route
+              path="/dashboard/settings"
+              element={<DasboardSettingsPage />}
+            />
+            <Route path="/dashboard/tasks" element={<TasksPage />} />
+          </Routes>
+        </AppWrapper>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

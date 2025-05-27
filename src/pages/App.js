@@ -24,11 +24,11 @@ function App() {
             path="/"
             element={
               <>
-               {/* Hero Section */}
+                {/* Hero Section */}
                 <HeroSectionMain />
-                    {/* Value Propositions */}
+                {/* Value Propositions */}
                 <ValuePropositionSection />
-                   {/* Testimonials */}
+                {/* Testimonials */}
                 <TestimonialSection />
                 <FeaturesSection />
                 <CTASection />
@@ -37,7 +37,7 @@ function App() {
           />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/SignUpPage" element={<SignupPage />}/>
+          <Route path="/SignUpPage" element={<SignupPage />} />
         </Routes>
       </main>
       <Footer />

@@ -14,6 +14,9 @@ import Profile from "./pages/Profile/Profile";
 import DashboardMainPage from "./pages/Dashboard/DashboardMainPage";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
+import ClaimsSummaryPage from "./pages/Dashboard/ClaimsSummaryPage";
+import DasboardSettingsPage from "./pages/Dashboard/DasboardSettingsPage";
+import TasksPage from "./pages/Dashboard/TasksPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -34,6 +37,15 @@ root.render(
           <Route path="/verification" element={<VerificationPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<DashboardMainPage />} />
+          <Route
+            path="/dashboard/claims-summary"
+            element={<ClaimsSummaryPage />}
+          />
+          <Route
+            path="/dashboard/settings"
+            element={<DasboardSettingsPage />}
+          />
+          <Route path="/dashboard/tasks" element={<TasksPage />} />
         </Routes>
       </Provider>
     </BrowserRouter>

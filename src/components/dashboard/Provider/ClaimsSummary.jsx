@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchClaims, setSearchQuery } from "../store/slices/claimsSlice";
-import SearchBar from "../components/SearchBar";
+import {
+  fetchClaims,
+  setSearchQuery,
+} from "../../../pages/Profile/store/slices/claimsSlice";
+import SearchBar from "../General/SearchBar";
 
 const ClaimsSummary = () => {
   const dispatch = useDispatch();

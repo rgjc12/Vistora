@@ -1,23 +1,23 @@
 import React from "react";
 import Sidebar from "../../components/dashboard/Sidebar";
-
-import MainContainer from "../../components/dashboard/MainContainer";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
+import MainContainer from "../../components/dashboard/MainContainer";
+import Settings from "../../components/dashboard/General/Settings";
 
-const DashboardMainPage = () => {
+const DasboardSettingsPage = () => {
   return (
     <div className="w-full h-full min-h-screen">
-      <Sidebar tabs={mainDashNav} activeTab={""} />
+      <Sidebar tabs={mainDashNav} activeTab={"Settings"} />
       <MainContainer>
         <div className="w-full p-4 border border-green-400">
           Dashboard Header for whatever we want
         </div>
-        <div className="w-full h-full p-4 flex border border-yellow-300">
-          rest of content
+        <div className="w-full p-4">
+          <Settings />
         </div>
       </MainContainer>
     </div>
   );
 };
 
-export default DashboardMainPage;
+export default DasboardSettingsPage;

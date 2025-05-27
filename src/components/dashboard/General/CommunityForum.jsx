@@ -1,40 +1,41 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { 
-  fetchPosts, 
-  setSearchQuery, 
-  setActivePost, 
-  setNewComment, 
-  addComment, 
-  setNewPostField, 
-  toggleNewPostForm, 
-  createPost, 
-  likePost 
-} from '../store/slices/forumSlice';
-import SearchBar from '../components/SearchBar';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchPosts,
+  setSearchQuery,
+  setActivePost,
+  setNewComment,
+  addComment,
+  setNewPostField,
+  toggleNewPostForm,
+  createPost,
+  likePost,
+} from "../../../pages/Profile/store/slices/forumSlice";
+import SearchBar from "./SearchBar";
 
 const CommunityForum = () => {
   const dispatch = useDispatch();
-  const { 
-    posts, 
-    activePost, 
-    newComment, 
-    newPost, 
-    showNewPostForm, 
-    loading, 
-    error, 
-    searchQuery 
-  } = useSelector(state => state.forum);
+  const {
+    posts,
+    activePost,
+    newComment,
+    newPost,
+    showNewPostForm,
+    loading,
+    error,
+    searchQuery,
+  } = useSelector((state) => state.forum);
 
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
   // Filter posts based on search query
-  const filteredPosts = searchQuery 
-    ? posts.filter(post => 
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPosts = searchQuery
+    ? posts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.content.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : posts;
 
@@ -50,12 +51,13 @@ const CommunityForum = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Community Forum</h1>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
-          🔔
-        </button>
+        <button className="p-2 text-gray-400 hover:text-gray-600">🔔</button>
       </div>
 
-      <SearchBar searchAction={setSearchQuery} placeholder="Search discussions..." />
+      <SearchBar
+        searchAction={setSearchQuery}
+        placeholder="Search discussions..."
+      />
 
       {/* Create New Post Button */}
       <div className="flex justify-between items-center">
@@ -77,23 +79,35 @@ const CommunityForum = () => {
           <h3 className="text-lg font-medium mb-4">Start a New Discussion</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Title
+              </label>
               <input
                 type="text"
                 placeholder="Enter discussion title..."
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={newPost.title}
-                onChange={(e) => dispatch(setNewPostField({ field: 'title', value: e.target.value }))}
+                onChange={(e) =>
+                  dispatch(
+                    setNewPostField({ field: "title", value: e.target.value })
+                  )
+                }
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Content
+              </label>
               <textarea
                 placeholder="Share your thoughts, questions, or insights..."
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={4}
                 value={newPost.content}
-                onChange={(e) => dispatch(setNewPostField({ field: 'content', value: e.target.value }))}
+                onChange={(e) =>
+                  dispatch(
+                    setNewPostField({ field: "content", value: e.target.value })
+                  )
+                }
               />
             </div>
             <div className="flex space-x-2">
@@ -126,12 +140,18 @@ const CommunityForum = () => {
 
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-medium text-lg text-gray-900">{post.title}</h3>
-                    <span className="text-xs text-gray-500 ml-4">{post.date}</span>
+                    <h3 className="font-medium text-lg text-gray-900">
+                      {post.title}
+                    </h3>
+                    <span className="text-xs text-gray-500 ml-4">
+                      {post.date}
+                    </span>
                   </div>
 
                   <div className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium text-blue-600">{post.author}</span>
+                    <span className="font-medium text-blue-600">
+                      {post.author}
+                    </span>
                     <p className="mt-2 text-gray-700">{post.content}</p>
                   </div>
 
@@ -149,7 +169,9 @@ const CommunityForum = () => {
                       onClick={() => dispatch(setActivePost(post.id))}
                     >
                       <span className="mr-1">💬</span>
-                      <span className="text-sm">{post.comments.length} comments</span>
+                      <span className="text-sm">
+                        {post.comments.length} comments
+                      </span>
                     </button>
 
                     <button className="flex items-center text-gray-500 hover:text-blue-500 transition-colors">
@@ -161,8 +183,10 @@ const CommunityForum = () => {
                   {/* Comments Section */}
                   {activePost === post.id && (
                     <div className="mt-6 pl-4 border-l-2 border-gray-200">
-                      <h4 className="font-medium text-gray-900 mb-4">Comments</h4>
-                      
+                      <h4 className="font-medium text-gray-900 mb-4">
+                        Comments
+                      </h4>
+
                       {post.comments.map((comment) => (
                         <div key={comment.id} className="mb-4">
                           <div className="flex items-start">
@@ -172,10 +196,16 @@ const CommunityForum = () => {
 
                             <div className="flex-1">
                               <div className="flex items-baseline">
-                                <span className="font-medium text-sm text-gray-900">{comment.author}</span>
-                                <span className="text-xs text-gray-500 ml-2">{comment.date}</span>
+                                <span className="font-medium text-sm text-gray-900">
+                                  {comment.author}
+                                </span>
+                                <span className="text-xs text-gray-500 ml-2">
+                                  {comment.date}
+                                </span>
                               </div>
-                              <p className="text-sm text-gray-700 mt-1">{comment.content}</p>
+                              <p className="text-sm text-gray-700 mt-1">
+                                {comment.content}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -192,8 +222,12 @@ const CommunityForum = () => {
                             placeholder="Add a comment..."
                             className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                             value={newComment}
-                            onChange={(e) => dispatch(setNewComment(e.target.value))}
-                            onKeyPress={(e) => e.key === "Enter" && dispatch(addComment(post.id))}
+                            onChange={(e) =>
+                              dispatch(setNewComment(e.target.value))
+                            }
+                            onKeyPress={(e) =>
+                              e.key === "Enter" && dispatch(addComment(post.id))
+                            }
                           />
                           <button
                             className="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition-colors"

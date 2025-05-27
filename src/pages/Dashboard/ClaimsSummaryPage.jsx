@@ -1,23 +1,24 @@
 import React from "react";
-import Sidebar from "../../components/dashboard/Sidebar";
 
+import Sidebar from "../../components/dashboard/Sidebar";
 import MainContainer from "../../components/dashboard/MainContainer";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
+import ClaimsSummary from "../../components/dashboard/Provider/ClaimsSummary";
 
-const DashboardMainPage = () => {
+const ClaimsSummaryPage = () => {
   return (
     <div className="w-full h-full min-h-screen">
-      <Sidebar tabs={mainDashNav} activeTab={""} />
+      <Sidebar tabs={mainDashNav} activeTab={"Claims Summary"} />
       <MainContainer>
         <div className="w-full p-4 border border-green-400">
           Dashboard Header for whatever we want
         </div>
-        <div className="w-full h-full p-4 flex border border-yellow-300">
-          rest of content
+        <div className="w-full p-4">
+          <ClaimsSummary />
         </div>
       </MainContainer>
     </div>
   );
 };
 
-export default DashboardMainPage;
+export default ClaimsSummaryPage;

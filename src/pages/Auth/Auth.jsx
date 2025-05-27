@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AuthProvider } from "../../contexts/AuthContext";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import VerificationPage from "./VerificationPage";
@@ -46,7 +45,7 @@ function Auth() {
     }
   };
 
-  return <AuthProvider>{renderPage()}</AuthProvider>;
+  return <>{renderPage()}</>;
 }
 
 export default Auth;

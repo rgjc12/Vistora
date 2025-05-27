@@ -11,6 +11,7 @@ import {
   ShieldQuestionIcon,
   User,
 } from "lucide-react";
+import ClaimsSummary from "../Profile/components/ClaimsSummary";
 
 const DashboardMainPage = () => {
   const mainDashNav = [
@@ -43,6 +44,9 @@ const DashboardMainPage = () => {
   return (
     <div className="w-full h-full min-h-screen">
       <Sidebar tabs={mainDashNav} />
+      <div className="flex-1 w-full p-4 pl-[316px]">
+        <ClaimsSummary />
+      </div>
     </div>
   );
 };

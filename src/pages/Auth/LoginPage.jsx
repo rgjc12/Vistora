@@ -55,6 +55,7 @@ function LoginPage() {
           throw new Error("Email not verified");
         } else {
           navigate("/dashboard");
+          //navigate("/profile");
         }
       })
       .catch((error) => {
@@ -110,7 +111,6 @@ function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                 placeholder="Enter your email"
-                disabled={loading}
                 required
               />
             </div>
@@ -130,7 +130,6 @@ function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6b1d1d]"
                   placeholder="Enter your password"
-                  disabled={loading}
                   required
                 />
                 <button
@@ -149,7 +148,6 @@ function LoginPage() {
                 type="button"
                 className="text-sm text-[#6b1d1d] hover:underline"
                 onClick={() => navigate("/auth/forgot-password")}
-                disabled={loading}
               >
                 Forgot Password?
               </button>
@@ -162,7 +160,6 @@ function LoginPage() {
                 checked={stayLoggedIn}
                 onChange={(e) => setStayLoggedIn(e.target.checked)}
                 className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
-                disabled={loading}
               />
               <label
                 htmlFor="stay-logged-in"
@@ -178,7 +175,6 @@ function LoginPage() {
                   id="recaptcha"
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-[#6b1d1d] focus:ring-[#6b1d1d]"
-                  disabled={loading}
                 />
                 <label
                   htmlFor="recaptcha"
@@ -200,7 +196,6 @@ function LoginPage() {
             <button
               onClick={() => navigate("/signup")}
               className="font-medium text-[#6b1d1d] hover:underline"
-              disabled={loading}
             >
               Sign Up
             </button>

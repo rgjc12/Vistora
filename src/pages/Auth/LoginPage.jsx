@@ -63,24 +63,27 @@ function LoginPage() {
 
       // ✅ Fetch profile from Firestore
       const profileData = await getUserProfile(user.uid);
+      //console.log(profileData);
 
       dispatch(
         login({
           user: {
-            name: user.displayName || "No name",
+            name:
+              profileData.name || user.name || user.displayName || "No name",
             email: user.email,
             uid: user.uid,
-            role: "admin",
+            role: profileData.role || "admin",
           },
           token,
         })
       );
-
+      /*  
       if (!user.emailVerified) {
         throw new Error("Email not verified");
       } else {
         navigate("/dashboard");
-      }
+      }*/
+      navigate("/dashboard");
     } catch (error) {
       console.log("An error occurred: ", error);
       handleFirebaseAuthError(error);

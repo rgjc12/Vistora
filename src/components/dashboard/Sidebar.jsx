@@ -91,8 +91,10 @@ const Sidebar = ({ tabs, activeTab }) => {
               >
                 {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
+                ) : user ? (
+                  <h2 className="text-[0.9rem]">{user.name}</h2>
                 ) : (
-                  <h2 className="text-[0.9rem]">{user && user.name}</h2>
+                  <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 )}
               </a>
             </div>

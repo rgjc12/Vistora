@@ -4,9 +4,14 @@ import { AnimatedSection } from "../../animations/AnimatedSection";
 import PrimaryButton from "../../buttons/PrimaryButton";
 import SecondaryButton from "../../buttons/SecondaryButton";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const HeroSectionMain = () => {
   const navigate = useNavigate();
+
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   return (
     <section
@@ -49,10 +54,18 @@ const HeroSectionMain = () => {
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-4 w-full">
               {/** Made a button component for easier styling, editting, and tracking */}
-              <PrimaryButton
-                buttonText={"Get Started"}
-                action={() => navigate("/signup")}
-              />
+              {user ? (
+                <PrimaryButton
+                  buttonText={"My Dashboard"}
+                  action={() => navigate("/dashboard")}
+                />
+              ) : (
+                <PrimaryButton
+                  buttonText={"Get Started"}
+                  action={() => navigate("/login")}
+                />
+              )}
+
               <SecondaryButton
                 buttonText={"Learn More"}
                 action={() => navigate("/faq")}

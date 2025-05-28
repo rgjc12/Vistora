@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SmallerButton from "../buttons/SmallerButton";
 import PrimaryButton from "../buttons/PrimaryButton";
+import { useSelector } from "react-redux";
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,10 @@ const MobileMenu = () => {
   const handleClick = () => {
     navigate("/Auth");
   };
+
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   return (
     <div className="md:hidden">
@@ -59,17 +64,38 @@ const MobileMenu = () => {
           <Link
             to="/faq"
             onClick={closeMenu}
-            className="text-gray-800 hover:text-primary mb-10"
+            className="text-gray-800 hover:text-primary"
           >
             About & FAQ
           </Link>
-          <PrimaryButton
-            primary={true}
-            bkgColor={"bg-primary"}
-            textColor={"text-white"}
-            buttonText={"Sign In"}
-            action={handleClick}
-          />
+          {user && (
+            <Link
+              to="/dashboard"
+              onClick={closeMenu}
+              className="text-gray-800 hover:text-primary mb-10"
+            >
+              My Dashboard
+            </Link>
+          )}
+          {isLoading ? (
+            <div className="w-[120px] flex h-8 bg-neutral-400 animate-loading rounded-lg"></div>
+          ) : user ? (
+            <PrimaryButton
+              primary={true}
+              bkgColor={"bg-primary"}
+              textColor={"text-white"}
+              buttonText={"Sign Out"}
+              action={() => navigate("/dashboard")}
+            />
+          ) : (
+            <PrimaryButton
+              primary={true}
+              bkgColor={"bg-primary"}
+              textColor={"text-white"}
+              buttonText={"Sign In"}
+              action={handleClick}
+            />
+          )}
         </nav>
       </div>
     </div>

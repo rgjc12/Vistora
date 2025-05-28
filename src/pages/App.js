@@ -12,8 +12,13 @@ import LoginPage from "../pages/Auth/LoginPage";
 import ForgotPasswordPage from "../pages/Auth/ForgotPasswordPage";
 import { Routes, Route } from "react-router-dom";
 import SignupPage from "./Auth/SignupPage";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <ScrollToTop />

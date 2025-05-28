@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { LogOut, Menu, X } from "lucide-react"; // or any icon set you prefer
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ tabs, activeTab }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 900);
   const navigate = useNavigate();
+
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   // Handle resizing behavior
   useEffect(() => {
@@ -75,9 +80,18 @@ const Sidebar = ({ tabs, activeTab }) => {
                 isMobile ? (isOpen ? "w-full" : "w-0") : ""
               } w-full h-[1px] bg-neutral-400`}
             ></div>
-            <div className="flex justify-start gap-2 items-center">
+            <div className="flex justify-start gap-2 items-center w-full">
               <div className="w-8 h-8 rounded-full bg-neutral-200"></div>
-              <h2 className="text-[0.9rem]">Company Name</h2>
+              <a
+                href="/dashboard"
+                className="cursor-pointer w-fit hover:text-neutral-400"
+              >
+                {!user ? (
+                  <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
+                ) : (
+                  <h2 className="text-[0.9rem]">{user && user.name}</h2>
+                )}
+              </a>
             </div>
           </div>
         )}

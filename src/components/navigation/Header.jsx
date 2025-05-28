@@ -5,6 +5,7 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import SmallerButton from "../buttons/SmallerButton";
 import { AlignJustify } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,6 +13,10 @@ const Header = () => {
   const handleClick = () => {
     navigate("/Auth");
   };
+
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   return (
     <header className="absolute z-50 top-0 w-full h-[80px] flex max-w-[3000px] mx-auto py-0 px-4 md:px-8 ">
@@ -42,12 +47,30 @@ const Header = () => {
             >
               About & FAQ
             </a>
+            {user && (
+              <a
+                href="/dashboard"
+                className="text-gray-200 hover:text-white  hover:underline hover:underline-offset-8"
+              >
+                My Dashboard
+              </a>
+            )}
           </nav>
-          <SmallerButton
-            primary={true}
-            buttonText={"Sign In"}
-            action={handleClick}
-          />
+          {isLoading ? (
+            <div className="w-[120px] flex h-8 bg-neutral-400 animate-loading rounded-lg"></div>
+          ) : user ? (
+            <SmallerButton
+              primary={true}
+              buttonText={"Sign Out"}
+              action={() => navigate("/dashboard")}
+            />
+          ) : (
+            <SmallerButton
+              primary={true}
+              buttonText={"Sign In"}
+              action={handleClick}
+            />
+          )}
         </div>
         <MobileMenu />
       </div>

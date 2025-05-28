@@ -3,8 +3,12 @@ import Sidebar from "../../components/dashboard/Sidebar";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
 import MainContainer from "../../components/dashboard/MainContainer";
 import Settings from "../../components/dashboard/General/Settings";
+import { useSelector } from "react-redux";
 
 const DasboardSettingsPage = () => {
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
   return (
     <div className="w-full h-full min-h-screen">
       <Sidebar tabs={mainDashNav} activeTab={"Settings"} />

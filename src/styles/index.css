@@ -269,6 +269,20 @@ textarea {
   opacity: 0;
 }
 
+.animate-loading {
+  animation: loading infinite 2.5s ease-in-out;
+}
+
+@keyframes loading {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* Swiper Pagination Color adjustment */
 
 .swiper-pagination-bullet {

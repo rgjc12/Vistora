@@ -1,7 +1,8 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setActiveTab, toggleHelpSubmenu } from '../store/slices/uiSlice';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+//import { setActiveTab, toggleHelpSubmenu } from "../store/slices/uiSlice";
 
+/*
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { activeTab, helpSubmenuOpen } = useSelector(state => state.ui);
@@ -105,3 +106,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+*/

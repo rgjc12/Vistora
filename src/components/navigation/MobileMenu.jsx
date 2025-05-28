@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import SmallerButton from "../buttons/SmallerButton";
 import PrimaryButton from "../buttons/PrimaryButton";
 import { useSelector } from "react-redux";
+import SignOutModal from "../ui/SignOutModal";
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -85,7 +87,7 @@ const MobileMenu = () => {
               bkgColor={"bg-primary"}
               textColor={"text-white"}
               buttonText={"Sign Out"}
-              action={() => navigate("/dashboard")}
+              action={() => setShowModal(true)}
             />
           ) : (
             <PrimaryButton
@@ -97,6 +99,7 @@ const MobileMenu = () => {
             />
           )}
         </nav>
+        <SignOutModal isOpen={showModal} onClose={() => setShowModal(false)} />
       </div>
     </div>
   );

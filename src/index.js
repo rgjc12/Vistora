@@ -2,7 +2,7 @@ import "./styles/globals.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./pages/App";
+import App from "./pages/LandingPage/App";
 import Auth from "./pages/Auth/Auth";
 import FAQ from "./pages/FAQ/FAQ";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage"; // 👈 Import it here
@@ -10,7 +10,7 @@ import LoginPage from "./pages/Auth/LoginPage"; // optional, if separated
 import "./styles/index.css";
 import SignupPage from "./pages/Auth/SignupPage";
 import VerificationPage from "./pages/Auth/VerificationPage";
-import Profile from "./pages/Profile/Profile";
+//import Profile from "./pages/Profile/Profile";
 import DashboardMainPage from "./pages/Dashboard/DashboardMainPage";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
@@ -36,9 +36,12 @@ root.render(
               element={<ForgotPasswordPage />}
             />
             <Route path="/FAQ" element={<FAQ />} />
+            {/**
+             * 
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/verification" element={<VerificationPage />} />
             <Route path="/profile" element={<Profile />} />
+             */}
             <Route path="/dashboard" element={<DashboardMainPage />} />
             <Route
               path="/dashboard/claims-summary"

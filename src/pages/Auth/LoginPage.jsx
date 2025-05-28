@@ -214,7 +214,8 @@ function LoginPage() {
             <FormButton buttonText={false ? "Logging in..." : "Login"} />
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600">
+          {/** Hide sign up */}
+          <div className="mt-6 text-center text-sm text-gray-600 hidden">
             Don't have an account?{" "}
             <button
               onClick={() => navigate("/signup")}

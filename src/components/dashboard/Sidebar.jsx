@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { LogOut, Menu, X } from "lucide-react"; // or any icon set you prefer
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import SignOutModal from "../ui/SignOutModal";
 
 const Sidebar = ({ tabs, activeTab }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 900);
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -86,7 +89,7 @@ const Sidebar = ({ tabs, activeTab }) => {
                 href="/dashboard"
                 className="cursor-pointer w-fit hover:text-neutral-400"
               >
-                {!user ? (
+                {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 ) : (
                   <h2 className="text-[0.9rem]">{user && user.name}</h2>
@@ -123,12 +126,16 @@ const Sidebar = ({ tabs, activeTab }) => {
         {/* Fixed Logout Button */}
         <div className="absolute bottom-6 left-4 right-4">
           <button
-            onClick={handleLogout}
+            onClick={() => setShowModal(true)}
             className="flex items-center gap-2 text-sm text-white hover:text-red-400"
           >
             <LogOut size={16} />
             {isOpen && "Log Out"}
           </button>
+          <SignOutModal
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+          />
         </div>
       </aside>
     </>

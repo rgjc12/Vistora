@@ -4,7 +4,7 @@ import {
   fetchNotifications,
   setSearchQuery,
   dismissNotification,
-} from "../../../pages/Profile/store/slices/notificationsSlice";
+} from "../../../store/slices/notificationsSlice";
 import SearchBar from "./SearchBar";
 import Pagination from "../../../pages/Profile/components/Pagination";
 

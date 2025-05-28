@@ -1,17 +1,17 @@
-import "../styles/App.css";
-import "../styles/index.css";
-import Header from "../components/navigation/Header";
-import Footer from "../components/navigation/Footer";
-import HeroSectionMain from "../components/sections/home/HeroSectionMain";
-import ValuePropositionSection from "../components/sections/home/ValuePropositionSection";
-import CTASection from "../components/sections/home/CTASection";
-import TestimonialSection from "../components/sections/home/TestimonialSection";
-import FeaturesSection from "../components/sections/home/FeaturesSection";
-import { ScrollToTop } from "../components/animations/ScrollToTop";
-import LoginPage from "../pages/Auth/LoginPage";
-import ForgotPasswordPage from "../pages/Auth/ForgotPasswordPage";
+import "../../styles/App.css";
+import "../../styles/index.css";
+import Header from "../../components/navigation/Header";
+import Footer from "../../components/navigation/Footer";
+import HeroSectionMain from "../../components/sections/home/HeroSectionMain";
+import ValuePropositionSection from "../../components/sections/home/ValuePropositionSection";
+import CTASection from "../../components/sections/home/CTASection";
+import TestimonialSection from "../../components/sections/home/TestimonialSection";
+import FeaturesSection from "../../components/sections/home/FeaturesSection";
+import { ScrollToTop } from "../../components/animations/ScrollToTop";
+import LoginPage from "../Auth/LoginPage";
+import ForgotPasswordPage from "../Auth/ForgotPasswordPage";
 import { Routes, Route } from "react-router-dom";
-import SignupPage from "./Auth/SignupPage";
+import SignupPage from "../Auth/SignupPage";
 import { useSelector } from "react-redux";
 
 function App() {

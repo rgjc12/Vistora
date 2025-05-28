@@ -4,7 +4,7 @@ import {
   fetchClaims,
   setSearchQuery,
   removeClaim,
-} from "../../../pages/Profile/store/slices/claimsSlice";
+} from "../../../store/slices/claimsSlice";
 import SearchBar from "../General/SearchBar";
 import Pagination from "../../../pages/Profile/components/Pagination";
 

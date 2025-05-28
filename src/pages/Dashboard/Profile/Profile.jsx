@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Sidebar from "./components/Sidebar";
-import ClaimsSummary from "../../components/dashboard/Provider/ClaimsSummary";
-import Claims from "../../components/dashboard/Provider/Claims";
-import Notifications from "../../components/dashboard/General/Notifications";
-import Tasks from "../../components/dashboard/Provider/Tasks";
+import ClaimsSummary from "../../../components/dashboard/Provider/ClaimsSummary";
+import Claims from "../../../components/dashboard/Provider/Claims";
+import Notifications from "../../../components/dashboard/General/Notifications";
+import Tasks from "../../../components/dashboard/Provider/Tasks";
 import TaskDetails from "./components/TaskDetails";
-import Settings from "../../components/dashboard/General/Settings";
-import CommunityForum from "../../components/dashboard/General/CommunityForum";
+import Settings from "../../../components/dashboard/General/Settings";
+import CommunityForum from "../../../components/dashboard/General/CommunityForum";
 
 const App = () => {
   const activeTab = useSelector((state) => state.ui.activeTab);
@@ -22,8 +22,9 @@ const App = () => {
         return <Notifications />;
       case "tasks":
         return <Tasks />;
+      /*
       case "task-details":
-        return <TaskDetails />;
+        return <TaskDetails />;*/
       case "community-forum":
         return <CommunityForum />;
       case "settings":
@@ -41,8 +42,6 @@ const App = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <div className="p-8">

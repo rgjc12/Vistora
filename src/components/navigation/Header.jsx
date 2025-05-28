@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/index.css";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../buttons/PrimaryButton";
@@ -6,6 +6,7 @@ import SmallerButton from "../buttons/SmallerButton";
 import { AlignJustify } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import { useSelector } from "react-redux";
+import SignOutModal from "../ui/SignOutModal";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const Header = () => {
   const handleClick = () => {
     navigate("/Auth");
   };
+
+  const [showModal, setShowModal] = useState(false);
 
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -62,7 +65,7 @@ const Header = () => {
             <SmallerButton
               primary={true}
               buttonText={"Sign Out"}
-              action={() => navigate("/dashboard")}
+              action={() => setShowModal(true)}
             />
           ) : (
             <SmallerButton
@@ -72,6 +75,7 @@ const Header = () => {
             />
           )}
         </div>
+        <SignOutModal isOpen={showModal} onClose={() => setShowModal(false)} />
         <MobileMenu />
       </div>
     </header>

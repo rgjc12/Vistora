@@ -10,7 +10,7 @@ import {
   toggleNewPostForm,
   createPost,
   likePost,
-} from "../../../pages/Profile/store/slices/forumSlice";
+} from "../../../store/slices/forumSlice";
 import SearchBar from "./SearchBar";
 
 const CommunityForum = () => {

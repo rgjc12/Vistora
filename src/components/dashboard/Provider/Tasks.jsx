@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+/*
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchTasks,
@@ -6,7 +7,7 @@ import {
   setFilter,
   updateTaskProgress,
 } from "../../../pages/Profile/store/slices/tasksSlice";
-import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";
+import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";*/
 
 const Tasks = () => {
   //const dispatch = useDispatch();

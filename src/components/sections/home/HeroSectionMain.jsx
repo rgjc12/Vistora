@@ -62,7 +62,7 @@ const HeroSectionMain = () => {
               ) : (
                 <PrimaryButton
                   buttonText={"Get Started"}
-                  action={() => navigate("/login")}
+                  action={() => navigate("/auth")}
                 />
               )}
 

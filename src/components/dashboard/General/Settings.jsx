@@ -8,7 +8,7 @@ import {
   updateSecurityField,
   updateTimezone,
   resetPasswordFields,
-} from "../../../pages/Profile/store/slices/settingsSlice";
+} from "../../../store/slices/settingsSlice";
 import SearchBar from "./SearchBar";
 
 const Settings = () => {

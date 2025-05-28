@@ -6,7 +6,7 @@ import {
   removeClaim,
 } from "../../../store/slices/claimsSlice";
 import SearchBar from "../General/SearchBar";
-import Pagination from "../../../pages/Profile/components/Pagination";
+import Pagination from "../General/Pagination";
 
 const Claims = () => {
   const dispatch = useDispatch();

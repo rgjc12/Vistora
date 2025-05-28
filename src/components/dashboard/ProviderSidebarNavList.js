@@ -1,6 +1,9 @@
 import {
   Bell,
   Clock,
+  File,
+  FilePlus,
+  LayoutDashboard,
   ListChecks,
   Settings,
   ShieldQuestionIcon,
@@ -10,12 +13,17 @@ import {
 export const mainDashNav = [
   {
     label: "Claims Summary",
-    icon: <Clock />,
+    icon: <LayoutDashboard />,
     link: "/dashboard/claims-summary",
   },
   {
-    label: "Profile",
-    icon: <User />,
+    label: "Claims",
+    icon: <File />,
+    link: "/dashboard/claims",
+  },
+  {
+    label: "Submit New Claim",
+    icon: <FilePlus />,
     link: "/dashboard/claims-summary",
   },
   {
@@ -32,6 +40,11 @@ export const mainDashNav = [
     label: "Help & Support",
     icon: <ShieldQuestionIcon />,
     link: "/dashboard/",
+  },
+  {
+    label: "Profile",
+    icon: <User />,
+    link: "/dashboard/claims-summary",
   },
   {
     label: "Settings",

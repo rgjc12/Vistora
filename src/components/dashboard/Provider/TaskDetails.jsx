@@ -47,7 +47,7 @@ const TaskDetails = () => {
             ←
           </button>
           <span className="text-sm text-gray-500">Task</span>
-          <span className="text-sm text-gray-300">></span>
+          <span className="text-sm text-gray-300"></span>
           <span className="text-sm text-gray-900">Task Details</span>
         </div>
         <button className="p-2 text-gray-400 hover:text-gray-600">🔔</button>

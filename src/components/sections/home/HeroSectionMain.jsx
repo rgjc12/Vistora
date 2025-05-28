@@ -57,7 +57,7 @@ const HeroSectionMain = () => {
               {user ? (
                 <PrimaryButton
                   buttonText={"My Dashboard"}
-                  action={() => navigate("/dashboard")}
+                  action={() => navigate("/dashboard/claims-summary")}
                 />
               ) : (
                 <PrimaryButton

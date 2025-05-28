@@ -83,7 +83,7 @@ function LoginPage() {
       } else {
         navigate("/dashboard");
       }*/
-      navigate("/dashboard");
+      navigate("/dashboard/claims-summary");
     } catch (error) {
       console.log("An error occurred: ", error);
       handleFirebaseAuthError(error);

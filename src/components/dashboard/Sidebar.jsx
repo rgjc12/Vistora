@@ -75,7 +75,7 @@ const Sidebar = ({ tabs, activeTab }) => {
               <img
                 src="/images/vistora-logo.png"
                 alt="Vistora Tech"
-                className="w-auto h-[48px] sm:h-[64px]"
+                className="w-auto h-[64px] sm:h-[80px]"
               />
             </a>
             <div
@@ -83,8 +83,10 @@ const Sidebar = ({ tabs, activeTab }) => {
                 isMobile ? (isOpen ? "w-full" : "w-0") : ""
               } w-full h-[1px] bg-neutral-400`}
             ></div>
-            <div className="flex justify-start gap-2 items-center w-full">
-              <div className="w-8 h-8 rounded-full bg-neutral-200"></div>
+            <div className="flex justify-start gap-2 items-center w-full truncate">
+              <div className="w-10 h-10 rounded-full bg-neutral-200 text-transparent">
+                a
+              </div>
               <a
                 href="/dashboard"
                 className="cursor-pointer w-fit hover:text-neutral-400"
@@ -92,7 +94,12 @@ const Sidebar = ({ tabs, activeTab }) => {
                 {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 ) : user ? (
-                  <h2 className="text-[0.9rem]">{user.name}</h2>
+                  <div className="flex flex-col items-start gap-0 overflow-x-hidden w-full truncate">
+                    <h2 className="text-[0.9rem]">{user.name}</h2>
+                    <p className="text-[0.75rem] text-neutral-200 truncate">
+                      {user.email}
+                    </p>
+                  </div>
                 ) : (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 )}

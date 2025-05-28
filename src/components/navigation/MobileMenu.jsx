@@ -72,7 +72,7 @@ const MobileMenu = () => {
           </Link>
           {user && (
             <Link
-              to="/dashboard"
+              to="/dashboard/claims-summary"
               onClick={closeMenu}
               className="text-gray-800 hover:text-primary mb-10"
             >

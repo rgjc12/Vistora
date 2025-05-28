@@ -6,7 +6,7 @@ import {
   dismissNotification,
 } from "../../../store/slices/notificationsSlice";
 import SearchBar from "./SearchBar";
-import Pagination from "../../../pages/Profile/components/Pagination";
+import Pagination from "../Provider/Pagination";
 
 const Notifications = () => {
   const dispatch = useDispatch();

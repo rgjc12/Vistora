@@ -26,7 +26,7 @@ export const mainDashNav = [
   {
     label: "Notifications",
     icon: <Bell />,
-    link: "/dashboard/",
+    link: "/dashboard/notifications",
   },
   {
     label: "Help & Support",

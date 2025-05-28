@@ -18,6 +18,7 @@ import ClaimsSummaryPage from "./pages/Dashboard/ClaimsSummaryPage";
 import DasboardSettingsPage from "./pages/Dashboard/DasboardSettingsPage";
 import TasksPage from "./pages/Dashboard/TasksPage";
 import AppWrapper from "./pages/AppWrapper/AppWrapper";
+import NotificationsPage from "./pages/Dashboard/NotificationsPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -52,6 +53,10 @@ root.render(
               element={<DasboardSettingsPage />}
             />
             <Route path="/dashboard/tasks" element={<TasksPage />} />
+            <Route
+              path="/dashboard/notifications"
+              element={<NotificationsPage />}
+            />
           </Routes>
         </AppWrapper>
       </Provider>

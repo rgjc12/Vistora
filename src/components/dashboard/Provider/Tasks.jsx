@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
-/*
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchTasks,
   setSearchQuery,
   setFilter,
   updateTaskProgress,
-} from "../../../pages/Profile/store/slices/tasksSlice";
-import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";*/
+} from "../../../store/slices/tasksSlice";
+//import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";
 
 const Tasks = () => {
-  //const dispatch = useDispatch();
-  /*const { recentTasks, activeProjects, loading, error, filters } = useSelector(
+  const dispatch = useDispatch();
+  const { recentTasks, activeProjects, loading, error, filters } = useSelector(
     (state) => state.tasks
   );
 
   useEffect(() => {
     dispatch(fetchTasks());
-  }, [dispatch]);*/
+  }, [dispatch]);
 
   const handleTaskClick = (taskId) => {
     // In a real app, you might want to fetch task details here
@@ -25,14 +25,13 @@ const Tasks = () => {
     //dispatch(setActiveTab("task-details"));
   };
 
-  /*
   if (loading) {
     return <div className="text-center py-12">Loading tasks...</div>;
   }
 
   if (error) {
     return <div className="text-center py-12 text-red-500">Error: {error}</div>;
-  }*/
+  }
 
   return (
     <div className="space-y-6">
@@ -49,18 +48,18 @@ const Tasks = () => {
             type="text"
             placeholder="Search tasks and projects..."
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            //onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
           />
           <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
         </div>
         <select
           className="px-3 py-2 border border-gray-300 rounded-md"
-          /*value={filters.priority}
+          value={filters.priority}
           onChange={(e) =>
             dispatch(
               setFilter({ filterType: "priority", value: e.target.value })
             )
-          }*/
+          }
         >
           <option value="all">Priority</option>
           <option value="high">High</option>
@@ -69,10 +68,10 @@ const Tasks = () => {
         </select>
         <select
           className="px-3 py-2 border border-gray-300 rounded-md"
-          /*value={filters.status}
+          value={filters.status}
           onChange={(e) =>
             dispatch(setFilter({ filterType: "status", value: e.target.value }))
-          }*/
+          }
         >
           <option value="all">Status</option>
           <option value="in-progress">In Progress</option>
@@ -82,10 +81,10 @@ const Tasks = () => {
         </select>
         <select
           className="px-3 py-2 border border-gray-300 rounded-md"
-          /*value={filters.date}
+          value={filters.date}
           onChange={(e) =>
             dispatch(setFilter({ filterType: "date", value: e.target.value }))
-          }*/
+          }
         >
           <option value="all">Date</option>
           <option value="today">Today</option>
@@ -98,7 +97,7 @@ const Tasks = () => {
       <div>
         <h2 className="text-lg font-medium mb-4">Recent Tasks</h2>
         <div className="grid grid-cols-2 gap-4">
-          {/*recentTasks.map((task) => (
+          {recentTasks.map((task) => (
             <div
               key={task.id}
               className="border rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow"
@@ -126,7 +125,7 @@ const Tasks = () => {
               </div>
               <p className="text-xs text-gray-500">{task.dueDate}</p>
             </div>
-                ))*/}
+          ))}
         </div>
       </div>
 
@@ -134,8 +133,7 @@ const Tasks = () => {
       <div>
         <h2 className="text-lg font-medium mb-4">Active Projects</h2>
         <div className="grid grid-cols-3 gap-4">
-          {/*
-          activeProjects.map((task) => (
+          {activeProjects.map((task) => (
             <div
               key={task.id}
               className="border rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow"
@@ -178,8 +176,7 @@ const Tasks = () => {
               </div>
               <p className="text-xs text-gray-500">{task.due}</p>
             </div>
-          ))
-                  */}
+          ))}
         </div>
       </div>
     </div>

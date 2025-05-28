@@ -48,7 +48,7 @@ const Sidebar = ({ tabs, activeTab }) => {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full min-h-[700px] z-40 bg-black text-white shadow-md transition-all duration-300 ease-in-out
-          ${isOpen ? "w-[275px]" : "w-[48px]"} px-2 lg:px-4 py-6`}
+          ${isOpen ? "w-[225px] lg:w-[275px]" : "w-[48px]"} px-2 lg:px-4 py-6`}
       >
         {isMobile && !isOpen && (
           <button
@@ -67,7 +67,7 @@ const Sidebar = ({ tabs, activeTab }) => {
 
         {/* Header */}
         {isOpen && (
-          <div className="mb-2 flex flex-col gap-2">
+          <div className=" flex flex-col gap-2">
             <a
               href="/"
               className="flex items-center transition-all ease-out duration-300"
@@ -109,7 +109,7 @@ const Sidebar = ({ tabs, activeTab }) => {
         )}
 
         {/* Tab list */}
-        <nav className="flex flex-col gap-2 my-10 transition-all duration-500 ease-in-out">
+        <nav className="flex mt-20 flex-col h-fit gap-2 my-4 transition-all duration-500 ease-in-out">
           {tabs &&
             tabs.map((tab, idx) => (
               <div

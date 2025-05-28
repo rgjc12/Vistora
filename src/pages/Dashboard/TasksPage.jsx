@@ -13,9 +13,6 @@ const TasksPage = () => {
     <div className="w-full h-full min-h-screen">
       <Sidebar tabs={mainDashNav} activeTab={"Tasks"} />
       <MainContainer>
-        <div className="w-full p-4 border border-green-400">
-          Dashboard Header for whatever we want
-        </div>
         <div className="w-full p-4">
           <Tasks />
         </div>

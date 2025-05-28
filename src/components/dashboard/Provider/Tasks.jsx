@@ -7,10 +7,12 @@ import {
   setFilter,
   updateTaskProgress,
 } from "../../../store/slices/tasksSlice";
+import { useNavigate } from "react-router-dom";
 //import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";
 
 const Tasks = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { recentTasks, activeProjects, loading, error, filters } = useSelector(
     (state) => state.tasks
   );
@@ -23,6 +25,7 @@ const Tasks = () => {
     // In a real app, you might want to fetch task details here
     // and then navigate to the task details page
     //dispatch(setActiveTab("task-details"));
+    navigate(`/dashboard/tasks/${taskId}/taskDetails`);
   };
 
   if (loading) {

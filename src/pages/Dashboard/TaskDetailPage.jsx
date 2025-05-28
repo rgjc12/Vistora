@@ -1,25 +1,24 @@
 import React from "react";
-
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainContainer from "../../components/dashboard/MainContainer";
+import TaskDetails from "../../components/dashboard/Provider/TaskDetails";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
-import ClaimsSummary from "../../components/dashboard/Provider/ClaimsSummary";
 import { useSelector } from "react-redux";
 
-const ClaimsSummaryPage = () => {
+const TaskDetailPage = () => {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
   return (
     <div className="w-full h-full min-h-screen">
-      <Sidebar tabs={mainDashNav} activeTab={"Claims Summary"} />
+      <Sidebar tabs={mainDashNav} activeTab={"Tasks"} />
       <MainContainer>
         <div className="w-full p-4">
-          <ClaimsSummary />
+          <TaskDetails />
         </div>
       </MainContainer>
     </div>
   );
 };
 
-export default ClaimsSummaryPage;
+export default TaskDetailPage;

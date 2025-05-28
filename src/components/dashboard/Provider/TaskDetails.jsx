@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-/*
-import { 
-  fetchTaskDetails, 
-  setNewComment, 
-  addComment, 
-  updateTaskProgress 
-} from '../store/slices/tasksSlice';
-import { setActiveTab } from '../store/slices/uiSlice';*/
 
-/*
+import {
+  fetchTaskDetails,
+  setNewComment,
+  addComment,
+  updateTaskProgress,
+} from "../../../store/slices/tasksSlice";
+import { useNavigate } from "react-router-dom";
+//import { setActiveTab } from "../store/slices/uiSlice";
+
 const TaskDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentTask, loading, error, newComment } = useSelector(
     (state) => state.tasks
   );
@@ -23,7 +24,8 @@ const TaskDetails = () => {
   }, [dispatch]);
 
   const handleBackToTasks = () => {
-    dispatch(setActiveTab("tasks"));
+    //dispatch(setActiveTab("tasks"));
+    navigate("/dashboard/tasks");
   };
 
   if (loading || !currentTask) {
@@ -182,10 +184,10 @@ const TaskDetails = () => {
           </div>
         </div>
 
-        <div>{/* Right sidebar content can go here }</div>
+        <div>{/* Right sidebar content can go here */}</div>
       </div>
     </div>
   );
 };
 
-export default TaskDetails;*/
+export default TaskDetails;

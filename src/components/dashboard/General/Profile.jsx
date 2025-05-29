@@ -1,0 +1,242 @@
+import { User2Icon, UserIcon } from "lucide-react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import SmallerButton from "../../buttons/SmallerButton";
+
+const Profile = () => {
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+
+  const [editAccDetails, setEditAccDetails] = useState(false);
+  const [editAccPassword, setEditAccPassword] = useState(false);
+  const [editOrganization, setEditOrganization] = useState(false);
+
+  return (
+    <div className="w-full h-full p-4 flex flex-col gap-4">
+      <div className="w-full flex items-center border-b border-neutral-200 py-2">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Profile
+        </h1>
+      </div>
+      <div className="w-full flex flex-col md:flex-row gap-12 items-start">
+        <div className="w-fit flex flex-col gap-4">
+          <div className="flex items-center justify-center w-28 h-28 lg:w-[200px] lg:h-[200px] rounded-full bg-neutral-200 text-neutral-400 p-4"></div>
+          <div className="flex flex-col items-center gap-2 w-full">
+            <button className="w-fit min-w-[120px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
+              Update
+            </button>
+            <button className="w-fit min-w-[120px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
+              Remove
+            </button>
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-10 py-4 max-w-[600px]">
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex items-center gap-6 justify-start">
+              <h2 className="text-lg font-bold">Account Details</h2>
+              {!editAccDetails && (
+                <button className="w-fit min-w-[80px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
+                  Edit
+                </button>
+              )}
+            </div>
+            <div className="w-full max-w-[800px] flex flex-col gap-4">
+              {!editAccDetails ? (
+                <>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">User Name</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">Account Email</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">Contact Number</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userName" className="">
+                      User Name
+                    </label>
+                    <input
+                      type="text"
+                      name="userName"
+                      id="userName"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userEmail">Account Email</label>
+                    <input
+                      type="email"
+                      name="userEmail"
+                      id="userEmail"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userPhone">Contact Number</label>
+                    <input
+                      type="number"
+                      name="userPhone"
+                      id="userPhone"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-wrap items-center justify-end gap-2">
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-primary text-white font-semibold text-[0.75rem] hover:bg-primary-dark">
+                      Save Changes
+                    </button>
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-black text-white font-semibold text-[0.75rem] hover:bg-neutral-800">
+                      Discard Changes
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex items-center gap-6 justify-start">
+              <h2 className="text-lg font-bold">Password Management</h2>
+              {!editAccPassword && (
+                <button className="w-fit min-w-[80px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
+                  Edit
+                </button>
+              )}
+            </div>
+            <div className="w-full max-w-[800px] flex flex-col gap-4">
+              {!editAccPassword ? (
+                <> </>
+              ) : (
+                <>
+                  {" "}
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userCurrPassword" className="">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      name="userCurrPassword"
+                      id="userCurrPassword"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userNewPassword" className="">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      name="userNewPassword"
+                      id="userNewPassword"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="userNewPasswordVerify" className="">
+                      Verify New Password
+                    </label>
+                    <input
+                      type="password"
+                      name="userNewPasswordVerify"
+                      id="userNewPasswordVerify"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-wrap items-center justify-end gap-2">
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-primary text-white font-semibold text-[0.75rem] hover:bg-primary-dark">
+                      Save Changes
+                    </button>
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-black text-white font-semibold text-[0.75rem] hover:bg-neutral-800">
+                      Discard Changes
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex items-center gap-6 justify-start">
+              <h2 className="text-lg font-bold">Organization Details</h2>
+              {!editOrganization && (
+                <button className="w-fit min-w-[80px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
+                  Edit
+                </button>
+              )}
+            </div>
+            <div className="w-full max-w-[800px] flex flex-col gap-4">
+              {!editOrganization ? (
+                <>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">User Name</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">Account Email</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                  <div className="w-full flex flex-col items-start">
+                    <span className="">Contact Number</span>
+                    <span className="font-medium text-lg">Francisco Perez</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="organizationName" className="">
+                      Organization Name
+                    </label>
+                    <input
+                      type="text"
+                      name="organizationName"
+                      id="organizationName"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="organizationAddress" className="">
+                      Organization Address
+                    </label>
+                    <input
+                      type="address"
+                      name="organizationAddress"
+                      id="organizationAddress"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+                  <div className="w-full flex flex-col items-start gap-1">
+                    <label htmlFor="organizationEmail" className="">
+                      Organization Email
+                    </label>
+                    <input
+                      type="email"
+                      name="organizationEmail"
+                      id="organizationEmail"
+                      className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
+                    />
+                  </div>
+
+                  <div className="w-full flex flex-wrap items-center justify-end gap-2">
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-primary text-white font-semibold text-[0.75rem] hover:bg-primary-dark">
+                      Save Changes
+                    </button>
+                    <button className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-black text-white font-semibold text-[0.75rem] hover:bg-neutral-800">
+                      Discard Changes
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

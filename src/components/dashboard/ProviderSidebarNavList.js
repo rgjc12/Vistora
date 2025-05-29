@@ -44,7 +44,7 @@ export const mainDashNav = [
   {
     label: "Profile",
     icon: <User />,
-    link: "/dashboard/claims-summary",
+    link: "/dashboard/profile",
   },
   {
     label: "Settings",

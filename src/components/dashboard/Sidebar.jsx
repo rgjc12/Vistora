@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Menu, X } from "lucide-react"; // or any icon set you prefer
+import { LogOut, Menu, X } from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SignOutModal from "../ui/SignOutModal";
@@ -132,7 +132,7 @@ const Sidebar = ({ tabs, activeTab }) => {
             ))}
         </nav>
 
-        {/* Fixed Logout Button */}
+    
         <div className="absolute bottom-6 left-4 right-4">
           <button
             onClick={() => setShowModal(true)}

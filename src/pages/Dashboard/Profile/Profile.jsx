@@ -7,7 +7,7 @@ import Notifications from "../../../components/dashboard/General/Notifications";
 import Tasks from "../../../components/dashboard/Provider/Tasks";
 import TaskDetails from "./components/TaskDetails";
 import Settings from "../../../components/dashboard/General/Settings";
-import CommunityForum from "../../../components/dashboard/General/CommunityForum";
+import SubmitClaim from "../../../components/dashboard/Provider/SubmitClaim";
 
 const App = () => {
   const activeTab = useSelector((state) => state.ui.activeTab);
@@ -16,6 +16,8 @@ const App = () => {
     switch (activeTab) {
       case "claims-summary":
         return <ClaimsSummary />;
+        case "submit-claim":
+        return <SubmitClaim />;
       case "claims":
         return <Claims />;
       case "notifications":
@@ -25,8 +27,6 @@ const App = () => {
       /*
       case "task-details":
         return <TaskDetails />;*/
-      case "community-forum":
-        return <CommunityForum />;
       case "settings":
         return <Settings />;
       default:

@@ -24,7 +24,7 @@ export const mainDashNav = [
   {
     label: "Submit New Claim",
     icon: <FilePlus />,
-    link: "/dashboard/claims-summary",
+    link: "/dashboard/SubmitClaim",
   },
   {
     label: "Tasks",

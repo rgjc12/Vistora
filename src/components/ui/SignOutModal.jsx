@@ -32,7 +32,7 @@ const SignOutModal = ({ isOpen, onClose }) => {
         <p className="text-gray-600 mb-6 text-center">
           Are you sure you want to sign out?
         </p>
-        <div className="flex flex-col justify-center md:flex-row md:justify-end gap-4">
+        <div className="flex flex-col justify-center md:flex-row md:justify-center gap-4">
           <SmallerButton
             buttonText={"Cancel"}
             action={onClose}

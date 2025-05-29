@@ -1,16 +1,20 @@
 import React from "react";
+
 import { useSelector } from "react-redux";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../../../components/dashboard/Sidebar";
+import MainContainer from "../../../components/dashboard/MainContainer";
+import { mainDashNav } from "../../../components/dashboard/ProviderSidebarNavList";
 import ClaimsSummary from "../../../components/dashboard/Provider/ClaimsSummary";
 import Claims from "../../../components/dashboard/Provider/Claims";
 import Notifications from "../../../components/dashboard/General/Notifications";
 import Tasks from "../../../components/dashboard/Provider/Tasks";
-import TaskDetails from "./components/TaskDetails";
 import Settings from "../../../components/dashboard/General/Settings";
-import CommunityForum from "../../../components/dashboard/General/CommunityForum";
 
-const App = () => {
+const ProviderDash = () => {
   const activeTab = useSelector((state) => state.ui.activeTab);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const renderContent = () => {
     switch (activeTab) {
@@ -25,8 +29,7 @@ const App = () => {
       /*
       case "task-details":
         return <TaskDetails />;*/
-      case "community-forum":
-        return <CommunityForum />;
+
       case "settings":
         return <Settings />;
       default:
@@ -41,19 +44,15 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-lg shadow p-6">
-              {renderContent()}
-            </div>
-          </div>
+    <div className="w-full h-full min-h-screen">
+      <Sidebar tabs={mainDashNav} activeTab={""} />
+      <MainContainer>
+        <div className="w-full flex gap-2 p-4 border border-green-400">
+          {renderContent()}
         </div>
-      </div>
+      </MainContainer>
     </div>
   );
 };
 
-export default App;
+export default ProviderDash;

@@ -3,6 +3,7 @@ import { LogOut, Menu, X } from "lucide-react"; // or any icon set you prefer
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SignOutModal from "../ui/SignOutModal";
+import { setActiveTab } from "../../store/slices/uiSlice";
 
 const Sidebar = ({ tabs, activeTab }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
@@ -10,6 +11,8 @@ const Sidebar = ({ tabs, activeTab }) => {
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
+
+  //const activeTab = useSelector((state) => state.ui.activeTab);
 
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -38,6 +41,7 @@ const Sidebar = ({ tabs, activeTab }) => {
   const handleTabClick = (tabLink) => {
     if (tabLink) {
       navigate(tabLink);
+      //setActiveTab(tabLink);
     }
   };
 

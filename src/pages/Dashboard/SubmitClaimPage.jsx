@@ -2,20 +2,19 @@ import React from "react";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainContainer from "../../components/dashboard/MainContainer";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
+import SubmitClaim from "../../components/dashboard/Provider/SubmitClaim";
 
-import Claims from "../../components/dashboard/Provider/Claims";
-
-const ClaimPage = () => {
+const SubmitClaimPage = () => {
   return (
     <div className="w-full h-full min-h-screen">
-      <Sidebar tabs={mainDashNav} activeTab={"Claims"} />
+      <Sidebar tabs={mainDashNav} activeTab={"Submit New Claim"} />
       <MainContainer>
         <div className="w-full p-4">
-          <Claims />
+          <SubmitClaim />
         </div>
       </MainContainer>
     </div>
   );
 };
 
-export default ClaimPage;
+export default SubmitClaimPage;

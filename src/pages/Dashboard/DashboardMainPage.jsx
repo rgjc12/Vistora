@@ -1,15 +1,9 @@
 import React from "react";
 import Sidebar from "../../components/dashboard/Sidebar";
-
 import MainContainer from "../../components/dashboard/MainContainer";
 import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
-import { useSelector } from "react-redux";
 
 const DashboardMainPage = () => {
-  const { user, isAuthenticated, isLoading } = useSelector(
-    (state) => state.auth
-  );
-
   return (
     <div className="w-full h-full min-h-screen">
       <Sidebar tabs={mainDashNav} activeTab={""} />

@@ -21,6 +21,7 @@ import AppWrapper from "./pages/AppWrapper/AppWrapper";
 import NotificationsPage from "./pages/Dashboard/NotificationsPage";
 import TaskDetailPage from "./pages/Dashboard/TaskDetailPage";
 import ClaimPage from "./pages/Dashboard/ClaimPage";
+import SubmitClaimPage from "./pages/Dashboard/SubmitClaimPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -49,6 +50,10 @@ root.render(
             <Route
               path="/dashboard/claims-summary"
               element={<ClaimsSummaryPage />}
+            />
+            <Route
+              path="/dashboard/SubmitClaim"
+              element={<SubmitClaimPage />}
             />
             <Route path="/dashboard/claims" element={<ClaimPage />} />
             <Route

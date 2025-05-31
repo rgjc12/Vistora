@@ -2,232 +2,955 @@ import React, { useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/claimsSlice";
 import { setActiveTab } from "../../../store/slices/uiSlice";
+import { useNavigate } from "react-router-dom";
 
 const ClaimsSummary = ({ onSubmitClick }) => {
-  const dispatch = useDispatch();
-  const { claims, stats, loading, error } = useSelector(state => state.claims);
+  const navigate = useNavigate()
+  const [claims, setClaims] = useState([])
+  const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
     status: [],
-    dateRange: { start: '', end: '' },
-    amountRange: { min: '', max: '' }
-  });
-  const [searchQuery, setSearchQueryLocal] = useState('');
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    dateRange: { start: "", end: "" },
+    amountRange: { min: "", max: "" },
+  })
+  const [searchQuery, setSearchQueryLocal] = useState("")
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" })
+  const [selectedClaim, setSelectedClaim] = useState(null)
+  const [showViewModal, setShowViewModal] = useState(false)
+  const [showAIModal, setShowAIModal] = useState(false)
+  const [selectedAIInsights, setSelectedAIInsights] = useState(null)
+  const [maskedIds, setMaskedIds] = useState(true)
+  const [showFlaggedClaimsModal, setShowFlaggedClaimsModal] = useState(false)
+  const [flaggedClaimsData, setFlaggedClaimsData] = useState([])
 
   useEffect(() => {
-    dispatch(fetchClaims());
-  }, [dispatch]);
+    loadClaimsFromStorage()
+  }, [])
+
+  const loadClaimsFromStorage = () => {
+    try {
+      const storedClaims = JSON.parse(localStorage.getItem("vistora_claims") || "[]")
+
+      // Transform stored claims to match ClaimsSummary format
+      const transformedClaims = storedClaims.map((claim, index) => {
+        const totalCharges =
+          claim.service?.procedures?.reduce((total, proc) => total + (Number.parseFloat(proc.charges) || 0), 0) || 0
+
+        // Generate realistic status based on submission date and draft status
+        let status = "Draft"
+        if (!claim.isDraft) {
+          const daysSinceSubmission = Math.floor(
+            (Date.now() - new Date(claim.savedAt).getTime()) / (1000 * 60 * 60 * 24),
+          )
+          if (daysSinceSubmission >= 5) {
+            status = Math.random() > 0.3 ? "Paid" : "Rejected"
+          } else if (daysSinceSubmission >= 2) {
+            status = "Under Review"
+          } else {
+            status = "Submitted"
+          }
+        }
+
+        // Calculate age from date of birth
+        const calculateAge = (dateOfBirth) => {
+          if (!dateOfBirth) return Math.floor(Math.random() * 60) + 20 // fallback
+          const today = new Date()
+          const birthDate = new Date(dateOfBirth)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
+          return age
+        }
+
+        return {
+          id: claim.claimId,
+          patientId: `PT-${Math.floor(Math.random() * 9000) + 1000}`,
+          provider: claim.provider?.name || "Unknown Provider",
+          date: claim.service?.dateOfService || new Date(claim.savedAt).toLocaleDateString(),
+          amount: `$${totalCharges.toFixed(2)}`,
+          status: status,
+          lastUpdated: getTimeAgo(claim.savedAt),
+          aiFlag: Math.random() > 0.8, // 20% chance of AI flag
+          docsMissing: Math.random() > 0.9, // 10% chance of missing docs
+          patientAge: calculateAge(claim.patient?.dateOfBirth),
+          patientGender: claim.patient?.gender || (Math.random() > 0.5 ? "M" : "F"),
+          fullData: claim,
+          isDraft: claim.isDraft,
+        }
+      })
+
+      setClaims(transformedClaims)
+      setLoading(false)
+    } catch (error) {
+      console.error("Error loading claims:", error)
+      setLoading(false)
+    }
+  }
+
+  const getTimeAgo = (dateString) => {
+    const now = new Date()
+    const date = new Date(dateString)
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60))
+
+    if (diffInHours < 1) return "Just now"
+    if (diffInHours < 24) return `${diffInHours} hours ago`
+    const diffInDays = Math.floor(diffInHours / 24)
+    if (diffInDays === 1) return "1 day ago"
+    return `${diffInDays} days ago`
+  }
 
   const handleSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction = "asc"
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc"
     }
-    setSortConfig({ key, direction });
-  };
+    setSortConfig({ key, direction })
+  }
 
   const handleStatusFilter = (status) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      status: prev.status.includes(status) 
-        ? prev.status.filter(s => s !== status)
-        : [...prev.status, status]
-    }));
-  };
+      status: prev.status.includes(status) ? prev.status.filter((s) => s !== status) : [...prev.status, status],
+    }))
+  }
 
-  // Function to handle navigation to Submit Claim page
   const handleSubmitNewClaim = () => {
-    dispatch(setActiveTab('submit-claim'));
-  };
+    navigate("/submit-claim")
+  }
+
+  const handleViewClaim = (claim) => {
+    setSelectedClaim(claim)
+    setShowViewModal(true)
+  }
+
+  const handleEditClaim = (claim) => {
+    console.log("Editing claim:", claim) // Debug log
+
+    // Store the full claim data for editing
+    const claimDataToEdit = {
+      ...claim.fullData,
+      uploadedFiles: claim.fullData.uploadedFiles || [],
+    }
+
+    localStorage.setItem("edit_claim_draft", JSON.stringify(claimDataToEdit))
+
+    // Navigate to submit claim page
+    navigate("/submit-claim")
+  }
+
+  const handleTrackClaim = (claim) => {
+    alert(`Tracking claim ${claim.id}:\nStatus: ${claim.status}\nLast Updated: ${claim.lastUpdated}`)
+  }
+
+  const handleResubmitClaim = (claim) => {
+    if (claim.status === "Rejected") {
+      localStorage.setItem("edit_claim_draft", JSON.stringify(claim.fullData))
+      navigate("/submit-claim")
+    }
+  }
+
+  const handleDownloadEOB = (claim) => {
+    if (claim.status === "Paid") {
+      alert(`Downloading EOB for claim ${claim.id}`)
+    }
+  }
+
+  const handleAIFlagDetails = (claim) => {
+    // Generate AI insights based on claim data
+    const aiInsights = generateAIInsights(claim)
+    setSelectedAIInsights(aiInsights)
+    setShowAIModal(true)
+  }
+
+  const generateAIInsights = (claim) => {
+    // Base insights on claim data or generate random insights
+    const insights = {
+      claimId: claim.id,
+      patientId: claim.patientId,
+      riskScore: Math.floor(Math.random() * 40) + 60, // 60-99
+      confidenceLevel: Math.floor(Math.random() * 20) + 80, // 80-99
+      flags: [],
+      recommendations: [],
+    }
+
+    // Generate flags based on claim data
+    if (claim.status === "Rejected") {
+      insights.flags.push("Claim has been rejected previously")
+      insights.recommendations.push("Review rejection reason and resubmit with corrections")
+    }
+
+    if (claim.docsMissing) {
+      insights.flags.push("Missing required documentation")
+      insights.recommendations.push("Upload all required supporting documents")
+    }
+
+    // Add random flags based on procedure codes if available
+    if (claim.fullData?.service?.procedures) {
+      const hasProcedureOver1000 = claim.fullData.service.procedures.some((p) => Number.parseFloat(p.charges) > 1000)
+
+      if (hasProcedureOver1000) {
+        insights.flags.push("High-value procedure detected")
+        insights.recommendations.push("Ensure proper authorization is in place")
+      }
+    }
+
+    // Add more random flags if needed
+    const possibleFlags = [
+      "Unusual billing pattern detected",
+      "Similar claim submitted recently",
+      "Procedure code and diagnosis code mismatch",
+      "Provider history indicates potential compliance issues",
+    ]
+
+    const possibleRecommendations = [
+      "Review coding for accuracy",
+      "Verify patient eligibility",
+      "Check for duplicate submissions",
+      "Confirm medical necessity documentation",
+    ]
+
+    // Add 1-2 random flags
+    const randomFlagCount = Math.floor(Math.random() * 2) + 1
+    for (let i = 0; i < randomFlagCount; i++) {
+      const randomFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)]
+      if (!insights.flags.includes(randomFlag)) {
+        insights.flags.push(randomFlag)
+      }
+    }
+
+    // Add 1-3 random recommendations
+    const randomRecommendationCount = Math.floor(Math.random() * 3) + 1
+    for (let i = 0; i < randomRecommendationCount; i++) {
+      const randomRecommendation = possibleRecommendations[Math.floor(Math.random() * possibleRecommendations.length)]
+      if (!insights.recommendations.includes(randomRecommendation)) {
+        insights.recommendations.push(randomRecommendation)
+      }
+    }
+
+    return insights
+  }
 
   const getActionButtons = (claim) => {
-    const buttons = [];
-    
-    if (claim.status === 'Rejected') {
+    const buttons = []
+
+    if (claim.status === "Rejected") {
       buttons.push(
-        <button key="resubmit" className="text-blue-600 hover:text-blue-800 text-sm mr-2">
+        <button
+          key="resubmit"
+          className="text-blue-600 hover:text-blue-800 text-sm mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
+          onClick={() => handleResubmitClaim(claim)}
+        >
           Resubmit
-        </button>
-      );
-    }
-    
-    if (claim.status === 'Paid') {
+        </button>,
+      )
       buttons.push(
-        <button key="download" className="text-green-600 hover:text-green-800 text-sm mr-2">
-          Download EOB
-        </button>
-      );
+        <button
+          key="edit-rejected"
+          className="text-orange-600 hover:text-orange-800 text-sm mr-2 hover:bg-orange-50 px-2 py-1 rounded transition-all duration-200"
+          onClick={() => handleEditClaim(claim)}
+        >
+          Edit
+        </button>,
+      )
     }
-    
+
+    if (claim.status === "Paid") {
+      buttons.push(
+        <button
+          key="download"
+          className="text-green-600 hover:text-green-800 text-sm mr-2 hover:bg-green-50 px-2 py-1 rounded transition-all duration-200"
+          onClick={() => handleDownloadEOB(claim)}
+        >
+          Download EOB
+        </button>,
+      )
+    }
+
     buttons.push(
-      <button key="view" className="text-gray-600 hover:text-gray-800 text-sm mr-2">
+      <button
+        key="view"
+        className="text-gray-600 hover:text-gray-800 text-sm mr-2 hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+        onClick={() => handleViewClaim(claim)}
+      >
         View
       </button>,
-      <button key="edit" className="text-gray-600 hover:text-gray-800 text-sm mr-2">
-        Edit
-      </button>,
-      <button key="track" className="text-purple-600 hover:text-purple-800 text-sm">
+    )
+
+    if (claim.isDraft) {
+      buttons.push(
+        <button
+          key="edit"
+          className="text-blue-600 hover:text-blue-800 text-sm mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
+          onClick={() => handleEditClaim(claim)}
+        >
+          Edit
+        </button>,
+      )
+    }
+
+    // Add edit button for AI flagged claims
+    if (claim.aiFlag && !claim.isDraft && claim.status !== "Rejected") {
+      buttons.push(
+        <button
+          key="edit-flagged"
+          className="text-purple-600 hover:text-purple-800 text-sm mr-2 hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
+          onClick={() => handleEditClaim(claim)}
+        >
+          Edit
+        </button>,
+      )
+    }
+
+    buttons.push(
+      <button
+        key="track"
+        className="text-purple-600 hover:text-purple-800 text-sm hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
+        onClick={() => handleTrackClaim(claim)}
+      >
         Track
-      </button>
-    );
-    
-    return buttons;
-  };
+      </button>,
+    )
+
+    return buttons
+  }
 
   const copyClaimId = (claimId) => {
-    navigator.clipboard.writeText(claimId);
-    // You could add a toast notification here
-  };
+    navigator.clipboard.writeText(claimId)
+    alert(`Claim ID ${claimId} copied to clipboard!`)
+  }
 
   const copyPatientId = (patientId) => {
-    navigator.clipboard.writeText(patientId);
-    // You could add a toast notification here
-  };
+    navigator.clipboard.writeText(patientId)
+    alert(`Patient ID ${patientId} copied to clipboard!`)
+  }
+
+  // Filter claims based on search and filters
+  const filteredClaims = claims.filter((claim) => {
+    const matchesSearch =
+      searchQuery === "" ||
+      claim.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      claim.patientId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      claim.provider.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchesStatus = filters.status.length === 0 || filters.status.includes(claim.status)
+
+    return matchesSearch && matchesStatus
+  })
+
+  // Calculate stats
+  const stats = {
+    totalReimbursed: claims
+      .filter((c) => c.status === "Paid")
+      .reduce((sum, c) => sum + Number.parseFloat(c.amount.replace(/[$,]/g, "")), 0),
+    awaitingAction: claims.filter((c) => c.status === "Rejected" || c.docsMissing).length,
+    inReview: claims.filter((c) => c.status === "Under Review").length,
+    rejected: claims.filter((c) => c.status === "Rejected").length,
+    avgProcessingTime: 5.2,
+  }
+
+  // View Modal Component
+  const ViewModal = () => {
+    if (!selectedClaim || !showViewModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-slate-200">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                Claim Details
+              </h2>
+              <button
+                onClick={() => setShowViewModal(false)}
+                className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100"
+              >
+                <span className="text-2xl">✕</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 space-y-6">
+            {/* Claim Header */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Claim ID</div>
+                  <div className="text-lg font-bold text-emerald-600">{selectedClaim.id}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Patient ID</div>
+                  <div className="text-lg font-bold text-purple-600">{selectedClaim.patientId}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Status</div>
+                  <span
+                    className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                      selectedClaim.status === "Paid"
+                        ? "bg-green-100 text-green-800"
+                        : selectedClaim.status === "Under Review"
+                          ? "bg-blue-100 text-blue-800"
+                          : selectedClaim.status === "Rejected"
+                            ? "bg-red-100 text-red-800"
+                            : selectedClaim.status === "Pending Authorization"
+                              ? "bg-orange-100 text-orange-800"
+                              : selectedClaim.status === "Draft"
+                                ? "bg-amber-100 text-amber-800"
+                                : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {selectedClaim.status}
+                  </span>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Total Amount</div>
+                  <div className="text-2xl font-bold text-emerald-600">{selectedClaim.amount}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Patient Information */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-slate-900 mb-4 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                Patient Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Patient ID</div>
+                  <div className="text-slate-900 font-mono">{selectedClaim.patientId}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Demographics</div>
+                  <div className="text-slate-900">
+                    {selectedClaim.patientAge} years old, {selectedClaim.patientGender === "M" ? "Male" : "Female"}
+                  </div>
+                </div>
+                {selectedClaim.fullData?.patient && (
+                  <>
+                    <div>
+                      <div className="text-sm font-semibold text-slate-500 mb-1">Name</div>
+                      <div className="text-slate-900">
+                        {selectedClaim.fullData.patient.firstName} {selectedClaim.fullData.patient.lastName}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-slate-500 mb-1">Date of Birth</div>
+                      <div className="text-slate-900">{selectedClaim.fullData.patient.dateOfBirth}</div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Provider Information */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-slate-900 mb-4 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                Provider Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Provider Name</div>
+                  <div className="text-slate-900">{selectedClaim.provider}</div>
+                </div>
+                {selectedClaim.fullData?.provider?.npi && (
+                  <div>
+                    <div className="text-sm font-semibold text-slate-500 mb-1">NPI</div>
+                    <div className="text-slate-900">{selectedClaim.fullData.provider.npi}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Service Details */}
+            {selectedClaim.fullData?.service && (
+              <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-4 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Service Details
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-500 mb-1">Date of Service</div>
+                    <div className="text-slate-900">{selectedClaim.date}</div>
+                  </div>
+                  {selectedClaim.fullData.service.diagnosis?.primary && (
+                    <div>
+                      <div className="text-sm font-semibold text-slate-500 mb-1">Primary Diagnosis</div>
+                      <div className="text-slate-900">{selectedClaim.fullData.service.diagnosis.primary}</div>
+                    </div>
+                  )}
+                  {selectedClaim.fullData.service.procedures && (
+                    <div>
+                      <div className="text-sm font-semibold text-slate-500 mb-1">Procedures</div>
+                      <div className="space-y-2">
+                        {selectedClaim.fullData.service.procedures.map((proc, index) => (
+                          <div key={index} className="bg-slate-50 p-3 rounded-lg">
+                            <div className="font-semibold">
+                              {proc.code} {proc.description && `- ${proc.description}`}
+                            </div>
+                            <div className="text-sm text-slate-600">
+                              Units: {proc.units} | Charges: ${proc.charges}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t border-slate-200 flex justify-end space-x-3">
+            {selectedClaim.isDraft && (
+              <button
+                onClick={() => {
+                  setShowViewModal(false)
+                  handleEditClaim(selectedClaim)
+                }}
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-semibold"
+              >
+                Edit Draft
+              </button>
+            )}
+            <button
+              onClick={() => setShowViewModal(false)}
+              className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Add the AI Insights Modal component
+  // Add this function inside the ClaimsSummary component, before the return statement:
+
+  const AIInsightsModal = () => {
+    if (!selectedAIInsights || !showAIModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-purple-50 to-indigo-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 text-xl">🤖</span>
+                </div>
+                <h2 className="text-2xl font-bold text-purple-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  AI Risk Analysis
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowAIModal(false)}
+                className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100"
+              >
+                <span className="text-2xl">✕</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 space-y-6">
+            {/* Claim Identifier */}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-semibold text-slate-500">Claim ID</div>
+                <div className="text-lg font-bold text-purple-600">{selectedAIInsights.claimId}</div>
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-500">Patient ID</div>
+                <div className="text-lg font-bold text-purple-600">{selectedAIInsights.patientId}</div>
+              </div>
+            </div>
+
+            {/* Risk Score */}
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-lg font-bold text-slate-900">Risk Assessment</div>
+                <div
+                  className={`text-xl font-bold ${
+                    selectedAIInsights.riskScore > 80
+                      ? "text-red-600"
+                      : selectedAIInsights.riskScore > 70
+                        ? "text-orange-600"
+                        : "text-green-600"
+                  }`}
+                >
+                  {selectedAIInsights.riskScore}/100
+                </div>
+              </div>
+              <div className="w-full bg-slate-200 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full ${
+                    selectedAIInsights.riskScore > 80
+                      ? "bg-red-500"
+                      : selectedAIInsights.riskScore > 70
+                        ? "bg-orange-500"
+                        : "bg-green-500"
+                  }`}
+                  style={{ width: `${selectedAIInsights.riskScore}%` }}
+                ></div>
+              </div>
+              <div className="text-xs text-slate-500 mt-2">AI Confidence: {selectedAIInsights.confidenceLevel}%</div>
+            </div>
+
+            {/* Risk Flags */}
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="text-lg font-bold text-slate-900 mb-4">Risk Flags</div>
+              <div className="space-y-3">
+                {selectedAIInsights.flags.map((flag, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start space-x-3 bg-red-50 p-3 rounded-lg border border-red-100"
+                  >
+                    <div className="text-red-600 mt-0.5">⚠️</div>
+                    <div>
+                      <div className="font-medium text-red-800">{flag}</div>
+                    </div>
+                  </div>
+                ))}
+                {selectedAIInsights.flags.length === 0 && <div className="text-slate-600">No risk flags detected</div>}
+              </div>
+            </div>
+
+            {/* Recommendations */}
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="text-lg font-bold text-slate-900 mb-4">AI Recommendations</div>
+              <div className="space-y-3">
+                {selectedAIInsights.recommendations.map((recommendation, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start space-x-3 bg-blue-50 p-3 rounded-lg border border-blue-100"
+                  >
+                    <div className="text-blue-600 mt-0.5">💡</div>
+                    <div>
+                      <div className="font-medium text-blue-800">{recommendation}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 border-t border-slate-200 flex justify-end">
+            <button
+              onClick={() => setShowAIModal(false)}
+              className="px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-all duration-200 font-semibold"
+            >
+              Close Analysis
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const handleViewFlaggedClaims = () => {
+    const flaggedClaims = claims.filter((c) => c.aiFlag)
+    setFlaggedClaimsData(
+      flaggedClaims.map((claim) => ({
+        ...claim,
+        flagReasons: generateDetailedFlagReasons(claim),
+      })),
+    )
+    setShowFlaggedClaimsModal(true)
+  }
+
+  const generateDetailedFlagReasons = (claim) => {
+    const reasons = []
+
+    // Check actual claim data for flags
+    if (claim.fullData) {
+      // High amount flag
+      const totalAmount = Number.parseFloat(claim.amount.replace(/[$,]/g, ""))
+      if (totalAmount > 5000) {
+        reasons.push({
+          type: "High Value",
+          severity: "Medium",
+          description: `Claim amount of ${claim.amount} exceeds $5,000 threshold`,
+          recommendation: "Verify medical necessity and ensure proper authorization",
+        })
+      }
+
+      // Missing documentation
+      if (!claim.fullData.uploadedFiles || claim.fullData.uploadedFiles.length === 0) {
+        reasons.push({
+          type: "Missing Documentation",
+          severity: "High",
+          description: "No supporting documents uploaded",
+          recommendation: "Upload required medical records and supporting documentation",
+        })
+      }
+
+      // Check for procedure codes
+      if (claim.fullData.service?.procedures) {
+        const procedures = claim.fullData.service.procedures
+
+        // Multiple procedures flag
+        if (procedures.length > 3) {
+          reasons.push({
+            type: "Multiple Procedures",
+            severity: "Medium",
+            description: `${procedures.length} procedures billed in single claim`,
+            recommendation: "Verify all procedures were performed and medically necessary",
+          })
+        }
+
+        // High-cost procedure codes (example)
+        const highCostCodes = ["99213", "99214", "99215", "99223", "99233"]
+        const hasHighCostCode = procedures.some((p) => highCostCodes.includes(p.code))
+        if (hasHighCostCode) {
+          reasons.push({
+            type: "High-Cost Procedure",
+            severity: "Medium",
+            description: "Contains high-reimbursement procedure codes",
+            recommendation: "Ensure proper documentation supports the level of service",
+          })
+        }
+      }
+
+      // Check diagnosis codes
+      if (claim.fullData.service?.diagnosis?.primary) {
+        const diagnosisCode = claim.fullData.service.diagnosis.primary
+
+        // Example: Check for certain diagnosis patterns
+        if (diagnosisCode.startsWith("Z")) {
+          reasons.push({
+            type: "Preventive Care",
+            severity: "Low",
+            description: "Preventive care diagnosis detected",
+            recommendation: "Verify coverage for preventive services",
+          })
+        }
+      }
+
+      // Patient age considerations
+      if (claim.patientAge > 65) {
+        reasons.push({
+          type: "Medicare Patient",
+          severity: "Low",
+          description: "Patient age suggests Medicare eligibility",
+          recommendation: "Verify Medicare as primary payer if applicable",
+        })
+      }
+
+      // Provider history (simulated)
+      if (Math.random() > 0.7) {
+        reasons.push({
+          type: "Provider Pattern",
+          severity: "Medium",
+          description: "Provider has elevated claim review rate",
+          recommendation: "Additional documentation may be required",
+        })
+      }
+    }
+
+    // If no specific reasons found, add generic ones
+    if (reasons.length === 0) {
+      reasons.push({
+        type: "Routine Review",
+        severity: "Low",
+        description: "Selected for routine AI quality review",
+        recommendation: "No action required - standard processing",
+      })
+    }
+
+    return reasons
+  }
+
+  // Flagged Claims Modal
+  const FlaggedClaimsModal = () => {
+    if (!showFlaggedClaimsModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-red-50 to-orange-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <span className="text-red-600 text-xl">⚠️</span>
+                </div>
+                <h2 className="text-2xl font-bold text-red-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  AI Flagged Claims Analysis
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowFlaggedClaimsModal(false)}
+                className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100"
+              >
+                <span className="text-2xl">✕</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                {flaggedClaimsData.length} Claims Flagged for Review
+              </h3>
+              <p className="text-slate-600">
+                These claims have been identified by our AI system as requiring additional attention before processing.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {flaggedClaimsData.map((claim) => (
+                <div key={claim.id} className="bg-white border-2 border-red-100 rounded-xl p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-4">
+                      <div>
+                        <div className="font-bold text-lg text-slate-900">{claim.id}</div>
+                        <div className="text-sm text-slate-600">
+                          Patient: {claim.patientId} | Amount: {claim.amount}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleViewClaim(claim)}
+                        className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm hover:bg-blue-200"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowFlaggedClaimsModal(false)
+                          handleEditClaim(claim)
+                        }}
+                        className="px-3 py-1 bg-orange-100 text-orange-800 rounded-lg text-sm hover:bg-orange-200"
+                      >
+                        Edit Claim
+                      </button>
+                      {claim.isDraft && (
+                        <button
+                          onClick={() => {
+                            setShowFlaggedClaimsModal(false)
+                            handleEditClaim(claim)
+                          }}
+                          className="px-3 py-1 bg-green-100 text-green-800 rounded-lg text-sm hover:bg-green-200"
+                        >
+                          Edit Draft
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <h4 className="font-semibold text-slate-900">Flag Reasons:</h4>
+                    {claim.flagReasons.map((reason, index) => (
+                      <div
+                        key={index}
+                        className={`p-3 rounded-lg border-l-4 ${
+                          reason.severity === "High"
+                            ? "bg-red-50 border-red-400"
+                            : reason.severity === "Medium"
+                              ? "bg-orange-50 border-orange-400"
+                              : "bg-yellow-50 border-yellow-400"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="font-medium text-slate-900">{reason.type}</div>
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              reason.severity === "High"
+                                ? "bg-red-100 text-red-800"
+                                : reason.severity === "Medium"
+                                  ? "bg-orange-100 text-orange-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {reason.severity} Risk
+                          </span>
+                        </div>
+                        <div className="text-sm text-slate-700 mb-2">{reason.description}</div>
+                        <div className="text-sm text-slate-600">
+                          <strong>Recommendation:</strong> {reason.recommendation}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-6 border-t border-slate-200 flex justify-end">
+            <button
+              onClick={() => setShowFlaggedClaimsModal(false)}
+              className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all duration-200 font-semibold"
+            >
+              Close Analysis
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (loading) {
-    return <div className="text-center py-12">Loading claims data...</div>;
+    return <div className="text-center py-12">Loading claims data...</div>
   }
-
-  if (error) {
-    return <div className="text-center py-12 text-red-500">Error: {error}</div>;
-  }
-
-  // Updated mock data with Patient IDs instead 
-  const enhancedClaims = [
-    {
-      id: 'CLM-0583',
-      patientId: 'PT-4521',
-      provider: 'Dr. Sarah Johnson',
-      date: '03/15/2025',
-      amount: '$2,450.00',
-      status: 'Under Review',
-      lastUpdated: '2 hours ago',
-      aiFlag: false,
-      docsMissing: false,
-      patientAge: 38,
-      patientGender: 'M'
-    },
-    {
-      id: 'CLM-0584',
-      patientId: 'PT-7892',
-      provider: 'Metro Health Clinic',
-      date: '03/14/2025',
-      amount: '$1,200.00',
-      status: 'Rejected',
-      lastUpdated: '1 day ago',
-      aiFlag: true,
-      docsMissing: true,
-      patientAge: 45,
-      patientGender: 'F'
-    },
-    {
-      id: 'CLM-0585',
-      patientId: 'PT-3456',
-      provider: 'Dr. Michael Chen',
-      date: '03/13/2025',
-      amount: '$5,800.00',
-      status: 'Paid',
-      lastUpdated: '3 days ago',
-      aiFlag: false,
-      docsMissing: false,
-      patientAge: 62,
-      patientGender: 'M'
-    },
-    {
-      id: 'CLM-0586',
-      patientId: 'PT-9123',
-      provider: 'City Medical Center',
-      date: '03/12/2025',
-      amount: '$890.00',
-      status: 'Submitted',
-      lastUpdated: '4 days ago',
-      aiFlag: false,
-      docsMissing: false,
-      patientAge: 29,
-      patientGender: 'F'
-    },
-    {
-      id: 'CLM-0587',
-      patientId: 'PT-6754',
-      provider: 'Dr. Emily Rodriguez',
-      date: '03/11/2025',
-      amount: '$3,200.00',
-      status: 'Under Review',
-      lastUpdated: '5 days ago',
-      aiFlag: false,
-      docsMissing: false,
-      patientAge: 55,
-      patientGender: 'F'
-    },
-    {
-      id: 'CLM-0588',
-      patientId: 'PT-2847',
-      provider: 'Westside Clinic',
-      date: '03/10/2025',
-      amount: '$1,750.00',
-      status: 'Pending Authorization',
-      lastUpdated: '6 days ago',
-      aiFlag: true,
-      docsMissing: false,
-      patientAge: 41,
-      patientGender: 'M'
-    }
-  ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-['Manrope',_sans-serif]">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Claims Dashboard</h1>
-        <button 
+        <h1 className="text-2xl font-bold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+          Claims Dashboard
+        </h1>
+        <button
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-           onClick={handleSubmitNewClaim}
+          onClick={handleSubmitNewClaim}
         >
           + Submit New Claim
         </button>
       </div>
 
       {/* Action Required Alert */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <span className="text-red-600 mr-2">⚠️</span>
-          <span className="text-red-800 font-medium">Action Required:</span>
-          <span className="text-red-700 ml-2">3 claims need immediate attention</span>
-          <button className="ml-auto text-red-600 hover:text-red-800 text-sm font-medium">
-            View All →
-          </button>
+      {stats.awaitingAction > 0 && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <span className="text-red-600 mr-2">⚠️</span>
+            <span className="text-red-800 font-medium">Action Required:</span>
+            <span className="text-red-700 ml-2">{stats.awaitingAction} claims need immediate attention</span>
+            <button className="ml-auto text-red-600 hover:text-red-800 text-sm font-medium">View All →</button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Enhanced KPI Metrics */}
       <div className="grid grid-cols-5 gap-4">
         <div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">$ Reimbursed This Month</div>
-          <div className="text-2xl font-bold text-green-600">$124,580</div>
+          <div className="text-2xl font-bold text-green-600">${stats.totalReimbursed.toLocaleString()}</div>
           <div className="text-xs text-green-500 mt-1">↑ 12% from last month</div>
         </div>
-        
+
         <div className="bg-orange-50 p-6 rounded-lg border-2 border-orange-200 shadow-sm">
           <div className="text-sm text-gray-600">Claims Awaiting Action</div>
-          <div className="text-2xl font-bold text-orange-600">8</div>
+          <div className="text-2xl font-bold text-orange-600">{stats.awaitingAction}</div>
           <div className="text-xs text-orange-500 mt-1">Requires immediate attention</div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">Claims in Review</div>
-          <div className="text-2xl font-bold text-blue-600">15</div>
+          <div className="text-2xl font-bold text-blue-600">{stats.inReview}</div>
           <div className="text-xs text-blue-500 mt-1">Avg 2-3 days processing</div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">Rejected Claims</div>
-          <div className="text-2xl font-bold text-red-600">4</div>
+          <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
           <div className="text-xs text-red-500 mt-1">Need resubmission</div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">Avg Time to Payment</div>
-          <div className="text-2xl font-bold text-purple-600">5.2 days</div>
+          <div className="text-2xl font-bold text-purple-600">{stats.avgProcessingTime} days</div>
           <div className="text-xs text-purple-500 mt-1">↓ 0.8 days improved</div>
         </div>
       </div>
@@ -238,24 +961,133 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           <div className="flex items-center">
             <span className="text-blue-600 mr-2">🤖</span>
             <span className="font-medium text-blue-900">AI Predictions:</span>
-            <span className="text-blue-800 ml-2">5 flagged claims may be at risk this week</span>
+            <span className="text-blue-800 ml-2">
+              {claims.filter((c) => c.aiFlag).length} flagged claims may be at risk this week
+            </span>
           </div>
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium" onClick={handleViewFlaggedClaims}>
             View Flagged Claims →
           </button>
+        </div>
+      </div>
+
+      {/* Claims Status Summary Sections */}
+      <div className="grid grid-cols-3 gap-4">
+        {/* Approved Claims */}
+        <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <span className="text-green-600 mr-2">✓</span>
+              <span className="font-medium text-green-900">Approved Claims</span>
+            </div>
+            <span className="text-2xl font-bold text-green-600">
+              {claims.filter((c) => c.status === "Paid").length}
+            </span>
+          </div>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {claims
+              .filter((c) => c.status === "Paid")
+              .map((claim) => (
+                <div
+                  key={claim.id}
+                  className="bg-white p-2 rounded border border-green-100 text-sm flex justify-between items-center cursor-pointer hover:bg-green-100 transition-all duration-200"
+                  onClick={() => handleViewClaim(claim)}
+                >
+                  <div>
+                    <div className="font-medium text-green-800">{claim.id}</div>
+                    <div className="text-xs text-green-600">{claim.amount}</div>
+                  </div>
+                  <div className="text-xs text-green-700">{claim.date}</div>
+                </div>
+              ))}
+            {claims.filter((c) => c.status === "Paid").length === 0 && (
+              <div className="text-sm text-green-600 text-center py-2">No approved claims</div>
+            )}
+          </div>
+        </div>
+
+        {/* In Progress Claims */}
+        <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <span className="text-yellow-600 mr-2">⏳</span>
+              <span className="font-medium text-yellow-900">In Progress Claims</span>
+            </div>
+            <span className="text-2xl font-bold text-yellow-600">
+              {claims.filter((c) => ["Submitted", "Under Review", "Pending Authorization"].includes(c.status)).length}
+            </span>
+          </div>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {claims
+              .filter((c) => ["Submitted", "Under Review", "Pending Authorization"].includes(c.status))
+              .map((claim) => (
+                <div
+                  key={claim.id}
+                  className="bg-white p-2 rounded border border-yellow-100 text-sm flex justify-between items-center cursor-pointer hover:bg-yellow-100 transition-all duration-200"
+                  onClick={() => handleViewClaim(claim)}
+                >
+                  <div>
+                    <div className="font-medium text-yellow-800">{claim.id}</div>
+                    <div className="text-xs text-yellow-600">{claim.status}</div>
+                  </div>
+                  <div className="text-xs text-yellow-700">{claim.lastUpdated}</div>
+                </div>
+              ))}
+            {claims.filter((c) => ["Submitted", "Under Review", "Pending Authorization"].includes(c.status)).length ===
+              0 && <div className="text-sm text-yellow-600 text-center py-2">No in-progress claims</div>}
+          </div>
+        </div>
+
+        {/* Rejected Claims */}
+        <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <span className="text-red-600 mr-2">✗</span>
+              <span className="font-medium text-red-900">Rejected Claims</span>
+            </div>
+            <span className="text-2xl font-bold text-red-600">
+              {claims.filter((c) => c.status === "Rejected").length}
+            </span>
+          </div>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {claims
+              .filter((c) => c.status === "Rejected")
+              .map((claim) => (
+                <div
+                  key={claim.id}
+                  className="bg-white p-2 rounded border border-red-100 text-sm flex justify-between items-center cursor-pointer hover:bg-red-100 transition-all duration-200"
+                  onClick={() => handleViewClaim(claim)}
+                >
+                  <div>
+                    <div className="font-medium text-red-800">{claim.id}</div>
+                    <div className="text-xs text-red-600">Rejected {claim.lastUpdated}</div>
+                  </div>
+                  <button
+                    className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleResubmitClaim(claim)
+                    }}
+                  >
+                    Resubmit
+                  </button>
+                </div>
+              ))}
+            {claims.filter((c) => c.status === "Rejected").length === 0 && (
+              <div className="text-sm text-red-600 text-center py-2">No rejected claims</div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Improved Sticky Filter Toolbar */}
       <div className="bg-white border rounded-lg p-6 sticky top-0 z-10 shadow-sm">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Search & Filter Claims</h3>
-        
+
         <div className="space-y-4">
           {/* Search Bar */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Search Claims
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Search Claims</label>
             <div className="relative">
               <input
                 type="text"
@@ -274,21 +1106,20 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Status Filter Dropdown */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Claim Status
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Claim Status</label>
               <div className="relative">
-                <select 
+                <select
                   className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                   onChange={(e) => {
-                    const value = e.target.value;
+                    const value = e.target.value
                     if (value) {
-                      handleStatusFilter(value);
-                      e.target.value = ''; // Reset dropdown
+                      handleStatusFilter(value)
+                      e.target.value = "" // Reset dropdown
                     }
                   }}
                 >
                   <option value="">Select status to filter...</option>
+                  <option value="Draft">Draft</option>
                   <option value="Submitted">Submitted</option>
                   <option value="Under Review">Under Review</option>
                   <option value="Pending Authorization">Pending Authorization</option>
@@ -301,15 +1132,12 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   </svg>
                 </div>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Filter claims by their current processing status
-              </p>
-              
+
               {/* Selected Filters Display */}
               {filters.status.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">
                   {filters.status.map((status) => (
-                    <span 
+                    <span
                       key={status}
                       className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                     >
@@ -326,100 +1154,92 @@ const ClaimsSummary = ({ onSubmitClick }) => {
               )}
             </div>
 
-            {/* Patient Birth Date */}
+            {/* Date Range Filters */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Patient Birth Date
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date Range Start</label>
               <input
                 type="date"
                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.dateRange.start}
-                onChange={(e) => setFilters(prev => ({
-                  ...prev,
-                  dateRange: { ...prev.dateRange, start: e.target.value }
-                }))}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    dateRange: { ...prev.dateRange, start: e.target.value },
+                  }))
+                }
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Filter by patient's date of birth
-              </p>
             </div>
 
-            {/* Claim Submission Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Submission Date
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date Range End</label>
               <input
                 type="date"
                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.dateRange.end}
-                onChange={(e) => setFilters(prev => ({
-                  ...prev,
-                  dateRange: { ...prev.dateRange, end: e.target.value }
-                }))}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    dateRange: { ...prev.dateRange, end: e.target.value },
+                  }))
+                }
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Filter by when the claim was submitted
-              </p>
             </div>
 
             {/* Amount Range */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Claim Amount Range
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Amount Range</label>
               <div className="flex space-x-2">
-                <div className="flex-1">
-                  <input
-                    type="number"
-                    placeholder="Min $"
-                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={filters.amountRange.min}
-                    onChange={(e) => setFilters(prev => ({
+                <input
+                  type="number"
+                  placeholder="Min $"
+                  className="flex-1 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={filters.amountRange.min}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
                       ...prev,
-                      amountRange: { ...prev.amountRange, min: e.target.value }
-                    }))}
-                  />
-                </div>
-                <div className="flex-1">
-                  <input
-                    type="number"
-                    placeholder="Max $"
-                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={filters.amountRange.max}
-                    onChange={(e) => setFilters(prev => ({
+                      amountRange: { ...prev.amountRange, min: e.target.value },
+                    }))
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="Max $"
+                  className="flex-1 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={filters.amountRange.max}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
                       ...prev,
-                      amountRange: { ...prev.amountRange, max: e.target.value }
-                    }))}
-                  />
-                </div>
+                      amountRange: { ...prev.amountRange, max: e.target.value },
+                    }))
+                  }
+                />
               </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Set minimum and maximum claim amounts to filter
-              </p>
             </div>
           </div>
 
           {/* Filter Actions */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-200">
             <div className="text-sm text-gray-600">
-              {(filters.status.length > 0 || filters.dateRange.start || filters.dateRange.end || filters.amountRange.min || filters.amountRange.max) ? (
+              {filters.status.length > 0 ||
+              filters.dateRange.start ||
+              filters.dateRange.end ||
+              filters.amountRange.min ||
+              filters.amountRange.max ? (
                 <span>Filters applied</span>
               ) : (
                 <span>No filters applied</span>
               )}
             </div>
-            
+
             <div className="flex space-x-2">
               <button
                 onClick={() => {
                   setFilters({
                     status: [],
-                    dateRange: { start: '', end: '' },
-                    amountRange: { min: '', max: '' }
-                  });
-                  setSearchQueryLocal('');
+                    dateRange: { start: "", end: "" },
+                    amountRange: { min: "", max: "" },
+                  })
+                  setSearchQueryLocal("")
                 }}
                 className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
@@ -433,7 +1253,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
         </div>
       </div>
 
-      {/* Enhanced Claims Table with Patient IDs */}
+      {/* Enhanced Claims Table */}
       <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50">
@@ -447,21 +1267,19 @@ const ClaimsSummary = ({ onSubmitClick }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Provider
               </th>
-              <th 
+              <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSort('date')}
+                onClick={() => handleSort("date")}
               >
-                Date {sortConfig.key === 'date' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                Date {sortConfig.key === "date" && (sortConfig.direction === "asc" ? "↑" : "↓")}
               </th>
-              <th 
+              <th
                 className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSort('amount')}
+                onClick={() => handleSort("amount")}
               >
-                Amount {sortConfig.key === 'amount' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                Amount {sortConfig.key === "amount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Last Updated
               </th>
@@ -471,18 +1289,22 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {enhancedClaims.map((claim) => (
+            {filteredClaims.map((claim) => (
               <tr key={claim.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <span 
+                    <span
                       className="text-blue-600 font-mono text-sm cursor-pointer hover:text-blue-800"
-                      onClick={() => copyClaimId(claim.id)}
+                      onClick={() => {
+                        copyClaimId(claim.id)
+                        setMaskedIds(false)
+                      }}
+                      onMouseLeave={() => setMaskedIds(true)}
                       title="Click to copy Claim ID"
                     >
-                      {claim.id}
+                      {maskedIds ? `${claim.id.substring(0, 4)}...${claim.id.slice(-4)}` : claim.id}
                     </span>
-                    <button 
+                    <button
                       className="ml-2 text-gray-400 hover:text-gray-600"
                       onClick={() => copyClaimId(claim.id)}
                       title="Copy Claim ID"
@@ -493,14 +1315,20 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <span 
+                    <span
                       className="text-purple-600 font-mono text-sm cursor-pointer hover:text-purple-800"
-                      onClick={() => copyPatientId(claim.patientId)}
+                      onClick={() => {
+                        copyPatientId(claim.patientId)
+                        setMaskedIds(false)
+                      }}
+                      onMouseLeave={() => setMaskedIds(true)}
                       title="Click to copy Patient ID"
                     >
-                      {claim.patientId}
+                      {maskedIds
+                        ? `${claim.patientId.substring(0, 3)}...${claim.patientId.slice(-4)}`
+                        : claim.patientId}
                     </span>
-                    <button 
+                    <button
                       className="ml-2 text-gray-400 hover:text-gray-600"
                       onClick={() => copyPatientId(claim.patientId)}
                       title="Copy Patient ID"
@@ -515,48 +1343,59 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{claim.provider}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {claim.date}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{claim.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <span className={`text-sm font-medium ${
-                    parseFloat(claim.amount.replace(/[$,]/g, '')) > 5000 
-                      ? 'text-purple-600 font-bold' 
-                      : 'text-gray-900'
-                  }`}>
+                  <span
+                    className={`text-sm font-medium ${
+                      Number.parseFloat(claim.amount.replace(/[$,]/g, "")) > 5000
+                        ? "text-purple-600 font-bold"
+                        : "text-gray-900"
+                    }`}
+                  >
                     {claim.amount}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      claim.status === 'Paid' ? 'bg-green-100 text-green-800' :
-                      claim.status === 'Under Review' ? 'bg-blue-100 text-blue-800' :
-                      claim.status === 'Rejected' ? 'bg-red-100 text-red-800' :
-                      claim.status === 'Pending Authorization' ? 'bg-orange-100 text-orange-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        claim.status === "Paid"
+                          ? "bg-green-100 text-green-800"
+                          : claim.status === "Under Review"
+                            ? "bg-blue-100 text-blue-800"
+                            : claim.status === "Rejected"
+                              ? "bg-red-100 text-red-800"
+                              : claim.status === "Pending Authorization"
+                                ? "bg-orange-100 text-orange-800"
+                                : claim.status === "Draft"
+                                  ? "bg-amber-100 text-amber-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
                       {claim.status}
                     </span>
                     {claim.aiFlag && (
-                      <span className="text-xs bg-purple-100 text-purple-800 px-1 py-0.5 rounded" title="AI flagged for review">
+                      <span
+                        className="text-xs bg-purple-100 text-purple-800 px-1 py-0.5 rounded cursor-pointer hover:bg-purple-200"
+                        title="AI flagged for review - Click for details"
+                        onClick={() => handleAIFlagDetails(claim)}
+                      >
                         AI Flag
                       </span>
                     )}
                     {claim.docsMissing && (
-                      <span className="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded" title="Missing required documents">
+                      <span
+                        className="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded"
+                        title="Missing required documents"
+                      >
                         Docs Missing
                       </span>
                     )}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {claim.lastUpdated}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{claim.lastUpdated}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <div className="flex space-x-1">
-                    {getActionButtons(claim)}
-                  </div>
+                  <div className="flex space-x-1">{getActionButtons(claim)}</div>
                 </td>
               </tr>
             ))}
@@ -569,48 +1408,23 @@ const ClaimsSummary = ({ onSubmitClick }) => {
         <div className="flex items-center">
           <span className="text-blue-600 mr-2">🔒</span>
           <span className="text-blue-800 text-sm">
-            <strong>Privacy Protected:</strong> Patient names are not displayed for HIPAA compliance. 
-            Use Patient IDs for identification. Full patient details are available in individual claim views for authorized personnel only.
+            <strong>Privacy Protected:</strong> Patient names are not displayed for HIPAA compliance. Use Patient IDs
+            for identification. Full patient details are available in individual claim views for authorized personnel
+            only.
           </span>
         </div>
       </div>
 
-      {/* Enhanced Analytics */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-lg font-medium mb-4">Reimbursement Trends (Last 30 Days)</h3>
-          <div className="bg-gray-100 h-48 rounded flex items-center justify-center">
-            <span className="text-gray-500">Reimbursement Bar Chart</span>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-lg font-medium mb-4">Claim Volume by Status</h3>
-          <div className="bg-gray-100 h-48 rounded flex items-center justify-center">
-            <span className="text-gray-500">Status Distribution Donut Chart</span>
-          </div>
-        </div>
-      </div>
+      {/* View Modal */}
+      <ViewModal />
 
-      {/* Quick Actions */}
-      <div className="bg-white p-6 rounded-lg border shadow-sm">
-        <h3 className="text-lg font-medium mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-3 gap-4">
-          <button className="p-4 border-2 border-red-200 rounded-lg hover:bg-red-50 text-left">
-            <div className="text-red-600 font-medium">Fix Rejected Claims</div>
-            <div className="text-sm text-red-500 mt-1">4 claims need attention</div>
-          </button>
-          <button className="p-4 border-2 border-blue-200 rounded-lg hover:bg-blue-50 text-left">
-            <div className="text-blue-600 font-medium">Bulk Upload Documents</div>
-            <div className="text-sm text-blue-500 mt-1">Upload multiple files</div>
-          </button>
-          <button className="p-4 border-2 border-green-200 rounded-lg hover:bg-green-50 text-left">
-            <div className="text-green-600 font-medium">Generate Reports</div>
-            <div className="text-sm text-green-500 mt-1">Monthly summaries</div>
-          </button>
-        </div>
-      </div>
+      {/* AI Insights Modal */}
+      <AIInsightsModal />
+
+      {/* Flagged Claims Modal */}
+      <FlaggedClaimsModal />
     </div>
-  );
-};
+  )
+}
 
-export default ClaimsSummary;
+export default ClaimsSummary

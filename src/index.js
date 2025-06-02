@@ -23,6 +23,7 @@ import TaskDetailPage from "./pages/Dashboard/TaskDetailPage";
 import ClaimPage from "./pages/Dashboard/ClaimPage";
 import ProviderDash from "./pages/Dashboard/Provider Dash/ProviderDash";
 import ProfilePage from "./pages/Dashboard/ProfilePage";
+import ToastManager from "./components/ui/ToastManager";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -30,45 +31,47 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <AppWrapper>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/login" element={<LoginPage />} />{" "}
-            {/* Optional */}
-            <Route
-              path="/auth/forgot-password"
-              element={<ForgotPasswordPage />}
-            />
-            <Route path="/FAQ" element={<FAQ />} />
-            {/**
+        <ToastManager>
+          <AppWrapper>
+            <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/auth/login" element={<LoginPage />} />{" "}
+              {/* Optional */}
+              <Route
+                path="/auth/forgot-password"
+                element={<ForgotPasswordPage />}
+              />
+              <Route path="/FAQ" element={<FAQ />} />
+              {/**
              * 
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/verification" element={<VerificationPage />} />
             <Route path="/profile" element={<Profile />} />
              */}
-            <Route path="/dashboard" element={<DashboardMainPage />} />
-            <Route
-              path="/dashboard/claims-summary"
-              element={<ClaimsSummaryPage />}
-            />
-            <Route path="/dashboard/claims" element={<ClaimPage />} />
-            <Route
-              path="/dashboard/settings"
-              element={<DasboardSettingsPage />}
-            />
-            <Route path="/dashboard/tasks" element={<TasksPage />} />
-            <Route
-              path="/dashboard/tasks/:taskId/taskDetails"
-              element={<TaskDetailPage />}
-            />
-            <Route
-              path="/dashboard/notifications"
-              element={<NotificationsPage />}
-            />
-            <Route path="/dashboard/profile" element={<ProfilePage />} />
-          </Routes>
-        </AppWrapper>
+              <Route path="/dashboard" element={<DashboardMainPage />} />
+              <Route
+                path="/dashboard/claims-summary"
+                element={<ClaimsSummaryPage />}
+              />
+              <Route path="/dashboard/claims" element={<ClaimPage />} />
+              <Route
+                path="/dashboard/settings"
+                element={<DasboardSettingsPage />}
+              />
+              <Route path="/dashboard/tasks" element={<TasksPage />} />
+              <Route
+                path="/dashboard/tasks/:taskId/taskDetails"
+                element={<TaskDetailPage />}
+              />
+              <Route
+                path="/dashboard/notifications"
+                element={<NotificationsPage />}
+              />
+              <Route path="/dashboard/profile" element={<ProfilePage />} />
+            </Routes>
+          </AppWrapper>
+        </ToastManager>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

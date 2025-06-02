@@ -85,6 +85,8 @@ const SubmitClaim = () => {
   const [showAiSuggestions, setShowAiSuggestions] = useState(false)
   const [ssnMasked, setSsnMasked] = useState(false)
   const [savedClaims, setSavedClaims] = useState([])
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingClaimId, setEditingClaimId] = useState(null)
 
   // Mock AI validation
   useEffect(() => {
@@ -105,15 +107,27 @@ const SubmitClaim = () => {
     }
   }, [formData.service.diagnosis.primary, formData.service.procedures])
 
-  // Load draft for editing if available
+  // FIXED: Only load draft data when explicitly editing
   useEffect(() => {
-    const draftToEdit = localStorage.getItem("edit_claim_draft")
-    if (draftToEdit) {
-      try {
-        const draftData = JSON.parse(draftToEdit)
-        console.log("Loading draft for editing:", draftData) // Debug log
+    console.log("SubmitClaim component mounted")
 
-        // Set the form data with the draft data, ensuring all nested objects exist
+    // Check if we're explicitly in editing mode
+    const editingMode = localStorage.getItem("editing_mode")
+    const editDraftData = localStorage.getItem("edit_claim_draft")
+
+    console.log("Editing mode:", editingMode)
+    console.log("Has edit draft data:", !!editDraftData)
+
+    // ONLY load draft if we're explicitly editing AND have draft data
+    if (editingMode === "true" && editDraftData) {
+      try {
+        const draftData = JSON.parse(editDraftData)
+        console.log("Loading draft data for editing:", draftData)
+
+        setIsEditing(true)
+        setEditingClaimId(draftData.id || draftData.originalId || draftData.editingClaimId)
+
+        // Set the form data with the draft data
         setFormData({
           patient: {
             firstName: draftData.patient?.firstName || "",
@@ -188,19 +202,103 @@ const SubmitClaim = () => {
           setUploadedFiles(draftData.uploadedFiles)
         }
 
-        // Clear the draft from localStorage after loading
+        // Clear the editing flags after loading
         localStorage.removeItem("edit_claim_draft")
+        localStorage.removeItem("editing_mode")
 
-        // Show a notification that draft was loaded
+        // Show notification
         setTimeout(() => {
           alert("Draft loaded successfully! You can continue editing your claim.")
         }, 500)
       } catch (error) {
         console.error("Error loading draft for editing:", error)
         alert("Error loading draft. Please try again.")
+        // Clear invalid data
+        localStorage.removeItem("edit_claim_draft")
+        localStorage.removeItem("editing_mode")
       }
+    } else {
+      // NOT editing - ensure we start with a clean form
+      console.log("Starting with clean form - clearing all localStorage")
+      setIsEditing(false)
+      setEditingClaimId(null)
+
+      // Clear any leftover editing flags and data
+      localStorage.removeItem("edit_claim_draft")
+      localStorage.removeItem("editing_mode")
+      localStorage.removeItem("claim_form_data")
+
+      // Reset form to initial state
+      setFormData({
+        patient: {
+          firstName: "",
+          lastName: "",
+          dateOfBirth: "",
+          gender: "",
+          ssn: "",
+          address: {
+            street: "",
+            city: "",
+            state: "",
+            zipCode: "",
+          },
+          phone: "",
+          email: "",
+        },
+        insurance: {
+          primary: {
+            company: "",
+            policyNumber: "",
+            groupNumber: "",
+            subscriberName: "",
+            subscriberDob: "",
+            relationship: "self",
+          },
+          secondary: {
+            hasSecondary: false,
+            company: "",
+            policyNumber: "",
+            groupNumber: "",
+          },
+        },
+        service: {
+          dateOfService: "",
+          placeOfService: "",
+          diagnosis: {
+            primary: "",
+            secondary: [],
+            description: "",
+          },
+          procedures: [
+            {
+              code: "",
+              description: "",
+              modifier: "",
+              units: 1,
+              charges: "",
+            },
+          ],
+          referringProvider: "",
+          authorizationNumber: "",
+        },
+        provider: {
+          npi: "",
+          name: "",
+          address: {
+            street: "",
+            city: "",
+            state: "",
+            zipCode: "",
+          },
+          phone: "",
+          taxId: "",
+        },
+      })
+
+      // Clear uploaded files
+      setUploadedFiles([])
     }
-  }, [])
+  }, []) // Only run once on mount
 
   const steps = [
     { id: 1, title: "Patient Info", icon: "👤" },
@@ -372,7 +470,7 @@ const SubmitClaim = () => {
 
   const saveClaimToStorage = (isDraft = true) => {
     const claimData = {
-      id: Date.now().toString(),
+      id: isEditing ? editingClaimId : Date.now().toString(),
       ...formData,
       uploadedFiles,
       isDraft,
@@ -386,8 +484,16 @@ const SubmitClaim = () => {
     }
 
     const existingClaims = JSON.parse(localStorage.getItem("vistora_claims") || "[]")
-    existingClaims.push(claimData)
-    localStorage.setItem("vistora_claims", JSON.stringify(existingClaims))
+
+    if (isEditing) {
+      // Update existing claim
+      const updatedClaims = existingClaims.map((claim) => (claim.id === editingClaimId ? claimData : claim))
+      localStorage.setItem("vistora_claims", JSON.stringify(updatedClaims))
+    } else {
+      // Add new claim
+      existingClaims.push(claimData)
+      localStorage.setItem("vistora_claims", JSON.stringify(existingClaims))
+    }
 
     return claimData
   }
@@ -430,17 +536,6 @@ const SubmitClaim = () => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
-
-    // Remove draft if this was an edited draft
-    if (formData.id) {
-      try {
-        const existingClaims = JSON.parse(localStorage.getItem("vistora_claims") || "[]")
-        const updatedClaims = existingClaims.filter((claim) => claim.id !== formData.id)
-        localStorage.setItem("vistora_claims", JSON.stringify(updatedClaims))
-      } catch (error) {
-        console.error("Error removing draft:", error)
-      }
-    }
 
     // Save the final claim
     const finalClaim = saveClaimToStorage(false)
@@ -496,7 +591,7 @@ const SubmitClaim = () => {
               </svg>
             </div>
             <h1 className="text-4xl font-bold text-slate-900 mb-4 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-              Claim Submitted Successfully!
+              Claim {isEditing ? "Updated" : "Submitted"} Successfully!
             </h1>
             <p className="text-xl text-slate-600">Your claim has been securely processed and is now under review</p>
           </div>
@@ -544,7 +639,7 @@ const SubmitClaim = () => {
                   <div className="text-slate-900">{submissionResult.claim.service.dateOfService}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-slate-500 mb-1">Submitted</div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">{isEditing ? "Updated" : "Submitted"}</div>
                   <div className="text-slate-900">{new Date(submissionResult.submittedAt).toLocaleString()}</div>
                 </div>
                 <div>
@@ -638,6 +733,8 @@ const SubmitClaim = () => {
               onClick={() => {
                 setShowSuccessPage(false)
                 setCurrentStep(1)
+                setIsEditing(false)
+                setEditingClaimId(null)
                 setFormData({
                   patient: {
                     firstName: "",
@@ -733,7 +830,8 @@ const SubmitClaim = () => {
                 </label>
                 <input
                   type="text"
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:
+border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                     errors.lastName ? "border-red-300 bg-red-50" : "border-slate-200 hover:border-slate-300"
                   }`}
                   value={formData.patient.lastName}
@@ -2077,10 +2175,12 @@ const SubmitClaim = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-              Submit New Claim
+              {isEditing ? "Edit Claim" : "Submit New Claim"}
             </h1>
             <p className="text-slate-600 mt-2 font-['Manrope',_sans-serif]">
-              Complete all required information to submit your claim securely
+              {isEditing
+                ? "Update your claim information"
+                : "Complete all required information to submit your claim securely"}
             </p>
           </div>
           <div className="flex items-center space-x-3">
@@ -2103,6 +2203,19 @@ const SubmitClaim = () => {
             </button>
           </div>
         </div>
+
+        {/* Editing Mode Indicator */}
+        {isEditing && (
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-blue-600">✏️</span>
+              <span className="font-semibold text-blue-900">Editing Mode</span>
+            </div>
+            <p className="text-blue-700 text-sm mt-1">
+              You are currently editing an existing claim. Changes will update the original claim.
+            </p>
+          </div>
+        )}
 
         {/* Progress Steps */}
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
@@ -2174,7 +2287,7 @@ const SubmitClaim = () => {
               onClick={handleSaveDraft}
               className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-semibold font-['Manrope',_sans-serif]"
             >
-              Save Draft
+              {isEditing ? "Update as Draft" : "Save Draft"}
             </button>
 
             {currentStep < 6 ? (
@@ -2193,12 +2306,12 @@ const SubmitClaim = () => {
                 {isSubmitting ? (
                   <span className="flex items-center space-x-2">
                     <span>🔄</span>
-                    <span>Submitting...</span>
+                    <span>{isEditing ? "Updating..." : "Submitting..."}</span>
                   </span>
                 ) : (
                   <span className="flex items-center space-x-2">
                     <span>🛡️</span>
-                    <span>Submit Claim</span>
+                    <span>{isEditing ? "Update Claim" : "Submit Claim"}</span>
                   </span>
                 )}
               </button>

@@ -9,10 +9,7 @@ import Claims from "../../../components/dashboard/Provider/Claims";
 import Notifications from "../../../components/dashboard/General/Notifications";
 import Tasks from "../../../components/dashboard/Provider/Tasks";
 import Settings from "../../../components/dashboard/General/Settings";
-<<<<<<< HEAD:src/pages/Dashboard/Provider Dash/ProviderDash.jsx
-=======
 import SubmitClaim from "../../../components/dashboard/Provider/SubmitClaim";
->>>>>>> main:src/pages/Dashboard/Profile/Profile.jsx
 
 const ProviderDash = () => {
   const activeTab = useSelector((state) => state.ui.activeTab);
@@ -24,7 +21,7 @@ const ProviderDash = () => {
     switch (activeTab) {
       case "claims-summary":
         return <ClaimsSummary />;
-        case "submit-claim":
+      case "submit-claim":
         return <SubmitClaim />;
       case "claims":
         return <Claims />;
@@ -35,10 +32,6 @@ const ProviderDash = () => {
       /*
       case "task-details":
         return <TaskDetails />;*/
-<<<<<<< HEAD:src/pages/Dashboard/Provider Dash/ProviderDash.jsx
-
-=======
->>>>>>> main:src/pages/Dashboard/Profile/Profile.jsx
       case "settings":
         return <Settings />;
       default:

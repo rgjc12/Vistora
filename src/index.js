@@ -23,6 +23,7 @@ import ClaimPage from "./pages/Dashboard/ClaimPage";
 import ProviderDash from "./pages/Dashboard/Provider Dash/ProviderDash";
 import ProfilePage from "./pages/Dashboard/ProfilePage";
 import ToastManager from "./components/ui/ToastManager";
+import SubmitClaimPage from "./pages/Dashboard/SubmitClaimPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

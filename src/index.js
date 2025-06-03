@@ -8,8 +8,7 @@ import FAQ from "./pages/FAQ/FAQ";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage"; // 👈 Import it here
 import LoginPage from "./pages/Auth/LoginPage"; // optional, if separated
 import "./styles/index.css";
-import SignupPage from "./pages/Auth/SignupPage";
-import VerificationPage from "./pages/Auth/VerificationPage";
+
 //import Profile from "./pages/Profile/Profile";
 import DashboardMainPage from "./pages/Dashboard/DashboardMainPage";
 import { store } from "./store/store";
@@ -53,6 +52,10 @@ root.render(
               <Route
                 path="/dashboard/claims-summary"
                 element={<ClaimsSummaryPage />}
+              />
+              <Route
+                path="/dashboard/SubmitClaim"
+                element={<SubmitClaimPage />}
               />
               <Route path="/dashboard/claims" element={<ClaimPage />} />
               <Route

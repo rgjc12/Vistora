@@ -22,8 +22,6 @@ const Tasks = () => {
   }, [dispatch]);
 
   const handleTaskClick = (taskId) => {
-    // In a real app, you might want to fetch task details here
-    // and then navigate to the task details page
     //dispatch(setActiveTab("task-details"));
     navigate(`/dashboard/tasks/${taskId}/taskDetails`);
   };

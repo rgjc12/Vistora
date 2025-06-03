@@ -1,11 +1,14 @@
 import { User2Icon, UserIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SmallerButton from "../../buttons/SmallerButton";
 import { useToast } from "../../ui/ToastManager";
+import { updateUserProfile } from "../../../firebase/utils/updateUserProfile";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const { showToast } = useToast();
 
@@ -19,12 +22,13 @@ const Profile = () => {
   const [userEmail, setUserEmail] = useState("");
   const [tempEmail, setTempEmail] = useState("");
   const [userPhone, setUserPhone] = useState("");
-  const [tempPhone, setTempPhone] = useState(userPhone);
+  const [tempPhone, setTempPhone] = useState("");
 
   const handleAccDetailsCancel = () => {
     setTempUserName(userName);
     setTempEmail(userEmail);
     setTempPhone(userPhone);
+
     //
     //showToast({ message: "Changes were discarded!", type: "success" });
     //
@@ -35,6 +39,18 @@ const Profile = () => {
     setUserName(tempUserName);
     setUserEmail(tempEmail);
     setUserPhone(tempPhone);
+    updateUserProfile(
+      user.uid,
+      {
+        name: tempUserName,
+        email: tempEmail,
+        phone: tempPhone,
+        organizationName: orgName,
+        organizationEmail: orgEmail,
+        organizationAddress: orgAddress,
+      },
+      dispatch
+    );
     //
     showToast({ message: "Changes were saved!", type: "success" });
     setEditAccDetails(false);
@@ -53,6 +69,7 @@ const Profile = () => {
     setTempOrgName(orgName);
     setTempOrgAddress(orgAddress);
     setTempOrgEmail(orgEmail);
+
     //
     //showToast({ message: "Changes were discarded!", type: "success" });
     //
@@ -63,6 +80,18 @@ const Profile = () => {
     setOrgName(tempOrgName);
     setOrgAddress(tempOrgAddress);
     setOrgEmail(tempOrgEmail);
+    updateUserProfile(
+      user.uid,
+      {
+        name: userName,
+        email: userEmail,
+        phone: userPhone,
+        organizationName: tempOrgName,
+        organizationAddress: tempOrgAddress,
+        organizationEmail: tempOrgEmail,
+      },
+      dispatch
+    );
     //
     showToast({ message: "Changes were saved!", type: "success" });
     setEditOrganization(false);
@@ -71,13 +100,12 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       console.log(user);
-
       setUserName(user.name);
       setTempUserName(user.name);
       setUserEmail(user.email);
       setTempEmail(user.email);
-      setUserPhone(user.phone || "");
-      setTempPhone(user.phone || "");
+      setUserPhone(user.phone);
+      setTempPhone(user.phone);
       //organization
       setOrgName(user.organizationName);
       setTempOrgName(user.organizationName);

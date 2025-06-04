@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Menu, X } from "lucide-react"; 
+import { LogOut, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SignOutModal from "../ui/SignOutModal";
@@ -92,7 +92,7 @@ const Sidebar = ({ tabs, activeTab }) => {
                 a
               </div>
               <a
-                href="/dashboard"
+                href="/dashboard/profile"
                 className="cursor-pointer w-fit hover:text-neutral-400"
               >
                 {isLoading ? (
@@ -136,7 +136,6 @@ const Sidebar = ({ tabs, activeTab }) => {
             ))}
         </nav>
 
-    
         <div className="absolute bottom-6 left-4 right-4">
           <button
             onClick={() => setShowModal(true)}

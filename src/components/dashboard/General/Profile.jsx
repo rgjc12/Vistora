@@ -184,7 +184,7 @@ const Profile = () => {
                       className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
                     />
                   </div>
-                  <div className="w-full flex flex-col items-start gap-1">
+                  {/* <div className="w-full flex flex-col items-start gap-1">
                     <label htmlFor="userEmail">Account Email</label>
                     <input
                       type="email"
@@ -194,7 +194,7 @@ const Profile = () => {
                       id="userEmail"
                       className="p-2 pl-4 border border-neutral-400 rounded-xl w-full"
                     />
-                  </div>
+                  </div> */}
                   <div className="w-full flex flex-col items-start gap-1">
                     <label htmlFor="userPhone">Contact Number</label>
                     <input
@@ -224,7 +224,7 @@ const Profile = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          {/* <div className="flex flex-col gap-4">
             <div className="w-full flex items-center gap-6 justify-start">
               <h2 className="text-lg font-bold">Password Management</h2>
               {!editAccPassword && (
@@ -290,9 +290,9 @@ const Profile = () => {
                     </button>
                   </div>
                 </>
-              )}
-            </div>
-          </div>
+              )} */}
+            {/* </div>
+          </div> */}
           <div className="flex flex-col gap-4 mb-12">
             <div className="w-full flex items-center gap-6 justify-start">
               <h2 className="text-lg font-bold">Organization Details</h2>

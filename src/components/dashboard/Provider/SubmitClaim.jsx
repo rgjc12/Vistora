@@ -218,11 +218,11 @@ const SubmitClaim = () => {
         localStorage.removeItem("edit_claim_draft")
         localStorage.removeItem("editing_mode")
       }
-    } else {
-      // NOT editing - ensure we start with a clean form
-      console.log("Starting with clean form - clearing all localStorage")
-      setIsEditing(false)
-      setEditingClaimId(null)
+    // } else {
+    //   // NOT editing - ensure we start with a clean form
+    //   console.log("Starting with clean form - clearing all localStorage")
+    //   setIsEditing(false)
+    //   setEditingClaimId(null)
 
       // Clear any leftover editing flags and data
       localStorage.removeItem("edit_claim_draft")
@@ -230,71 +230,71 @@ const SubmitClaim = () => {
       localStorage.removeItem("claim_form_data")
 
       // Reset form to initial state
-      setFormData({
-        patient: {
-          firstName: "",
-          lastName: "",
-          dateOfBirth: "",
-          gender: "",
-          ssn: "",
-          address: {
-            street: "",
-            city: "",
-            state: "",
-            zipCode: "",
-          },
-          phone: "",
-          email: "",
-        },
-        insurance: {
-          primary: {
-            company: "",
-            policyNumber: "",
-            groupNumber: "",
-            subscriberName: "",
-            subscriberDob: "",
-            relationship: "self",
-          },
-          secondary: {
-            hasSecondary: false,
-            company: "",
-            policyNumber: "",
-            groupNumber: "",
-          },
-        },
-        service: {
-          dateOfService: "",
-          placeOfService: "",
-          diagnosis: {
-            primary: "",
-            secondary: [],
-            description: "",
-          },
-          procedures: [
-            {
-              code: "",
-              description: "",
-              modifier: "",
-              units: 1,
-              charges: "",
-            },
-          ],
-          referringProvider: "",
-          authorizationNumber: "",
-        },
-        provider: {
-          npi: "",
-          name: "",
-          address: {
-            street: "",
-            city: "",
-            state: "",
-            zipCode: "",
-          },
-          phone: "",
-          taxId: "",
-        },
-      })
+      // setFormData({
+      //   patient: {
+      //     firstName: "",
+      //     lastName: "",
+      //     dateOfBirth: "",
+      //     gender: "",
+      //     ssn: "",
+      //     address: {
+      //       street: "",
+      //       city: "",
+      //       state: "",
+      //       zipCode: "",
+      //     },
+      //     phone: "",
+      //     email: "",
+      //   },
+      //   insurance: {
+      //     primary: {
+      //       company: "",
+      //       policyNumber: "",
+      //       groupNumber: "",
+      //       subscriberName: "",
+      //       subscriberDob: "",
+      //       relationship: "self",
+      //     },
+      //     secondary: {
+      //       hasSecondary: false,
+      //       company: "",
+      //       policyNumber: "",
+      //       groupNumber: "",
+      //     },
+      //   },
+      //   service: {
+      //     dateOfService: "",
+      //     placeOfService: "",
+      //     diagnosis: {
+      //       primary: "",
+      //       secondary: [],
+      //       description: "",
+      //     },
+      //     procedures: [
+      //       {
+      //         code: "",
+      //         description: "",
+      //         modifier: "",
+      //         units: 1,
+      //         charges: "",
+      //       },
+      //     ],
+      //     referringProvider: "",
+      //     authorizationNumber: "",
+      //   },
+      //   provider: {
+      //     npi: "",
+      //     name: "",
+      //     address: {
+      //       street: "",
+      //       city: "",
+      //       state: "",
+      //       zipCode: "",
+      //     },
+      //     phone: "",
+      //     taxId: "",
+      //   },
+      // })
 
       // Clear uploaded files
       setUploadedFiles([])
@@ -724,7 +724,7 @@ const SubmitClaim = () => {
             <button
               onClick={() => {
                 setShowSuccessPage(false)
-                navigate("/claims")
+                navigate("/dashboard/claims")
               }}
               className="px-8 py-4 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-bold shadow-lg hover:shadow-xl"
             >

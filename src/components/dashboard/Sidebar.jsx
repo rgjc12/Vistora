@@ -82,26 +82,19 @@ const Sidebar = ({ tabs, activeTab }) => {
                 className="w-auto h-[64px] sm:h-[80px]"
               />
             </a>
-            <div
-              className={`${
-                isMobile ? (isOpen ? "w-full" : "w-0") : ""
-              } w-full h-[1px] bg-neutral-400`}
-            ></div>
-            <div className="flex justify-start gap-2 items-center w-full truncate">
+
+            <div className="flex justify-start gap-2 items-center w-full truncate p-4 bg-neutral-900 rounded-2xl hover:bg-neutral-800 cursor-pointer">
               <div className="w-10 h-10 rounded-full bg-neutral-200 text-transparent">
                 a
               </div>
-              <a
-                href="/dashboard/profile"
-                className="cursor-pointer w-fit hover:text-neutral-400"
-              >
+              <a href="/dashboard/profile" className="cursor-pointer w-fit ">
                 {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 ) : user ? (
                   <div className="flex flex-col items-start gap-0 overflow-x-hidden w-full truncate">
-                    <h2 className="text-[0.9rem]">{user.name}</h2>
+                    <h2 className="text-[0.9rem]">{user.organizationName}</h2>
                     <p className="text-[0.75rem] text-neutral-200 truncate">
-                      {user.email}
+                      {user.userType}
                     </p>
                   </div>
                 ) : (
@@ -113,7 +106,10 @@ const Sidebar = ({ tabs, activeTab }) => {
         )}
 
         {/* Tab list */}
-        <nav className="flex mt-20 flex-col h-fit gap-2 my-4 transition-all duration-500 ease-in-out">
+        <nav className="flex mt-16 flex-col h-fit gap-2 my-4 transition-all duration-500 ease-in-out">
+          <span className="text-[0.75rem] text-neutral-500 mb-2">
+            Navigation
+          </span>
           {tabs &&
             tabs.map((tab, idx) => (
               <div

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const SubmitClaim = () => {
   const navigate = useNavigate()
+  
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccessPage, setShowSuccessPage] = useState(false)
   const [submissionResult, setSubmissionResult] = useState(null)

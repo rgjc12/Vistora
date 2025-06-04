@@ -267,7 +267,7 @@ const Claims = () => {
     localStorage.setItem("editing_mode", "true")
 
     // Navigate to submit claim page - THIS IS THE KEY FIX
-    navigate("/submit-claim")
+    navigate("/dashboard/SubmitClaim")
   }
 
   const handleTrackClaim = (claim) => {

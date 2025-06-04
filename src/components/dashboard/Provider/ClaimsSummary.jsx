@@ -117,7 +117,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   }
 
   const handleSubmitNewClaim = () => {
-    navigate("/submit-claim")
+    navigate("/dashboard/SubmitClaim")
   }
 
   const handleViewClaim = (claim) => {
@@ -135,9 +135,10 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     }
 
     localStorage.setItem("edit_claim_draft", JSON.stringify(claimDataToEdit))
+    localStorage.setItem("editing_mode", "true")
 
     // Navigate to submit claim page
-    navigate("/submit-claim")
+    navigate("/dashboard/SubmitClaim")
   }
 
   const handleTrackClaim = (claim) => {
@@ -147,7 +148,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   const handleResubmitClaim = (claim) => {
     if (claim.status === "Rejected") {
       localStorage.setItem("edit_claim_draft", JSON.stringify(claim.fullData))
-      navigate("/submit-claim")
+      localStorage.setItem("editing_mode", "true")
+      navigate("/dashboard/SubmitClaim")
     }
   }
 
@@ -902,14 +904,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
         <h1 className="text-2xl font-bold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
           Claims Dashboard
         </h1>
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-          onClick={handleSubmitNewClaim}
-        >
-          + Submit New Claim
-        </button>
       </div>
-
       {/* Action Required Alert */}
       {stats.awaitingAction > 0 && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">

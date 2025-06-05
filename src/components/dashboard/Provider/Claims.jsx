@@ -9,6 +9,69 @@ import SearchBar from "../General/SearchBar";
 import Pagination from "../General/Pagination";
 import { useNavigate } from "react-router-dom"
 
+const Toast = ({ message, type = "success", onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000)
+    return () => clearTimeout(timer)
+  }, [onClose])
+
+  return (
+    <div
+      className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+        type === "success"
+          ? "bg-green-500 text-white"
+          : type === "error"
+            ? "bg-red-500 text-white"
+            : "bg-blue-500 text-white"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span>{message}</span>
+        <button onClick={onClose} className="ml-4 text-white hover:text-gray-200">
+          ×
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// Skeleton loading component
+const SkeletonLoader = () => (
+  <div className="space-y-6 animate-pulse">
+    {/* Header skeleton */}
+    <div className="flex items-center justify-between">
+      <div className="h-8 bg-gray-200 rounded w-64"></div>
+    </div>
+
+    {/* Stats skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="bg-white p-6 rounded-lg border">
+          <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+          <div className="h-8 bg-gray-200 rounded w-16"></div>
+        </div>
+      ))}
+    </div>
+
+    {/* Table skeleton */}
+    <div className="bg-white rounded-lg border">
+      <div className="p-4 border-b">
+        <div className="h-6 bg-gray-200 rounded w-32"></div>
+      </div>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="p-4 border-b">
+          <div className="flex items-center space-x-4">
+            <div className="h-4 bg-gray-200 rounded w-24"></div>
+            <div className="h-4 bg-gray-200 rounded w-32"></div>
+            <div className="h-4 bg-gray-200 rounded w-20"></div>
+            <div className="h-4 bg-gray-200 rounded w-16"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
 const Claims = () => {
   const navigate = useNavigate()
   const [claims, setClaims] = useState([])
@@ -21,6 +84,30 @@ const Claims = () => {
   const [selectedAuditClaim, setSelectedAuditClaim] = useState(null)
   const [showFlaggedClaimsModal, setShowFlaggedClaimsModal] = useState(false)
   const [sortConfig, setSortConfig] = useState({ key: "lastUpdated", direction: "desc" })
+  const [toast, setToast] = useState(null)
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type })
+  }
+
+  const addNotification = (type, title, message, claimId = null) => {
+    const notification = {
+      id: `notif_${Date.now()}_${Math.random()}`,
+      type,
+      priority: type === "claim" ? "medium" : "low",
+      title,
+      message,
+      timestamp: new Date().toISOString(),
+      isRead: false,
+      actionText: type === "claim" ? "View Claim" : "View Details",
+      actionUrl: type === "claim" ? "/dashboard/claims" : "/dashboard",
+      claimId,
+    }
+
+    const existingNotifications = JSON.parse(localStorage.getItem("vistora_notifications") || "[]")
+    existingNotifications.unshift(notification)
+    localStorage.setItem("vistora_notifications", JSON.stringify(existingNotifications))
+  }
 
   useEffect(() => {
     loadClaimsFromStorage()
@@ -69,6 +156,12 @@ const Claims = () => {
           if (diffInMonths === 1) return "1 month ago"
           if (diffInMonths < 12) return `${diffInMonths} months ago`
           return `${Math.floor(diffInMonths / 12)} year${Math.floor(diffInMonths / 12) > 1 ? "s" : ""} ago`
+        }
+
+        // Generate username from patient name
+        const generateUsername = (firstName, lastName) => {
+          if (!firstName || !lastName) return `user${Math.floor(Math.random() * 1000)}`
+          return `${firstName.toLowerCase()}${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`
         }
 
         // Generate AI insights for each claim
@@ -179,7 +272,7 @@ const Claims = () => {
         return {
           id: claim.id,
           claimId: claim.claimId,
-          name: `${claim.patient?.firstName || ""} ${claim.patient?.lastName || ""}`.trim() || "Unknown Patient",
+          username: generateUsername(claim.patient?.firstName, claim.patient?.lastName),
           provider: claim.provider?.name || "Unknown Provider",
           details: `${claim.service?.diagnosis?.primary || "No diagnosis"} - ${claim.service?.procedures?.[0]?.code || "No procedure"}`,
           phoneNumber: claim.patient?.phone || "N/A",
@@ -229,8 +322,10 @@ const Claims = () => {
         const updatedClaims = storedClaims.filter((claim) => claim.id !== claimId)
         localStorage.setItem("vistora_claims", JSON.stringify(updatedClaims))
         loadClaimsFromStorage() // Reload the claims
+        showToast("Claim removed successfully", "success")
       } catch (error) {
         console.error("Error removing claim:", error)
+        showToast("Error removing claim", "error")
       }
     }
   }
@@ -288,8 +383,22 @@ const Claims = () => {
       )
       localStorage.setItem("vistora_claims", JSON.stringify(updatedClaims))
       loadClaimsFromStorage()
+
+      // Add notification for status change
+      const claim = claims.find((c) => c.id === claimId)
+      if (claim) {
+        addNotification(
+          "claim",
+          "Claim Status Updated",
+          `Claim ${claim.claimId} status changed to ${newStatus}`,
+          claimId,
+        )
+      }
+
+      showToast(`Claim status updated to ${newStatus}`, "success")
     } catch (error) {
       console.error("Error updating claim status:", error)
+      showToast("Error updating claim status", "error")
     }
   }
 
@@ -332,7 +441,7 @@ const Claims = () => {
   const filteredClaims = sortedClaims.filter((claim) => {
     const matchesSearch =
       searchQuery === "" ||
-      claim.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      claim.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.claimId.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.details.toLowerCase().includes(searchQuery.toLowerCase())
@@ -515,15 +624,15 @@ const Claims = () => {
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="p-6 border-t border-slate-200 flex justify-end">
-            <button
-              onClick={() => setShowAuditModal(false)}
-              className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold"
-            >
-              Close Audit Trail
-            </button>
-          </div>
+        <div className="p-6 border-t border-slate-200 flex justify-end">
+          <button
+            onClick={() => setShowAuditModal(false)}
+            className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold"
+          >
+            Close Audit Trail
+          </button>
         </div>
       </div>
     )
@@ -566,7 +675,7 @@ const Claims = () => {
                     <div>
                       <h3 className="font-bold text-lg text-slate-900">{claim.claimId}</h3>
                       <p className="text-slate-600">
-                        Patient: {claim.name} | Amount: ${claim.totalCharges.toFixed(2)}
+                        Username: {claim.username} | Amount: ${claim.totalCharges.toFixed(2)}
                       </p>
                     </div>
                     <div className="flex space-x-2">
@@ -696,6 +805,7 @@ const Claims = () => {
                   <p>✓ All claim data is cryptographically secured</p>
                   <p>✓ Complete audit trail maintained on immutable ledger</p>
                   <p>✓ Anti-fraud measures automatically applied</p>
+                  <p>✓ Anti-fraud measures automatically applied</p>
                 </div>
               </div>
 
@@ -706,8 +816,8 @@ const Claims = () => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1">Name</div>
-                    <div className="text-slate-900">{selectedClaim.name}</div>
+                    <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
+                    <div className="text-slate-900 font-mono">{selectedClaim.username}</div>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-slate-500 mb-1">Date of Birth</div>
@@ -799,20 +909,16 @@ const Claims = () => {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-          <p className="text-slate-600 font-['Manrope',_sans-serif]">Loading claims data...</p>
-        </div>
-      </div>
-    )
+    return <SkeletonLoader />
   }
 
   const flaggedClaimsCount = claims.filter((claim) => claim.aiInsights.isFlagged).length
 
   return (
     <div className="space-y-6 font-['Manrope',_sans-serif]">
+      {/* Toast notification */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -854,7 +960,7 @@ const Claims = () => {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="Search claims by patient name, claim ID, provider..."
+              placeholder="Search claims by username, claim ID, provider..."
               className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -962,7 +1068,7 @@ const Claims = () => {
                     Claim ID
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Patient Name
+                    Username
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
                     Provider
@@ -1000,7 +1106,7 @@ const Claims = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-900">
-                      <div>{claim.name}</div>
+                      <div className="font-mono">{claim.username}</div>
                       <div className="text-xs text-slate-500">
                         Age: {claim.patientAge}, Gender: {claim.patientGender}
                       </div>
@@ -1060,29 +1166,13 @@ const Claims = () => {
         )}
       </div>
 
-      {/* Pagination */}
-      {filteredClaims.length > 0 && (
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-slate-600">
-              Showing {filteredClaims.length} of {claims.length} claims
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="px-3 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all duration-200">
-                Previous
-              </button>
-              <span className="px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold">1</span>
-              <button className="px-3 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all duration-200">
-                Next
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modals */}
+      {/* View Modal */}
       <ViewModal />
+
+      {/* Audit Trail Modal */}
       <AuditTrailModal />
+
+      {/* Flagged Claims Modal */}
       <FlaggedClaimsModal />
     </div>
   )

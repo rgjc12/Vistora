@@ -4,6 +4,69 @@ import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/
 import { setActiveTab } from "../../../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 
+const Toast = ({ message, type = "success", onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000)
+    return () => clearTimeout(timer)
+  }, [onClose])
+
+  return (
+    <div
+      className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+        type === "success"
+          ? "bg-green-500 text-white"
+          : type === "error"
+            ? "bg-red-500 text-white"
+            : "bg-blue-500 text-white"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span>{message}</span>
+        <button onClick={onClose} className="ml-4 text-white hover:text-gray-200">
+          ×
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// Skeleton loading component
+const SkeletonLoader = () => (
+  <div className="space-y-6 animate-pulse">
+    {/* Header skeleton */}
+    <div className="flex items-center justify-between">
+      <div className="h-8 bg-gray-200 rounded w-64"></div>
+    </div>
+
+    {/* Stats skeleton */}
+    <div className="grid grid-cols-5 gap-4">
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="bg-white p-6 rounded-lg border">
+          <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+          <div className="h-8 bg-gray-200 rounded w-16"></div>
+        </div>
+      ))}
+    </div>
+
+    {/* Table skeleton */}
+    <div className="bg-white rounded-lg border">
+      <div className="p-4 border-b">
+        <div className="h-6 bg-gray-200 rounded w-32"></div>
+      </div>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="p-4 border-b">
+          <div className="flex items-center space-x-4">
+            <div className="h-4 bg-gray-200 rounded w-24"></div>
+            <div className="h-4 bg-gray-200 rounded w-32"></div>
+            <div className="h-4 bg-gray-200 rounded w-20"></div>
+            <div className="h-4 bg-gray-200 rounded w-16"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
 const ClaimsSummary = ({ onSubmitClick }) => {
   const navigate = useNavigate()
   const [claims, setClaims] = useState([])
@@ -22,6 +85,30 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   const [maskedIds, setMaskedIds] = useState(true)
   const [showFlaggedClaimsModal, setShowFlaggedClaimsModal] = useState(false)
   const [flaggedClaimsData, setFlaggedClaimsData] = useState([])
+  const [toast, setToast] = useState(null)
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type })
+  }
+
+  const addNotification = (type, title, message, claimId = null) => {
+    const notification = {
+      id: `notif_${Date.now()}_${Math.random()}`,
+      type,
+      priority: type === "claim" ? "medium" : "low",
+      title,
+      message,
+      timestamp: new Date().toISOString(),
+      isRead: false,
+      actionText: type === "claim" ? "View Claim" : "View Details",
+      actionUrl: type === "claim" ? "/dashboard/claims" : "/dashboard",
+      claimId,
+    }
+
+    const existingNotifications = JSON.parse(localStorage.getItem("vistora_notifications") || "[]")
+    existingNotifications.unshift(notification)
+    localStorage.setItem("vistora_notifications", JSON.stringify(existingNotifications))
+  }
 
   useEffect(() => {
     loadClaimsFromStorage()
@@ -64,9 +151,16 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           return age
         }
 
+        // Generate username from patient name
+        const generateUsername = (firstName, lastName) => {
+          if (!firstName || !lastName) return `user${Math.floor(Math.random() * 1000)}`
+          return `${firstName.toLowerCase()}${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`
+        }
+
         return {
           id: claim.claimId,
           patientId: `PT-${Math.floor(Math.random() * 9000) + 1000}`,
+          username: generateUsername(claim.patient?.firstName, claim.patient?.lastName),
           provider: claim.provider?.name || "Unknown Provider",
           date: claim.service?.dateOfService || new Date(claim.savedAt).toLocaleDateString(),
           amount: `$${totalCharges.toFixed(2)}`,
@@ -142,7 +236,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   }
 
   const handleTrackClaim = (claim) => {
-    alert(`Tracking claim ${claim.id}:\nStatus: ${claim.status}\nLast Updated: ${claim.lastUpdated}`)
+    showToast(`Tracking claim ${claim.id}: Status - ${claim.status}`, "info")
   }
 
   const handleResubmitClaim = (claim) => {
@@ -150,12 +244,13 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       localStorage.setItem("edit_claim_draft", JSON.stringify(claim.fullData))
       localStorage.setItem("editing_mode", "true")
       navigate("/dashboard/SubmitClaim")
+      showToast("Claim loaded for resubmission", "info")
     }
   }
 
   const handleDownloadEOB = (claim) => {
     if (claim.status === "Paid") {
-      alert(`Downloading EOB for claim ${claim.id}`)
+      showToast(`EOB downloaded for claim ${claim.id}`, "success")
     }
   }
 
@@ -320,12 +415,12 @@ const ClaimsSummary = ({ onSubmitClick }) => {
 
   const copyClaimId = (claimId) => {
     navigator.clipboard.writeText(claimId)
-    alert(`Claim ID ${claimId} copied to clipboard!`)
+    showToast(`Claim ID ${claimId} copied to clipboard!`, "success")
   }
 
   const copyPatientId = (patientId) => {
     navigator.clipboard.writeText(patientId)
-    alert(`Patient ID ${patientId} copied to clipboard!`)
+    showToast(`Patient ID ${patientId} copied to clipboard!`, "success")
   }
 
   // Filter claims based on search and filters
@@ -334,6 +429,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       searchQuery === "" ||
       claim.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.patientId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      claim.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.provider.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchesStatus = filters.status.length === 0 || filters.status.includes(claim.status)
@@ -386,6 +482,10 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   <div className="text-lg font-bold text-purple-600">{selectedClaim.patientId}</div>
                 </div>
                 <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
+                  <div className="text-lg font-bold text-blue-600">{selectedClaim.username}</div>
+                </div>
+                <div>
                   <div className="text-sm font-semibold text-slate-500 mb-1">Status</div>
                   <span
                     className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
@@ -423,6 +523,10 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   <div className="text-slate-900 font-mono">{selectedClaim.patientId}</div>
                 </div>
                 <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
+                  <div className="text-slate-900 font-mono">{selectedClaim.username}</div>
+                </div>
+                <div>
                   <div className="text-sm font-semibold text-slate-500 mb-1">Demographics</div>
                   <div className="text-slate-900">
                     {selectedClaim.patientAge} years old, {selectedClaim.patientGender === "M" ? "Male" : "Female"}
@@ -430,12 +534,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 </div>
                 {selectedClaim.fullData?.patient && (
                   <>
-                    <div>
-                      <div className="text-sm font-semibold text-slate-500 mb-1">Name</div>
-                      <div className="text-slate-900">
-                        {selectedClaim.fullData.patient.firstName} {selectedClaim.fullData.patient.lastName}
-                      </div>
-                    </div>
                     <div>
                       <div className="text-sm font-semibold text-slate-500 mb-1">Date of Birth</div>
                       <div className="text-slate-900">{selectedClaim.fullData.patient.dateOfBirth}</div>
@@ -527,9 +625,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     )
   }
 
-  // Add the AI Insights Modal component
-  // Add this function inside the ClaimsSummary component, before the return statement:
-
+  // AI Insights Modal component
   const AIInsightsModal = () => {
     if (!selectedAIInsights || !showAIModal) return null
 
@@ -807,7 +903,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                       <div>
                         <div className="font-bold text-lg text-slate-900">{claim.id}</div>
                         <div className="text-sm text-slate-600">
-                          Patient: {claim.patientId} | Amount: {claim.amount}
+                          Username: {claim.username} | Amount: {claim.amount}
                         </div>
                       </div>
                     </div>
@@ -894,17 +990,21 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   }
 
   if (loading) {
-    return <div className="text-center py-12">Loading claims data...</div>
+    return <SkeletonLoader />
   }
 
   return (
     <div className="space-y-6 font-['Manrope',_sans-serif]">
+      {/* Toast notification */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
           Claims Dashboard
         </h1>
       </div>
+
       {/* Action Required Alert */}
       {stats.awaitingAction > 0 && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -1086,7 +1186,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search by Patient ID, Claim ID, or Provider..."
+                placeholder="Search by Patient ID, Claim ID, Username, or Provider..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQueryLocal(e.target.value)}
@@ -1094,7 +1194,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
               <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Enter any part of Patient ID, Claim ID, or Provider name to filter results
+              Enter any part of Patient ID, Claim ID, Username, or Provider name to filter results
             </p>
           </div>
 
@@ -1260,6 +1360,9 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 Patient ID
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Username
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Provider
               </th>
               <th
@@ -1336,6 +1439,9 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900 font-mono">{claim.username}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{claim.provider}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{claim.date}</td>
@@ -1404,8 +1510,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           <span className="text-blue-600 mr-2">🔒</span>
           <span className="text-blue-800 text-sm">
             <strong>Privacy Protected:</strong> Patient names are not displayed for HIPAA compliance. Use Patient IDs
-            for identification. Full patient details are available in individual claim views for authorized personnel
-            only.
+            and usernames for identification. Full patient details are available in individual claim views for
+            authorized personnel only.
           </span>
         </div>
       </div>

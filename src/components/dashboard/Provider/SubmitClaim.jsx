@@ -3,9 +3,35 @@ import React, { useState, useEffect } from "react";
 //import { setActiveTab } from "../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 
+const Toast = ({ message, type = "success", onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000)
+    return () => clearTimeout(timer)
+  }, [onClose])
+
+  return (
+    <div
+      className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+        type === "success"
+          ? "bg-green-500 text-white"
+          : type === "error"
+            ? "bg-red-500 text-white"
+            : "bg-blue-500 text-white"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span>{message}</span>
+        <button onClick={onClose} className="ml-4 text-white hover:text-gray-200">
+          ×
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const SubmitClaim = () => {
   const navigate = useNavigate()
-  
+
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccessPage, setShowSuccessPage] = useState(false)
   const [submissionResult, setSubmissionResult] = useState(null)
@@ -88,6 +114,31 @@ const SubmitClaim = () => {
   const [savedClaims, setSavedClaims] = useState([])
   const [isEditing, setIsEditing] = useState(false)
   const [editingClaimId, setEditingClaimId] = useState(null)
+
+  const [toast, setToast] = useState(null)
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type })
+  }
+
+  const addNotification = (type, title, message, claimId = null) => {
+    const notification = {
+      id: `notif_${Date.now()}_${Math.random()}`,
+      type,
+      priority: type === "claim" ? "medium" : "low",
+      title,
+      message,
+      timestamp: new Date().toISOString(),
+      isRead: false,
+      actionText: type === "claim" ? "View Claim" : "View Details",
+      actionUrl: type === "claim" ? "/dashboard/claims" : "/dashboard",
+      claimId,
+    }
+
+    const existingNotifications = JSON.parse(localStorage.getItem("vistora_notifications") || "[]")
+    existingNotifications.unshift(notification)
+    localStorage.setItem("vistora_notifications", JSON.stringify(existingNotifications))
+  }
 
   // Mock AI validation
   useEffect(() => {
@@ -218,11 +269,11 @@ const SubmitClaim = () => {
         localStorage.removeItem("edit_claim_draft")
         localStorage.removeItem("editing_mode")
       }
-    // } else {
-    //   // NOT editing - ensure we start with a clean form
-    //   console.log("Starting with clean form - clearing all localStorage")
-    //   setIsEditing(false)
-    //   setEditingClaimId(null)
+      // } else {
+      //   // NOT editing - ensure we start with a clean form
+      //   console.log("Starting with clean form - clearing all localStorage")
+      //   setIsEditing(false)
+      //   setEditingClaimId(null)
 
       // Clear any leftover editing flags and data
       localStorage.removeItem("edit_claim_draft")
@@ -530,8 +581,14 @@ const SubmitClaim = () => {
 
   const handleSaveDraft = () => {
     const savedClaim = saveClaimToStorage(true)
-    alert(
-      `Claim saved as draft!\nDraft ID: ${savedClaim.claimId}\nSaved at: ${new Date(savedClaim.savedAt).toLocaleString()}`,
+    showToast(`Claim saved as draft! Draft ID: ${savedClaim.claimId}`, "success")
+
+    // Add notification
+    addNotification(
+      "claim",
+      "Claim Draft Saved",
+      `Claim draft ${savedClaim.claimId} has been saved`,
+      savedClaim.claimId,
     )
   }
 
@@ -1419,10 +1476,10 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                     />
                     <button
                       type="button"
-                      className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold font-['Manrope',_sans-serif] flex items-center space-x-2"
+                      className="px-4 py-3 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all duration-200 font-['Manrope',_sans-serif]"
+                      onClick={() => setShowAiSuggestions(!showAiSuggestions)}
                     >
-                      <span>🔍</span>
-                      <span>Lookup</span>
+                      🔍 Search
                     </button>
                   </div>
                   {errors.primaryDiagnosis && (
@@ -1430,12 +1487,77 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                   )}
                 </div>
 
+                {showAiSuggestions && (
+                  <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
+                        AI Suggested Codes
+                      </div>
+                      <button
+                        type="button"
+                        className="text-slate-400 hover:text-slate-600"
+                        onClick={() => setShowAiSuggestions(false)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <div
+                        className="p-2 hover:bg-slate-50 rounded cursor-pointer"
+                        onClick={() =>
+                          handleInputChange("service", "diagnosis", {
+                            ...formData.service.diagnosis,
+                            primary: "J02.9",
+                            description: "Acute pharyngitis, unspecified",
+                          })
+                        }
+                      >
+                        <div className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">J02.9</div>
+                        <div className="text-sm text-slate-600 font-['Manrope',_sans-serif]">
+                          Acute pharyngitis, unspecified
+                        </div>
+                      </div>
+                      <div
+                        className="p-2 hover:bg-slate-50 rounded cursor-pointer"
+                        onClick={() =>
+                          handleInputChange("service", "diagnosis", {
+                            ...formData.service.diagnosis,
+                            primary: "J01.90",
+                            description: "Acute sinusitis, unspecified",
+                          })
+                        }
+                      >
+                        <div className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">J01.90</div>
+                        <div className="text-sm text-slate-600 font-['Manrope',_sans-serif]">
+                          Acute sinusitis, unspecified
+                        </div>
+                      </div>
+                      <div
+                        className="p-2 hover:bg-slate-50 rounded cursor-pointer"
+                        onClick={() =>
+                          handleInputChange("service", "diagnosis", {
+                            ...formData.service.diagnosis,
+                            primary: "J06.9",
+                            description: "Acute upper respiratory infection, unspecified",
+                          })
+                        }
+                      >
+                        <div className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">J06.9</div>
+                        <div className="text-sm text-slate-600 font-['Manrope',_sans-serif]">
+                          Acute upper respiratory infection, unspecified
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
                     Diagnosis Description *
                   </label>
-                  <textarea
-                    rows="3"
+                  <input
+                    type="text"
+                    placeholder="Enter diagnosis description"
                     className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white ${
                       errors.diagnosisDescription
                         ? "border-red-300 bg-red-50"
@@ -1448,7 +1570,6 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                         description: e.target.value,
                       })
                     }
-                    placeholder="Enter detailed diagnosis description or N/A"
                   />
                   {errors.diagnosisDescription && (
                     <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">
@@ -1459,62 +1580,53 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
               </div>
             </div>
 
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+            <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                  Procedure Information
+                  Procedures
                 </h3>
                 <button
                   type="button"
                   onClick={addProcedure}
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-sm hover:bg-emerald-700 transition-all duration-200 font-semibold font-['Manrope',_sans-serif] flex items-center space-x-2"
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all duration-200 font-['Manrope',_sans-serif]"
                 >
-                  <span>+</span>
-                  <span>Add Procedure</span>
+                  + Add Procedure
                 </button>
               </div>
 
               {formData.service.procedures.map((procedure, index) => (
-                <div key={index} className="border-2 border-slate-200 rounded-xl p-6 mb-6 last:mb-0 bg-slate-50">
+                <div key={index} className="mb-6 p-4 border-2 border-slate-200 rounded-xl bg-white last:mb-0">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-semibold text-slate-700 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                      Procedure {index + 1}
-                    </span>
-                    {formData.service.procedures.length > 1 && (
+                    <h4 className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">Procedure {index + 1}</h4>
+                    {index > 0 && (
                       <button
                         type="button"
                         onClick={() => removeProcedure(index)}
-                        className="text-red-600 hover:text-red-800 text-sm font-semibold font-['Manrope',_sans-serif] px-3 py-1 rounded-lg hover:bg-red-50 transition-all duration-200"
+                        className="text-red-600 hover:text-red-800 text-sm font-['Manrope',_sans-serif]"
                       >
                         Remove
                       </button>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
-                        CPT Code *
+                        Procedure Code (CPT/HCPCS) *
                       </label>
-                      <div className="flex space-x-3">
-                        <input
-                          type="text"
-                          placeholder="e.g., 99213"
-                          className={`flex-1 px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white ${
-                            index === 0 && errors.procedureCode
-                              ? "border-red-300 bg-red-50"
-                              : "border-slate-200 hover:border-slate-300"
-                          }`}
-                          value={procedure.code}
-                          onChange={(e) => handleInputChange("service", "procedures", { code: e.target.value }, index)}
-                        />
-                        <button
-                          type="button"
-                          className="px-4 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200"
-                        >
-                          🔍
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        placeholder="e.g., 99213"
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
+                          index === 0 && errors.procedureCode
+                            ? "border-red-300 bg-red-50"
+                            : "border-slate-200 hover:border-slate-300"
+                        }`}
+                        value={procedure.code}
+                        onChange={(e) =>
+                          handleInputChange("service", "procedures", { ...procedure, code: e.target.value }, index)
+                        }
+                      />
                       {index === 0 && errors.procedureCode && (
                         <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">{errors.procedureCode}</p>
                       )}
@@ -1527,52 +1639,12 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                       <input
                         type="text"
                         placeholder="e.g., 25"
-                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white hover:border-slate-300"
+                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] hover:border-slate-300"
                         value={procedure.modifier}
                         onChange={(e) =>
-                          handleInputChange("service", "procedures", { modifier: e.target.value }, index)
+                          handleInputChange("service", "procedures", { ...procedure, modifier: e.target.value }, index)
                         }
                       />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
-                        Units
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white hover:border-slate-300"
-                        value={procedure.units}
-                        onChange={(e) =>
-                          handleInputChange("service", "procedures", { units: Number.parseInt(e.target.value) }, index)
-                        }
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
-                        Charges ($) *
-                      </label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        placeholder="0.00"
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white ${
-                          index === 0 && errors.procedureCharges
-                            ? "border-red-300 bg-red-50"
-                            : "border-slate-200 hover:border-slate-300"
-                        }`}
-                        value={procedure.charges}
-                        onChange={(e) => handleInputChange("service", "procedures", { charges: e.target.value }, index)}
-                      />
-                      {index === 0 && errors.procedureCharges && (
-                        <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">
-                          {errors.procedureCharges}
-                        </p>
-                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -1581,22 +1653,73 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                       </label>
                       <input
                         type="text"
-                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] bg-white ${
+                        placeholder="Enter procedure description"
+                        className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                           index === 0 && errors.procedureDescription
                             ? "border-red-300 bg-red-50"
                             : "border-slate-200 hover:border-slate-300"
                         }`}
                         value={procedure.description}
                         onChange={(e) =>
-                          handleInputChange("service", "procedures", { description: e.target.value }, index)
+                          handleInputChange(
+                            "service",
+                            "procedures",
+                            { ...procedure, description: e.target.value },
+                            index,
+                          )
                         }
-                        placeholder="Procedure description or N/A"
                       />
                       {index === 0 && errors.procedureDescription && (
                         <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">
                           {errors.procedureDescription}
                         </p>
                       )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
+                          Units
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] hover:border-slate-300"
+                          value={procedure.units}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "service",
+                              "procedures",
+                              { ...procedure, units: Number.parseInt(e.target.value) || 1 },
+                              index,
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
+                          Charges ($) *
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="0.00"
+                          className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
+                            index === 0 && errors.procedureCharges
+                              ? "border-red-300 bg-red-50"
+                              : "border-slate-200 hover:border-slate-300"
+                          }`}
+                          value={procedure.charges}
+                          onChange={(e) =>
+                            handleInputChange("service", "procedures", { ...procedure, charges: e.target.value }, index)
+                          }
+                        />
+                        {index === 0 && errors.procedureCharges && (
+                          <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">
+                            {errors.procedureCharges}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1610,10 +1733,10 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                 </label>
                 <input
                   type="text"
+                  placeholder="Enter referring provider name"
                   className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] hover:border-slate-300"
                   value={formData.service.referringProvider}
                   onChange={(e) => handleInputChange("service", "referringProvider", e.target.value)}
-                  placeholder="Enter referring provider name"
                 />
               </div>
 
@@ -1623,10 +1746,10 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                 </label>
                 <input
                   type="text"
+                  placeholder="Enter authorization number if applicable"
                   className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] hover:border-slate-300"
                   value={formData.service.authorizationNumber}
                   onChange={(e) => handleInputChange("service", "authorizationNumber", e.target.value)}
-                  placeholder="Enter authorization number"
                 />
               </div>
             </div>
@@ -1641,27 +1764,11 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                 Provider Information
               </h2>
               <p className="text-slate-600 mt-2 font-['Manrope',_sans-serif]">
-                Enter healthcare provider and practice details
+                Enter details about the healthcare provider
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
-                  NPI Number *
-                </label>
-                <input
-                  type="text"
-                  placeholder="10-digit NPI"
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
-                    errors.npi ? "border-red-300 bg-red-50" : "border-slate-200 hover:border-slate-300"
-                  }`}
-                  value={formData.provider.npi}
-                  onChange={(e) => handleInputChange("provider", "npi", e.target.value)}
-                />
-                {errors.npi && <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">{errors.npi}</p>}
-              </div>
-
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
                   Provider Name *
@@ -1673,11 +1780,28 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                   }`}
                   value={formData.provider.name}
                   onChange={(e) => handleInputChange("provider", "name", e.target.value)}
-                  placeholder="Enter provider or practice name"
+                  placeholder="Enter provider name"
                 />
                 {errors.providerName && (
                   <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">{errors.providerName}</p>
                 )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
+                  NPI (National Provider Identifier) *
+                </label>
+                <input
+                  type="text"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
+                    errors.npi ? "border-red-300 bg-red-50" : "border-slate-200 hover:border-slate-300"
+                  }`}
+                  value={formData.provider.npi}
+                  onChange={(e) => handleInputChange("provider", "npi", e.target.value)}
+                  placeholder="Enter 10-digit NPI"
+                  maxLength={10}
+                />
+                {errors.npi && <p className="text-red-500 text-sm mt-1 font-['Manrope',_sans-serif]">{errors.npi}</p>}
               </div>
             </div>
 
@@ -1770,7 +1894,7 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-slate-700 font-['Manrope',_sans-serif]">
-                  Phone Number *
+                  Provider Phone *
                 </label>
                 <input
                   type="tel"
@@ -1792,7 +1916,7 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                 </label>
                 <input
                   type="text"
-                  placeholder="XX-XXXXXXX or N/A"
+                  placeholder="XX-XXXXXXX"
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                     errors.taxId ? "border-red-300 bg-red-50" : "border-slate-200 hover:border-slate-300"
                   }`}
@@ -1815,128 +1939,129 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                 Supporting Documents
               </h2>
               <p className="text-slate-600 mt-2 font-['Manrope',_sans-serif]">
-                Upload medical records and supporting documentation
+                Upload any relevant medical records or supporting documentation
               </p>
             </div>
 
-            <div className="border-2 border-dashed border-emerald-300 rounded-2xl p-12 text-center bg-gradient-to-br from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 transition-all duration-300">
-              <input
-                type="file"
-                multiple
-                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                onChange={handleFileUploadWithPreview}
-                className="hidden"
-                id="file-upload"
-              />
-              <label htmlFor="file-upload" className="cursor-pointer">
-                <div className="text-emerald-400 mb-6 text-6xl">📁</div>
-                <div className="text-xl font-bold text-slate-900 mb-3 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                  Upload Supporting Documents
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl p-6">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <span className="text-emerald-600 text-xl">🔒</span>
                 </div>
-                <div className="text-slate-600 mb-6 font-['Manrope',_sans-serif]">
-                  Drag and drop files here, or click to browse
+                <div>
+                  <h3 className="font-bold text-emerald-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                    Secure Document Upload
+                  </h3>
+                  <p className="text-emerald-700 text-sm font-['Manrope',_sans-serif]">
+                    All files are encrypted and stored securely
+                  </p>
                 </div>
-                <button
-                  type="button"
-                  className="px-8 py-4 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-bold font-['Manrope',_sans-serif] shadow-lg hover:shadow-xl"
+              </div>
+
+              <div className="bg-white border-2 border-dashed border-slate-300 rounded-xl p-8 text-center">
+                <div className="mb-4">
+                  <span className="text-4xl">📄</span>
+                </div>
+                <h4 className="font-bold text-slate-900 mb-2 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Drag and drop files here
+                </h4>
+                <p className="text-slate-600 mb-6 font-['Manrope',_sans-serif]">
+                  or click to browse from your computer
+                </p>
+                <input
+                  type="file"
+                  id="file-upload"
+                  className="hidden"
+                  multiple
+                  onChange={handleFileUploadWithPreview}
+                />
+                <label
+                  htmlFor="file-upload"
+                  className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 cursor-pointer font-semibold font-['Manrope',_sans-serif]"
                 >
-                  Choose Files
-                </button>
-              </label>
-            </div>
+                  Select Files
+                </label>
+                <p className="text-xs text-slate-500 mt-4 font-['Manrope',_sans-serif]">
+                  Supported formats: PDF, JPG, PNG, TIFF (Max 10MB per file)
+                </p>
+              </div>
 
-            <div className="text-sm text-slate-600 font-['Manrope',_sans-serif]">
-              <p className="mb-2">
-                <strong>Accepted file types:</strong> PDF, JPG, PNG, DOC, DOCX
-              </p>
-              <p>
-                <strong>Maximum file size:</strong> 10MB per file
-              </p>
-            </div>
-
-            {uploadedFiles.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                  Uploaded Files ({uploadedFiles.length})
-                </h3>
-                <div className="space-y-3">
-                  {uploadedFiles.map((file) => (
-                    <div
-                      key={file.id}
-                      className="flex items-center justify-between p-4 border-2 border-slate-200 rounded-xl bg-white hover:bg-slate-50 transition-all duration-200"
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                          {file.preview ? (
-                            <img
-                              src={file.preview || "/placeholder.svg"}
-                              alt={file.name}
-                              className="w-10 h-10 object-cover rounded-lg"
-                            />
-                          ) : (
-                            <span className="text-emerald-600 text-xl">📄</span>
+              {uploadedFiles.length > 0 && (
+                <div className="mt-8">
+                  <h4 className="font-bold text-slate-900 mb-4 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                    Uploaded Files ({uploadedFiles.length})
+                  </h4>
+                  <div className="space-y-3">
+                    {uploadedFiles.map((file) => (
+                      <div
+                        key={file.id}
+                        className="bg-white border border-slate-200 rounded-lg p-4 flex items-center justify-between"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-slate-100 rounded flex items-center justify-center">
+                            <span className="text-slate-600 text-lg">
+                              {file.type.includes("image") ? "🖼️" : file.type.includes("pdf") ? "📄" : "📎"}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="font-medium text-slate-900 font-['Manrope',_sans-serif]">{file.name}</div>
+                            <div className="text-xs text-slate-500 font-['Manrope',_sans-serif]">
+                              {(file.size / 1024).toFixed(1)} KB • Uploaded {new Date(file.uploadDate).toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {file.preview && (
+                            <button
+                              type="button"
+                              className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                              onClick={() => window.open(file.preview, "_blank")}
+                            >
+                              Preview
+                            </button>
                           )}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">{file.name}</div>
-                          <div className="text-sm text-slate-500 font-['Manrope',_sans-serif]">
-                            {(file.size / 1024 / 1024).toFixed(2)} MB • Uploaded{" "}
-                            {new Date(file.uploadDate).toLocaleString()}
-                          </div>
-                          <div className="text-xs text-emerald-600 font-['Manrope',_sans-serif] mt-1">
-                            🛡️ Hash: {file.hash}
-                          </div>
+                          <button
+                            type="button"
+                            className="text-red-600 hover:text-red-800 text-sm font-['Manrope',_sans-serif]"
+                            onClick={() => removeFile(file.id)}
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <span className="text-emerald-600 text-sm font-semibold bg-emerald-100 px-3 py-1 rounded-lg font-['Manrope',_sans-serif]">
-                          ✓ Secured
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(file.id)}
-                          className="text-red-600 hover:text-red-800 text-sm font-semibold px-3 py-1 rounded-lg hover:bg-red-50 transition-all duration-200 font-['Manrope',_sans-serif]"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6">
-              <h3 className="font-bold text-amber-800 mb-4 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif] flex items-center space-x-2">
-                <span>📋</span>
-                <span>Document Checklist</span>
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-amber-700 font-['Manrope',_sans-serif]">
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Medical records and chart notes</span>
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-blue-600 text-xl">ℹ️</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Lab results and diagnostic reports</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Prior authorization (if required)</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Referral documentation (if applicable)</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Operative reports (for surgical procedures)</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-amber-600">•</span>
-                  <span>Discharge summaries</span>
-                </div>
+                <h3 className="font-bold text-blue-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Recommended Documents
+                </h3>
               </div>
+              <ul className="space-y-2 text-blue-800 font-['Manrope',_sans-serif]">
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Medical records related to the service</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Physician notes or orders</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Lab or test results</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Prior authorization documentation (if applicable)</span>
+                </li>
+              </ul>
             </div>
           </div>
         )
@@ -1946,220 +2071,289 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
           <div className="space-y-8">
             <div className="border-b border-slate-200 pb-6">
               <h2 className="text-2xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                Review & Submit
+                Review and Submit
               </h2>
               <p className="text-slate-600 mt-2 font-['Manrope',_sans-serif]">
-                Review all information and submit your claim
+                Please review all information before submitting your claim
               </p>
             </div>
 
-            {/* AI Validation Results */}
-            {aiValidation && (
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-2xl p-8">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 text-2xl">🤖</span>
+            {/* Patient Information Summary */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Patient Information
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(1)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                >
+                  Edit
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">Name</div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.patient.firstName} {formData.patient.lastName}
                   </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Date of Birth
+                  </div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">{formData.patient.dateOfBirth}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">Address</div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.patient.address.street}, {formData.patient.address.city}, {formData.patient.address.state}{" "}
+                    {formData.patient.address.zipCode}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">Contact</div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.patient.phone} | {formData.patient.email}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Insurance Information Summary */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Insurance Information
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(2)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                >
+                  Edit
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Primary Insurance
+                  </div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.insurance.primary.company} | Policy: {formData.insurance.primary.policyNumber} | Group:{" "}
+                    {formData.insurance.primary.groupNumber}
+                  </div>
+                </div>
+                {formData.insurance.secondary.hasSecondary && (
                   <div>
-                    <h3 className="font-bold text-purple-900 text-xl font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                      AI Validation Complete
-                    </h3>
-                    <p className="text-purple-700 font-['Manrope',_sans-serif]">
-                      Advanced claim analysis and fraud detection completed
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm">
-                    <div className="text-sm font-semibold text-slate-700 mb-3 font-['Manrope',_sans-serif]">
-                      Validation Score
+                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                      Secondary Insurance
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="flex-1 bg-slate-200 rounded-full h-4">
-                        <div
-                          className="bg-gradient-to-r from-emerald-500 to-teal-500 h-4 rounded-full transition-all duration-1000"
-                          style={{ width: `${aiValidation.score}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-2xl font-bold text-emerald-600 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                        {aiValidation.score}%
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2 font-['Manrope',_sans-serif]">
-                      High confidence approval prediction
-                    </p>
-                  </div>
-
-                  <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm">
-                    <div className="text-sm font-semibold text-slate-700 mb-3 font-['Manrope',_sans-serif]">
-                      AI Confidence
-                    </div>
-                    <div className="text-purple-600 font-bold text-2xl font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                      {aiValidation.confidence}%
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2 font-['Manrope',_sans-serif]">
-                      Model prediction accuracy
-                    </p>
-                  </div>
-
-                  <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm">
-                    <div className="text-sm font-semibold text-slate-700 mb-3 font-['Manrope',_sans-serif]">
-                      Est. Approval Time
-                    </div>
-                    <div className="text-emerald-600 font-bold text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                      {aiValidation.estimatedApprovalTime}
-                    </div>
-                    <p className="text-xs text-slate-500 mt-2 font-['Manrope',_sans-serif]">Based on similar claims</p>
-                  </div>
-                </div>
-
-                {aiValidation.suggestions.length > 0 && (
-                  <div className="mt-6">
-                    <div className="text-sm font-semibold text-slate-700 mb-3 font-['Manrope',_sans-serif]">
-                      Final AI Recommendations
-                    </div>
-                    <div className="space-y-2">
-                      {aiValidation.suggestions.map((suggestion, index) => (
-                        <div
-                          key={index}
-                          className="text-sm text-purple-700 bg-purple-100 px-4 py-3 rounded-xl border border-purple-200 font-['Manrope',_sans-serif]"
-                        >
-                          💡 {suggestion}
-                        </div>
-                      ))}
+                    <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                      {formData.insurance.secondary.company} | Policy: {formData.insurance.secondary.policyNumber}
                     </div>
                   </div>
                 )}
               </div>
-            )}
+            </div>
 
-            {/* Claim Summary */}
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8">
-              <h3 className="font-bold text-slate-900 mb-6 text-xl font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                Claim Summary
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
-                      Patient
-                    </div>
-                    <div className="text-slate-900 font-semibold font-['Manrope',_sans-serif]">
-                      {formData.patient.firstName} {formData.patient.lastName}
-                    </div>
-                    <div className="text-sm text-slate-500 font-['Manrope',_sans-serif]">
-                      DOB: {formData.patient.dateOfBirth}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
-                      Primary Insurance
-                    </div>
-                    <div className="text-slate-900 font-semibold font-['Manrope',_sans-serif]">
-                      {formData.insurance.primary.company}
-                    </div>
-                    <div className="text-sm text-slate-500 font-['Manrope',_sans-serif]">
-                      Policy: {formData.insurance.primary.policyNumber}
-                    </div>
-                  </div>
-
+            {/* Service Details Summary */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Service Details
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(3)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                >
+                  Edit
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
                       Date of Service
                     </div>
-                    <div className="text-slate-900 font-semibold font-['Manrope',_sans-serif]">
-                      {formData.service.dateOfService}
+                    <div className="text-slate-900 font-['Manrope',_sans-serif]">{formData.service.dateOfService}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                      Place of Service
                     </div>
+                    <div className="text-slate-900 font-['Manrope',_sans-serif]">{formData.service.placeOfService}</div>
                   </div>
                 </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
-                      Primary Diagnosis
-                    </div>
-                    <div className="text-slate-900 font-semibold font-['Manrope',_sans-serif]">
-                      {formData.service.diagnosis.primary}
-                    </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Primary Diagnosis
                   </div>
-
-                  <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
-                      Procedures
-                    </div>
-                    <div className="space-y-2">
-                      {formData.service.procedures.map((proc, index) => (
-                        <div key={index} className="text-slate-900 text-sm font-['Manrope',_sans-serif]">
-                          <span className="font-semibold">{proc.code}</span>
-                          {proc.modifier && <span className="text-slate-500"> ({proc.modifier})</span>}
-                          {proc.charges && <span className="text-emerald-600 font-semibold"> - ${proc.charges}</span>}
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.service.diagnosis.primary} - {formData.service.diagnosis.description}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Procedures
+                  </div>
+                  <div className="space-y-2">
+                    {formData.service.procedures.map((procedure, index) => (
+                      <div key={index} className="bg-slate-50 p-3 rounded-lg">
+                        <div className="font-semibold text-slate-900 font-['Manrope',_sans-serif]">
+                          {procedure.code} {procedure.modifier && `- ${procedure.modifier}`}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
-                      Total Charges
-                    </div>
-                    <div className="text-2xl font-bold text-emerald-600 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                      $
-                      {formData.service.procedures
-                        .reduce((total, proc) => total + (Number.parseFloat(proc.charges) || 0), 0)
-                        .toFixed(2)}
-                    </div>
+                        <div className="text-sm text-slate-600 font-['Manrope',_sans-serif]">
+                          {procedure.description} | Units: {procedure.units} | Charges: ${procedure.charges}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Tamper-Proof Verification */}
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <span className="text-emerald-600 text-lg">🛡️</span>
+            {/* Provider Information Summary */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Provider Information
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(4)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                >
+                  Edit
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Provider Name
+                  </div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">{formData.provider.name}</div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-emerald-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-                    Tamper-Proof Verification
-                  </h3>
-                  <p className="text-emerald-700 text-sm font-['Manrope',_sans-serif]">
-                    Blockchain-secured claim integrity
-                  </p>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">NPI</div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">{formData.provider.npi}</div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">Address</div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.provider.address.street}, {formData.provider.address.city},{" "}
+                    {formData.provider.address.state} {formData.provider.address.zipCode}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-slate-500 mb-1 font-['Manrope',_sans-serif]">
+                    Phone / Tax ID
+                  </div>
+                  <div className="text-slate-900 font-['Manrope',_sans-serif]">
+                    {formData.provider.phone} | {formData.provider.taxId}
+                  </div>
                 </div>
               </div>
-              <div className="text-sm text-emerald-700 font-['Manrope',_sans-serif] space-y-2">
-                <p>✓ This claim will be secured using advanced blockchain technology</p>
-                <p>✓ All data will be cryptographically hashed and stored immutably</p>
-                <p>✓ Complete audit trail will be maintained for compliance</p>
-                <p>✓ Anti-fraud measures automatically applied</p>
+            </div>
+
+            {/* Supporting Documents Summary */}
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Supporting Documents
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(5)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-['Manrope',_sans-serif]"
+                >
+                  Edit
+                </button>
               </div>
+              {uploadedFiles.length > 0 ? (
+                <div className="space-y-2">
+                  {uploadedFiles.map((file) => (
+                    <div key={file.id} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-slate-600">
+                          {file.type.includes("image") ? "🖼️" : file.type.includes("pdf") ? "📄" : "📎"}
+                        </span>
+                        <span className="text-slate-900 font-['Manrope',_sans-serif]">{file.name}</span>
+                      </div>
+                      <span className="text-xs text-slate-500 font-['Manrope',_sans-serif]">
+                        {(file.size / 1024).toFixed(1)} KB
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-slate-600 italic font-['Manrope',_sans-serif]">No documents uploaded</div>
+              )}
+            </div>
+
+            {/* Total Charges Summary */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl p-6">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-emerald-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Total Charges
+                </h3>
+                <div className="text-2xl font-bold text-emerald-600 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  $
+                  {formData.service.procedures
+                    .reduce((total, proc) => total + (Number.parseFloat(proc.charges) || 0), 0)
+                    .toFixed(2)}
+                </div>
+              </div>
+            </div>
+
+            {/* Blockchain Security Notice */}
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-blue-600 text-xl">🔒</span>
+                </div>
+                <h3 className="font-bold text-blue-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                  Secure Blockchain Submission
+                </h3>
+              </div>
+              <p className="text-blue-800 mb-4 font-['Manrope',_sans-serif]">
+                Your claim will be securely stored with blockchain technology, ensuring:
+              </p>
+              <ul className="space-y-2 text-blue-700 font-['Manrope',_sans-serif]">
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Tamper-proof record of your submission</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Complete audit trail of all claim activities</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Enhanced security and privacy protection</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Faster processing through smart contract validation</span>
+                </li>
+              </ul>
             </div>
 
             {/* Terms and Conditions */}
-            <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6">
-              <label className="flex items-start space-x-3 cursor-pointer">
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-6">
+              <div className="flex items-start space-x-3">
                 <input
                   type="checkbox"
+                  id="terms"
                   className="mt-1 w-5 h-5 text-emerald-600 border-2 border-slate-300 rounded focus:ring-emerald-500"
-                  required
                 />
-                <div className="text-sm text-slate-700 font-['Manrope',_sans-serif]">
-                  <span className="font-bold">I certify and acknowledge that:</span>
-                  <ul className="mt-3 space-y-2 ml-4 list-disc">
-                    <li>The information provided is true and accurate to the best of my knowledge</li>
-                    <li>The services were medically necessary and actually provided to the patient</li>
-                    <li>I have the legal right to submit this claim on behalf of the patient and provider</li>
-                    <li>
-                      I understand that any false claims may result in penalties under applicable federal and state laws
-                    </li>
-                    <li>I consent to blockchain verification and tamper-proof storage of this claim data</li>
-                  </ul>
-                </div>
-              </label>
+                <label htmlFor="terms" className="text-slate-700 font-['Manrope',_sans-serif]">
+                  I certify that the information provided is true and accurate to the best of my knowledge. I authorize
+                  the release of any medical or other information necessary to process this claim.
+                </label>
+              </div>
             </div>
           </div>
         )
@@ -2171,151 +2365,121 @@ border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
 
   return (
     <div className="min-h-screen bg-slate-50 font-['Manrope',_sans-serif]">
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-              {isEditing ? "Edit Claim" : "Submit New Claim"}
-            </h1>
-            <p className="text-slate-600 mt-2 font-['Manrope',_sans-serif]">
-              {isEditing
-                ? "Update your claim information"
-                : "Complete all required information to submit your claim securely"}
-            </p>
-          </div>
-          <div className="flex items-center space-x-3">
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+            {isEditing ? "Edit Claim" : "Submit New Claim"}
+          </h1>
+          <div className="flex space-x-3">
             <button
-              onClick={() => {
-                const claims = JSON.parse(localStorage.getItem("vistora_claims") || "[]")
-                alert(
-                  `You have ${claims.length} saved claims:\n${claims.map((c) => `${c.claimId} (${c.isDraft ? "Draft" : "Submitted"})`).join("\n")}`,
-                )
-              }}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-all duration-200 font-semibold font-['Manrope',_sans-serif]"
+              type="button"
+              onClick={handleSaveDraft}
+              className="px-4 py-2 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-semibold"
             >
-              📋 View Saved Claims
+              Save as Draft
             </button>
             <button
-              onClick={() => navigate("/claims")}
-              className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100 transition-all duration-200"
+              type="button"
+              onClick={() => navigate("/dashboard/claims")}
+              className="px-4 py-2 border-2 border-red-300 text-red-700 rounded-xl hover:bg-red-50 hover:border-red-400 transition-all duration-200 font-semibold"
             >
-              <span className="text-2xl">✕</span>
+              Cancel
             </button>
           </div>
         </div>
 
-        {/* Editing Mode Indicator */}
-        {isEditing && (
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-blue-600">✏️</span>
-              <span className="font-semibold text-blue-900">Editing Mode</span>
-            </div>
-            <p className="text-blue-700 text-sm mt-1">
-              You are currently editing an existing claim. Changes will update the original claim.
-            </p>
-          </div>
-        )}
-
         {/* Progress Steps */}
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-            {steps.map((step, index) => (
-              <React.Fragment key={step.id}>
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-                      currentStep >= step.id
-                        ? "bg-emerald-500 border-emerald-500 text-white"
-                        : "border-slate-300 text-slate-400 bg-white"
-                    }`}
-                  >
-                    {currentStep > step.id ? (
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    ) : (
-                      <span className="text-sm font-semibold">{step.id}</span>
-                    )}
-                  </div>
-                  <div className="mt-2 text-center">
-                    <div
-                      className={`text-xs font-medium transition-all duration-300 ${
-                        currentStep >= step.id ? "text-emerald-600" : "text-slate-400"
-                      }`}
-                    >
-                      {step.title}
-                    </div>
-                  </div>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            {steps.map((step) => (
+              <div
+                key={step.id}
+                className={`flex flex-col items-center ${
+                  step.id < currentStep
+                    ? "text-emerald-600"
+                    : step.id === currentStep
+                      ? "text-blue-600"
+                      : "text-slate-400"
+                }`}
+              >
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 ${
+                    step.id < currentStep
+                      ? "bg-emerald-100 text-emerald-600"
+                      : step.id === currentStep
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-slate-100 text-slate-400"
+                  }`}
+                >
+                  {step.id < currentStep ? "✓" : step.icon}
                 </div>
-                {index < steps.length - 1 && (
-                  <div className="flex-1 mx-4">
-                    <div
-                      className={`h-0.5 transition-all duration-300 ${
-                        currentStep > step.id ? "bg-emerald-500" : "bg-slate-300"
-                      }`}
-                    />
-                  </div>
-                )}
-              </React.Fragment>
+                <div className="text-sm font-semibold">{step.title}</div>
+              </div>
             ))}
+          </div>
+          <div className="relative mt-4">
+            <div className="absolute top-0 left-0 h-2 bg-slate-200 w-full rounded-full"></div>
+            <div
+              className="absolute top-0 left-0 h-2 bg-emerald-500 rounded-full transition-all duration-500"
+              style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+            ></div>
           </div>
         </div>
 
         {/* Form Content */}
-        <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 shadow-sm">{renderStepContent()}</div>
+        <div className="bg-white rounded-2xl border-2 border-slate-200 p-8 shadow-sm">
+          {renderStepContent()}
 
-        {/* Navigation Buttons */}
-        <div className="flex items-center justify-between">
-          <div className="flex space-x-3">
-            {currentStep > 1 && (
+          {/* Navigation Buttons */}
+          <div className="mt-8 pt-6 border-t border-slate-200 flex justify-between">
+            {currentStep > 1 ? (
               <button
+                type="button"
                 onClick={handlePrevious}
-                className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-semibold font-['Manrope',_sans-serif]"
+                className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-semibold"
               >
-                ← Previous
+                Previous
               </button>
+            ) : (
+              <div></div>
             )}
-          </div>
-
-          <div className="flex space-x-3">
-            <button
-              onClick={handleSaveDraft}
-              className="px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-semibold font-['Manrope',_sans-serif]"
-            >
-              {isEditing ? "Update as Draft" : "Save Draft"}
-            </button>
 
             {currentStep < 6 ? (
               <button
+                type="button"
                 onClick={handleNext}
-                className="px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-bold font-['Manrope',_sans-serif] shadow-lg hover:shadow-xl"
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-semibold"
               >
-                Next →
+                Next
               </button>
             ) : (
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:from-emerald-700 hover:to-teal-700 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all duration-200 font-bold font-['Manrope',_sans-serif] shadow-lg hover:shadow-xl"
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center space-x-2">
-                    <span>🔄</span>
-                    <span>{isEditing ? "Updating..." : "Submitting..."}</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center space-x-2">
-                    <span>🛡️</span>
-                    <span>{isEditing ? "Update Claim" : "Submit Claim"}</span>
-                  </span>
-                )}
-              </button>
+              <div className="flex space-x-3">
+                <button
+                  type="button"
+                  onClick={handleSaveDraft}
+                  className="px-6 py-3 border-2 border-emerald-300 text-emerald-700 rounded-xl hover:bg-emerald-50 hover:border-emerald-400 transition-all duration-200 font-semibold"
+                >
+                  Save as Draft
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className={`px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold flex items-center space-x-2 ${
+                    isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <span>Submit Claim</span>
+                  )}
+                </button>
+              </div>
             )}
           </div>
         </div>

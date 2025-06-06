@@ -122,7 +122,9 @@ const Notifications = () => {
 
     // Navigate based on notification type
     if (notification.type === "claim" && notification.claimId) {
-      navigate(`/dashboard/claims?claimId=${notification.claimId}`)
+      // Store the claim ID to highlight when navigating to claims page
+      localStorage.setItem("highlightClaimId", notification.claimId)
+      navigate("/dashboard/claims")
     } else if (notification.type === "task" && notification.taskId) {
       navigate("/dashboard/tasks")
     } else {
@@ -343,7 +345,9 @@ const Notifications = () => {
                           {notification.priority.toUpperCase()}
                         </span>
                       )}
-                      <span className="text-sm text-slate-500">{getTimeAgo(notification.timestamp)}</span>
+                      <span className="text-sm text-slate-500">
+                        {new Date(notification.timestamp).toLocaleString()} ({getTimeAgo(notification.timestamp)})
+                      </span>
                     </div>
                   </div>
                   <p className={`mb-3 ${notification.isRead ? "text-slate-600" : "text-blue-800"}`}>

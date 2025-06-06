@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/claimsSlice";
-import { setActiveTab } from "../../../store/slices/uiSlice";
+// import { useSelector, useDispatch } from "react-redux";
+// import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/claimsSlice";
+// import { setActiveTab } from "../../../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 
 const Toast = ({ message, type = "success", onClose }) => {
@@ -151,16 +151,9 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           return age
         }
 
-        // Generate username from patient name
-        const generateUsername = (firstName, lastName) => {
-          if (!firstName || !lastName) return `user${Math.floor(Math.random() * 1000)}`
-          return `${firstName.toLowerCase()}${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`
-        }
-
         return {
           id: claim.claimId,
           patientId: `PT-${Math.floor(Math.random() * 9000) + 1000}`,
-          username: generateUsername(claim.patient?.firstName, claim.patient?.lastName),
           provider: claim.provider?.name || "Unknown Provider",
           date: claim.service?.dateOfService || new Date(claim.savedAt).toLocaleDateString(),
           amount: `$${totalCharges.toFixed(2)}`,
@@ -429,7 +422,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       searchQuery === "" ||
       claim.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.patientId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      claim.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.provider.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchesStatus = filters.status.length === 0 || filters.status.includes(claim.status)
@@ -482,10 +474,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   <div className="text-lg font-bold text-purple-600">{selectedClaim.patientId}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
-                  <div className="text-lg font-bold text-blue-600">{selectedClaim.username}</div>
-                </div>
-                <div>
                   <div className="text-sm font-semibold text-slate-500 mb-1">Status</div>
                   <span
                     className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
@@ -521,10 +509,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 <div>
                   <div className="text-sm font-semibold text-slate-500 mb-1">Patient ID</div>
                   <div className="text-slate-900 font-mono">{selectedClaim.patientId}</div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
-                  <div className="text-slate-900 font-mono">{selectedClaim.username}</div>
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-slate-500 mb-1">Demographics</div>
@@ -903,7 +887,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                       <div>
                         <div className="font-bold text-lg text-slate-900">{claim.id}</div>
                         <div className="text-sm text-slate-600">
-                          Username: {claim.username} | Amount: {claim.amount}
+                          Patient ID: {claim.patientId} | Amount: {claim.amount}
                         </div>
                       </div>
                     </div>
@@ -1186,7 +1170,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search by Patient ID, Claim ID, Username, or Provider..."
+                placeholder="Search by Patient ID, Claim ID, or Provider..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQueryLocal(e.target.value)}
@@ -1194,7 +1178,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
               <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Enter any part of Patient ID, Claim ID, Username, or Provider name to filter results
+              Enter any part of Patient ID, Claim ID, or Provider name to filter results
             </p>
           </div>
 
@@ -1360,9 +1344,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 Patient ID
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Username
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Provider
               </th>
               <th
@@ -1439,9 +1420,6 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900 font-mono">{claim.username}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{claim.provider}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{claim.date}</td>
@@ -1510,8 +1488,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           <span className="text-blue-600 mr-2">🔒</span>
           <span className="text-blue-800 text-sm">
             <strong>Privacy Protected:</strong> Patient names are not displayed for HIPAA compliance. Use Patient IDs
-            and usernames for identification. Full patient details are available in individual claim views for
-            authorized personnel only.
+            for identification. Full patient details are available in individual claim views for authorized personnel
+            only.
           </span>
         </div>
       </div>

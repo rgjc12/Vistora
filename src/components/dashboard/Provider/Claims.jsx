@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchClaims,
-  setSearchQuery,
-  removeClaim,
-} from "../../../store/slices/claimsSlice";
-import SearchBar from "../General/SearchBar";
-import Pagination from "../General/Pagination";
+// import { useSelector, useDispatch } from "react-redux";
+// import {
+//   fetchClaims,
+//   setSearchQuery,
+//   removeClaim,
+// } from "../../../store/slices/claimsSlice";
+// import SearchBar from "../General/SearchBar";
+// import Pagination from "../General/Pagination";
 import { useNavigate } from "react-router-dom"
 
 const Toast = ({ message, type = "success", onClose }) => {
@@ -85,6 +85,8 @@ const Claims = () => {
   const [showFlaggedClaimsModal, setShowFlaggedClaimsModal] = useState(false)
   const [sortConfig, setSortConfig] = useState({ key: "lastUpdated", direction: "desc" })
   const [toast, setToast] = useState(null)
+  const [showRemoveModal, setShowRemoveModal] = useState(false)
+  const [claimToRemove, setClaimToRemove] = useState(null)
 
   const showToast = (message, type = "success") => {
     setToast({ message, type })
@@ -111,6 +113,24 @@ const Claims = () => {
 
   useEffect(() => {
     loadClaimsFromStorage()
+
+    // Check for highlighted claim from notifications
+    const highlightClaimId = localStorage.getItem("highlightClaimId")
+    if (highlightClaimId) {
+      // Remove the highlight flag
+      localStorage.removeItem("highlightClaimId")
+      // Set a timeout to highlight the claim
+      setTimeout(() => {
+        const claimElement = document.querySelector(`[data-claim-id="${highlightClaimId}"]`)
+        if (claimElement) {
+          claimElement.scrollIntoView({ behavior: "smooth", block: "center" })
+          claimElement.classList.add("bg-yellow-100", "border-yellow-400")
+          setTimeout(() => {
+            claimElement.classList.remove("bg-yellow-100", "border-yellow-400")
+          }, 3000)
+        }
+      }, 500)
+    }
   }, [])
 
   // Add this useEffect after the existing useEffect
@@ -156,12 +176,6 @@ const Claims = () => {
           if (diffInMonths === 1) return "1 month ago"
           if (diffInMonths < 12) return `${diffInMonths} months ago`
           return `${Math.floor(diffInMonths / 12)} year${Math.floor(diffInMonths / 12) > 1 ? "s" : ""} ago`
-        }
-
-        // Generate username from patient name
-        const generateUsername = (firstName, lastName) => {
-          if (!firstName || !lastName) return `user${Math.floor(Math.random() * 1000)}`
-          return `${firstName.toLowerCase()}${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`
         }
 
         // Generate AI insights for each claim
@@ -272,7 +286,6 @@ const Claims = () => {
         return {
           id: claim.id,
           claimId: claim.claimId,
-          username: generateUsername(claim.patient?.firstName, claim.patient?.lastName),
           provider: claim.provider?.name || "Unknown Provider",
           details: `${claim.service?.diagnosis?.primary || "No diagnosis"} - ${claim.service?.procedures?.[0]?.code || "No procedure"}`,
           phoneNumber: claim.patient?.phone || "N/A",
@@ -316,18 +329,26 @@ const Claims = () => {
   }
 
   const handleRemoveClaim = (claimId) => {
-    if (window.confirm("Are you sure you want to remove this claim?")) {
+    const claim = claims.find((c) => c.id === claimId)
+    setClaimToRemove(claim)
+    setShowRemoveModal(true)
+  }
+
+  const confirmRemoveClaim = () => {
+    if (claimToRemove) {
       try {
         const storedClaims = JSON.parse(localStorage.getItem("vistora_claims") || "[]")
-        const updatedClaims = storedClaims.filter((claim) => claim.id !== claimId)
+        const updatedClaims = storedClaims.filter((claim) => claim.id !== claimToRemove.id)
         localStorage.setItem("vistora_claims", JSON.stringify(updatedClaims))
-        loadClaimsFromStorage() // Reload the claims
+        loadClaimsFromStorage()
         showToast("Claim removed successfully", "success")
       } catch (error) {
         console.error("Error removing claim:", error)
         showToast("Error removing claim", "error")
       }
     }
+    setShowRemoveModal(false)
+    setClaimToRemove(null)
   }
 
   const handleViewDetails = (claim) => {
@@ -441,7 +462,6 @@ const Claims = () => {
   const filteredClaims = sortedClaims.filter((claim) => {
     const matchesSearch =
       searchQuery === "" ||
-      claim.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.claimId.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
       claim.details.toLowerCase().includes(searchQuery.toLowerCase())
@@ -624,15 +644,15 @@ const Claims = () => {
               ))}
             </div>
           </div>
-        </div>
 
-        <div className="p-6 border-t border-slate-200 flex justify-end">
-          <button
-            onClick={() => setShowAuditModal(false)}
-            className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold"
-          >
-            Close Audit Trail
-          </button>
+          <div className="p-6 border-t border-slate-200 flex justify-end">
+            <button
+              onClick={() => setShowAuditModal(false)}
+              className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-semibold"
+            >
+              Close Audit Trail
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -674,9 +694,7 @@ const Claims = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <h3 className="font-bold text-lg text-slate-900">{claim.claimId}</h3>
-                      <p className="text-slate-600">
-                        Username: {claim.username} | Amount: ${claim.totalCharges.toFixed(2)}
-                      </p>
+                      <p className="text-slate-600">Amount: ${claim.totalCharges.toFixed(2)}</p>
                     </div>
                     <div className="flex space-x-2">
                       <button
@@ -805,7 +823,6 @@ const Claims = () => {
                   <p>✓ All claim data is cryptographically secured</p>
                   <p>✓ Complete audit trail maintained on immutable ledger</p>
                   <p>✓ Anti-fraud measures automatically applied</p>
-                  <p>✓ Anti-fraud measures automatically applied</p>
                 </div>
               </div>
 
@@ -816,8 +833,8 @@ const Claims = () => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <div className="text-sm font-semibold text-slate-500 mb-1">Username</div>
-                    <div className="text-slate-900 font-mono">{selectedClaim.username}</div>
+                    <div className="text-sm font-semibold text-slate-500 mb-1">Patient ID</div>
+                    <div className="text-slate-900 font-mono">PT-{selectedClaim.id.slice(-4)}</div>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-slate-500 mb-1">Date of Birth</div>
@@ -908,6 +925,40 @@ const Claims = () => {
     )
   }
 
+  const RemoveClaimModal = () => {
+    if (!showRemoveModal || !claimToRemove) return null
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-md w-full">
+          <div className="p-6 border-b border-slate-200">
+            <h3 className="text-lg font-bold text-slate-900">Remove Claim</h3>
+          </div>
+          <div className="p-6">
+            <p className="text-slate-700 mb-4">
+              Are you sure you want to remove claim <strong>{claimToRemove.claimId}</strong>? This action cannot be
+              undone.
+            </p>
+            <div className="flex space-x-3 justify-end">
+              <button
+                onClick={() => setShowRemoveModal(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmRemoveClaim}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Remove Claim
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (loading) {
     return <SkeletonLoader />
   }
@@ -960,7 +1011,7 @@ const Claims = () => {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="Search claims by username, claim ID, provider..."
+              placeholder="Search claims by claim ID, provider..."
               className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -1068,7 +1119,7 @@ const Claims = () => {
                     Claim ID
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Username
+                    Patient ID
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
                     Provider
@@ -1098,7 +1149,11 @@ const Claims = () => {
               </thead>
               <tbody className="divide-y divide-slate-200">
                 {filteredClaims.map((claim) => (
-                  <tr key={claim.id} className="hover:bg-slate-50 transition-colors duration-200">
+                  <tr
+                    key={claim.id}
+                    className="hover:bg-slate-50 transition-colors duration-200"
+                    data-claim-id={claim.id}
+                  >
                     <td className="px-6 py-4 text-sm font-semibold text-slate-900">
                       <div className="flex items-center space-x-2">
                         <span>{claim.claimId}</span>
@@ -1106,7 +1161,7 @@ const Claims = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-900">
-                      <div className="font-mono">{claim.username}</div>
+                      <div className="font-mono">PT-{claim.id.slice(-4)}</div>
                       <div className="text-xs text-slate-500">
                         Age: {claim.patientAge}, Gender: {claim.patientGender}
                       </div>
@@ -1174,6 +1229,9 @@ const Claims = () => {
 
       {/* Flagged Claims Modal */}
       <FlaggedClaimsModal />
+
+      {/* Remove Claim Modal */}
+      <RemoveClaimModal />
     </div>
   )
 }

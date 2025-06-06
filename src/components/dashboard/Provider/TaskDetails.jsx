@@ -1,13 +1,13 @@
 import React, { useEffect, useState} from "react";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 
 import { useParams, useNavigate } from "react-router-dom"
-import {
-  fetchTaskDetails,
-  setNewComment,
-  addComment,
-  updateTaskProgress,
-} from "../../../store/slices/tasksSlice";
+// import {
+//   fetchTaskDetails,
+//   setNewComment,
+//   addComment,
+//   updateTaskProgress,
+// } from "../../../store/slices/tasksSlice";
 
 //import { setActiveTab } from "../store/slices/uiSlice";
 

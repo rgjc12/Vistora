@@ -1,13 +1,13 @@
 
 import { useState, useEffect } from "react"
 
-import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchTasks,
-  setSearchQuery,
-  setFilter,
-  updateTaskProgress,
-} from "../../../store/slices/tasksSlice";
+// import { useSelector, useDispatch } from "react-redux";
+// import {
+//   fetchTasks,
+//   setSearchQuery,
+//   setFilter,
+//   updateTaskProgress,
+// } from "../../../store/slices/tasksSlice";
 import { useNavigate } from "react-router-dom";
 //import { setActiveTab } from "../../../pages/Profile/store/slices/uiSlice";
 

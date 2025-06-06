@@ -1,7 +1,7 @@
-import { User2Icon, UserIcon } from "lucide-react";
+// import { User2Icon, UserIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SmallerButton from "../../buttons/SmallerButton";
+// import SmallerButton from "../../buttons/SmallerButton";
 import { useToast } from "../../ui/ToastManager";
 import { updateUserProfile } from "../../../firebase/utils/updateUserProfile";
 

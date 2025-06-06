@@ -269,83 +269,11 @@ const SubmitClaim = () => {
         localStorage.removeItem("edit_claim_draft")
         localStorage.removeItem("editing_mode")
       }
-      // } else {
-      //   // NOT editing - ensure we start with a clean form
-      //   console.log("Starting with clean form - clearing all localStorage")
-      //   setIsEditing(false)
-      //   setEditingClaimId(null)
-
+    } else {
       // Clear any leftover editing flags and data
       localStorage.removeItem("edit_claim_draft")
       localStorage.removeItem("editing_mode")
       localStorage.removeItem("claim_form_data")
-
-      // Reset form to initial state
-      // setFormData({
-      //   patient: {
-      //     firstName: "",
-      //     lastName: "",
-      //     dateOfBirth: "",
-      //     gender: "",
-      //     ssn: "",
-      //     address: {
-      //       street: "",
-      //       city: "",
-      //       state: "",
-      //       zipCode: "",
-      //     },
-      //     phone: "",
-      //     email: "",
-      //   },
-      //   insurance: {
-      //     primary: {
-      //       company: "",
-      //       policyNumber: "",
-      //       groupNumber: "",
-      //       subscriberName: "",
-      //       subscriberDob: "",
-      //       relationship: "self",
-      //     },
-      //     secondary: {
-      //       hasSecondary: false,
-      //       company: "",
-      //       policyNumber: "",
-      //       groupNumber: "",
-      //     },
-      //   },
-      //   service: {
-      //     dateOfService: "",
-      //     placeOfService: "",
-      //     diagnosis: {
-      //       primary: "",
-      //       secondary: [],
-      //       description: "",
-      //     },
-      //     procedures: [
-      //       {
-      //         code: "",
-      //         description: "",
-      //         modifier: "",
-      //         units: 1,
-      //         charges: "",
-      //       },
-      //     ],
-      //     referringProvider: "",
-      //     authorizationNumber: "",
-      //   },
-      //   provider: {
-      //     npi: "",
-      //     name: "",
-      //     address: {
-      //       street: "",
-      //       city: "",
-      //       state: "",
-      //       zipCode: "",
-      //     },
-      //     phone: "",
-      //     taxId: "",
-      //   },
-      // })
 
       // Clear uploaded files
       setUploadedFiles([])
@@ -724,13 +652,21 @@ const SubmitClaim = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-              <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm text-center">
-                <div className="text-3xl font-bold text-emerald-600 mb-2">
-                  {submissionResult.aiValidation.approvalProbability}%
-                </div>
-                <div className="text-sm font-semibold text-slate-700">Approval Probability</div>
+            {/* Prominent AI Probability Display */}
+            <div className="bg-white rounded-2xl p-8 mb-6 border-2 border-purple-200 text-center">
+              <h4 className="text-lg font-bold text-slate-900 mb-4">AI Approval Prediction</h4>
+              <div className="text-6xl font-bold text-emerald-600 mb-4">
+                {submissionResult.aiValidation.approvalProbability}%
               </div>
+              <p className="text-xl text-slate-700 mb-2">Probability of Approval</p>
+              <p className="text-slate-600">
+                Based on historical data and claim analysis, this claim has a{" "}
+                <strong className="text-emerald-600">{submissionResult.aiValidation.approvalProbability}%</strong>{" "}
+                chance of approval
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm text-center">
                 <div className="text-3xl font-bold text-purple-600 mb-2">
                   {submissionResult.aiValidation.confidence}%
@@ -888,8 +824,7 @@ const SubmitClaim = () => {
                 </label>
                 <input
                   type="text"
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:
-border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 font-['Manrope',_sans-serif] ${
                     errors.lastName ? "border-red-300 bg-red-50" : "border-slate-200 hover:border-slate-300"
                   }`}
                   value={formData.patient.lastName}

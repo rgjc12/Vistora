@@ -130,7 +130,7 @@ const Profile = () => {
       </div>
       <div className="w-full flex flex-col md:flex-row gap-12 items-start">
         <div className="w-fit flex flex-col gap-4">
-          <div className="flex items-center justify-center w-28 h-28 lg:w-[200px] lg:h-[200px] rounded-full bg-neutral-200 text-neutral-400 p-4"></div>
+          <div className="flex overflow-hidden items-center justify-center w-28 h-28 lg:w-[200px] lg:h-[200px] rounded-full bg-neutral-200 text-neutral-400 p-4"></div>
           <div className="flex flex-col items-center gap-2 w-full">
             <button className="w-fit min-w-[120px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
               Update

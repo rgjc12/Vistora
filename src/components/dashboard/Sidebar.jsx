@@ -51,7 +51,7 @@ const Sidebar = ({ tabs, activeTab }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full min-h-[700px] z-40 bg-black text-white shadow-md transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 h-full min-h-[700px] z-40 bg-primary-dark text-white shadow-md transition-all duration-300 ease-in-out
           ${isOpen ? "w-[225px] lg:w-[275px]" : "w-[48px]"} px-2 lg:px-4 py-6`}
       >
         {isMobile && !isOpen && (
@@ -82,26 +82,23 @@ const Sidebar = ({ tabs, activeTab }) => {
                 className="w-auto h-[64px] sm:h-[80px]"
               />
             </a>
-            <div
-              className={`${
-                isMobile ? (isOpen ? "w-full" : "w-0") : ""
-              } w-full h-[1px] bg-neutral-400`}
-            ></div>
-            <div className="flex justify-start gap-2 items-center w-full truncate">
-              <div className="w-10 h-10 rounded-full bg-neutral-200 text-transparent">
-                a
+
+            <div className="flex justify-start gap-2 items-center w-full truncate p-4 px-3 bg-neutral-900/35 rounded-2xl hover:bg-neutral-900/50 cursor-pointer">
+              <div className="w-12 h-12 rounded-full  overflow-hidden">
+                <img
+                  src="/images/flower-wet-hero.jpg"
+                  alt="hero img"
+                  className="object-cover h-full"
+                />
               </div>
-              <a
-                href="/dashboard/profile"
-                className="cursor-pointer w-fit hover:text-neutral-400"
-              >
+              <a href="/dashboard/profile" className="cursor-pointer w-fit ">
                 {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 ) : user ? (
                   <div className="flex flex-col items-start gap-0 overflow-x-hidden w-full truncate">
-                    <h2 className="text-[0.9rem]">{user.name}</h2>
+                    <h2 className="text-[0.9rem]">{user.organizationName}</h2>
                     <p className="text-[0.75rem] text-neutral-200 truncate">
-                      {user.email}
+                      {user.userType}
                     </p>
                   </div>
                 ) : (
@@ -113,15 +110,18 @@ const Sidebar = ({ tabs, activeTab }) => {
         )}
 
         {/* Tab list */}
-        <nav className="flex mt-20 flex-col h-fit gap-2 my-4 transition-all duration-500 ease-in-out">
+        <nav className="flex mt-16 flex-col h-fit gap-2 my-4 transition-all duration-500 ease-in-out">
+          <span className="text-[0.75rem] text-neutral-200 mb-2 hidden min-[900px]:block">
+            Navigation
+          </span>
           {tabs &&
             tabs.map((tab, idx) => (
               <div
                 onClick={() => handleTabClick(tab.link)}
                 tabIndex={0}
-                className={`w-full p-2 rounded-xl hover:bg-neutral-800 cursor-pointer text-sm flex gap-4 items-center 
+                className={`w-full p-2 rounded-xl hover:bg-neutral-900/35 cursor-pointer text-sm flex gap-4 items-center 
                 ${!isOpen && "justify-center"}
-                ${activeTab === tab.label ? "bg-neutral-800" : ""}
+                ${activeTab === tab.label ? "bg-neutral-900/35" : ""}
                 `}
               >
                 <span className="">{tab.icon}</span>

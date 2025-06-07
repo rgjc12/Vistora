@@ -26,14 +26,14 @@ const AppWrapper = ({ children }) => {
                 uid: user.uid,
                 email: user.email,
                 name: data?.name || "No Name",
-                userType: data?.userType || "basic",
+                userType: data?.userType || "Healthcare Provider",
                 phone: data?.phone || "",
                 organizationAddress: data?.organizationAddress || "",
                 organizationName: data?.organizationName,
                 organizationEmail: data?.organizationEmail,
               },
               token,
-              role: data?.userType || "basic",
+              role: data?.userType || "Healthcare Provider",
             })
           );
         } catch (err) {

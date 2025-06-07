@@ -20,7 +20,7 @@ const DashButton = ({
           ? "bg-transparent border border-primary text-primary hover:bg-primary hover:text-white"
           : "bg-black text-white hover:bg-neutral-800"
       }
-      max-w-[350px] px-6 py-2 min-h-8 min-w-[140px] text-center text-[0.85rem] flex items-center justify-center gap-1
+      max-w-[350px] h-fit px-6 py-2 min-h-8 min-w-[140px] text-center text-[0.85rem] flex items-center justify-center gap-1
       `}
     >
       <span className={`${icon ? "block" : "hidden"}`}>{icon}</span>

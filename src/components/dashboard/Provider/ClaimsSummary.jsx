@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import DashboardStatCard from "../General/DashboardStatCard";
 import ReimbursementChartDashboard from "./ReimbursementChartDashboard";
+import ClaimBreakdownCard from "./ClaimBreakdownCard";
 
 const ClaimsSummary = ({ onSubmitClick }) => {
   const navigate = useNavigate();
@@ -1152,6 +1153,9 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       <div className="w-full grid grid-cols-1 min-[1440px]:grid-cols-8 gap-4">
         <div className="col-span-1 min-[1440px]:col-span-5">
           <ReimbursementChartDashboard />
+        </div>
+        <div className="col-span-1 min-[1440px]:col-span-3">
+          <ClaimBreakdownCard />
         </div>
       </div>
 

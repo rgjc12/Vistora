@@ -10,7 +10,16 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../buttons/PrimaryButton";
 import SmallerButton from "../../buttons/SmallerButton";
 import DashButton from "../../buttons/DashButton";
-import { PlusCircleIcon } from "lucide-react";
+import {
+  Ban,
+  Clock,
+  DollarSign,
+  FileWarning,
+  Loader,
+  PlusCircleIcon,
+} from "lucide-react";
+import DashboardStatCard from "../General/DashboardStatCard";
+import ReimbursementChartDashboard from "./ReimbursementChartDashboard";
 
 const ClaimsSummary = ({ onSubmitClick }) => {
   const navigate = useNavigate();
@@ -1029,12 +1038,14 @@ const ClaimsSummary = ({ onSubmitClick }) => {
   }
 
   return (
-    <div className="space-y-6 font-['Manrope',_sans-serif]">
+    <div className="space-y-3 font-['Manrope',_sans-serif]">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-          Claims Dashboard
-        </h1>
+      <div className="flex flex-wrap justify-between">
+        <div className="w-fit flex flex-col items-start xl:flex-row  xl:items-center gap-6">
+          <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+            Claims Dashboard
+          </h1>
+        </div>
 
         <DashButton
           icon={<PlusCircleIcon />}
@@ -1061,8 +1072,45 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       )}
 
       {/* Enhanced KPI Metrics */}
-      <div className="grid grid-cols-5 gap-4">
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
+      <div className="flex flex-wrap w-full gap-2 xl:gap-3">
+        <DashboardStatCard
+          cardTitle={"Reimbursed This Month"}
+          cardNumber={"$2,450.00"}
+          cardAnalytics={"+12% from last month"}
+          cardMoney={true}
+          analyticsPositive={true}
+          icon={<DollarSign className="size-[24px] " />}
+        />
+        <DashboardStatCard
+          cardTitle={"Claims Awaiting Action"}
+          cardNumber={"5"}
+          cardAnalytics={"Requires Immediate Attention"}
+          cardHighlighted={true}
+          icon={<FileWarning className="size-[24px] " />}
+        />
+        <DashboardStatCard
+          cardTitle={"Claims In Review"}
+          cardNumber={"2"}
+          cardAnalytics={"Avg 2-3 days processing"}
+          cardHighlighted={false}
+          icon={<Loader className="size-[24px] " />}
+        />
+        <DashboardStatCard
+          cardTitle={"Rejected Claims"}
+          cardNumber={"1"}
+          cardAnalytics={"Need Resubmission"}
+          cardHighlighted={false}
+          icon={<Ban className="size-[24px] " />}
+        />
+        <DashboardStatCard
+          cardTitle={"Avg Time to Payment"}
+          cardNumber={"5.2 days"}
+          cardAnalytics={"0.8 days improvement"}
+          cardHighlighted={false}
+          icon={<Clock className="size-[24px] " />}
+        />
+        {/**
+           *   <div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">$ Reimbursed This Month</div>
           <div className="text-2xl font-bold text-green-600">
             ${stats.totalReimbursed.toLocaleString()}
@@ -1071,14 +1119,12 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             ↑ 12% from last month
           </div>
         </div>
-
-        <div className=" p-6 rounded-lg border-2 border-primary bg-primary-light/10 shadow-sm">
+           *   <div className=" p-6 rounded-lg border-2 border-primary bg-primary-light/10 shadow-sm">
           <div className="text-sm text-gray-600">Claims Awaiting Action</div>
           <div className="text-2xl font-bold ">{stats.awaitingAction}</div>
           <div className="text-xs  mt-1">Requires immediate attention</div>
         </div>
-
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
+          *<div className="bg-white p-6 rounded-lg border shadow-sm">
           <div className="text-sm text-gray-600">Claims in Review</div>
           <div className="text-2xl font-bold ">{stats.inReview}</div>
           <div className="text-xs text-primary mt-1">
@@ -1099,34 +1145,22 @@ const ClaimsSummary = ({ onSubmitClick }) => {
           </div>
           <div className="text-xs text-primary">↓ 0.8 days improved</div>
         </div>
+        *
+           */}
       </div>
 
-      {/* AI Insights Card */}
-      <div className=" rounded-2xl p-4 bg-neutral-100 border border-neutral-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-neutral-800 mr-2">🤖</span>
-            <span className="font-medium text-neutral-800">
-              AI Predictions:
-            </span>
-            <span className="text-neutral-800 ml-2">
-              {claims.filter((c) => c.aiFlag).length} flagged claims may be at
-              risk this week
-            </span>
-          </div>
-          <button
-            className="text-neutral-800 hover:text-neutral-600 text-sm font-medium"
-            onClick={handleViewFlaggedClaims}
-          >
-            View Flagged Claims →
-          </button>
+      <div className="w-full grid grid-cols-1 min-[1440px]:grid-cols-8 gap-4">
+        <div className="col-span-1 min-[1440px]:col-span-5">
+          <ReimbursementChartDashboard />
         </div>
       </div>
 
-      {/* Claims Status Summary Sections */}
+      {/* Claims Status Summary Sections -- hidden for now */}
       <div className="grid grid-cols-3 gap-4">
         {/* Approved Claims */}
-        <div className=" border-2 border-neutral-100 ounded-lg p-4">
+        {/** 
+           * 
+           *  <div className=" border-2 border-neutral-100 ounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <span className="text-green-600 mr-2">✓</span>
@@ -1161,9 +1195,12 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             )}
           </div>
         </div>
+          */}
 
         {/* In Progress Claims */}
-        <div className=" border-2 border-neutral-100 rounded-lg p-4">
+        {/**
+           * 
+           *  <div className=" border-2 border-neutral-100 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <span className="text-yellow-600 mr-2">⏳</span>
@@ -1220,9 +1257,12 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             )}
           </div>
         </div>
+           */}
 
         {/* Rejected Claims */}
-        <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4">
+        {/**
+           * 
+           *  <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <span className="text-red-600 mr-2">✗</span>
@@ -1265,6 +1305,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             )}
           </div>
         </div>
+           * 
+           */}
       </div>
 
       {/* Improved Sticky Filter Toolbar */}

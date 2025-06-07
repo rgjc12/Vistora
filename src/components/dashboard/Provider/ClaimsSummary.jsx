@@ -6,7 +6,6 @@ import {
   removeClaim,
 } from "../../../store/slices/claimsSlice";
 import { setActiveTab } from "../../../store/slices/uiSlice";
-import React, { useState, useEffect } from "react";
 // import { useSelector, useDispatch } from "react-redux";
 // import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/claimsSlice";
 // import { setActiveTab } from "../../../store/slices/uiSlice";

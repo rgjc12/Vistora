@@ -140,6 +140,12 @@ const SubmitClaim = () => {
     localStorage.setItem("vistora_notifications", JSON.stringify(existingNotifications))
   }
 
+  // Function to trigger chart updates
+  const triggerChartUpdate = () => {
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent("claimUpdated"))
+  }
+
   // Mock AI validation
   useEffect(() => {
     if (formData.service.diagnosis.primary && formData.service.procedures[0].code) {
@@ -473,6 +479,11 @@ const SubmitClaim = () => {
       // Add new claim
       existingClaims.push(claimData)
       localStorage.setItem("vistora_claims", JSON.stringify(existingClaims))
+    }
+
+    // Trigger chart update when a non-draft claim is saved
+    if (!isDraft) {
+      triggerChartUpdate()
     }
 
     return claimData

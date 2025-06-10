@@ -1,14 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchClaims,
-  setSearchQuery,
-  removeClaim,
-} from "../../../store/slices/claimsSlice";
-import { setActiveTab } from "../../../store/slices/uiSlice";
-// import { useSelector, useDispatch } from "react-redux";
-// import { fetchClaims, setSearchQuery , removeClaim} from "../../../store/slices/claimsSlice";
-// import { setActiveTab } from "../../../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../buttons/PrimaryButton";
 import SmallerButton from "../../buttons/SmallerButton";
@@ -20,6 +10,7 @@ import {
   FileWarning,
   Loader,
   PlusCircleIcon,
+  SearchIcon,
 } from "lucide-react";
 import DashboardStatCard from "../General/DashboardStatCard";
 import ReimbursementChartDashboard from "./ReimbursementChartDashboard";
@@ -382,7 +373,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       buttons.push(
         <button
           key="resubmit"
-          className="text-blue-600 hover:text-blue-800 text-sm mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
+          className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
           onClick={() => handleResubmitClaim(claim)}
         >
           Resubmit
@@ -391,7 +382,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       buttons.push(
         <button
           key="edit-rejected"
-          className="text-orange-600 hover:text-orange-800 text-sm mr-2 hover:bg-orange-50 px-2 py-1 rounded transition-all duration-200"
+          className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-orange-50 px-2 py-1 rounded transition-all duration-200"
           onClick={() => handleEditClaim(claim)}
         >
           Edit
@@ -403,7 +394,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       buttons.push(
         <button
           key="download"
-          className="text-green-600 hover:text-green-800 text-sm mr-2 hover:bg-green-50 px-2 py-1 rounded transition-all duration-200"
+          className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-green-50 px-2 py-1 rounded transition-all duration-200"
           onClick={() => handleDownloadEOB(claim)}
         >
           Download EOB
@@ -414,7 +405,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     buttons.push(
       <button
         key="view"
-        className="text-gray-600 hover:text-gray-800 text-sm mr-2 hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+        className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
         onClick={() => handleViewClaim(claim)}
       >
         View
@@ -425,7 +416,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       buttons.push(
         <button
           key="edit"
-          className="text-blue-600 hover:text-blue-800 text-sm mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
+          className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
           onClick={() => handleEditClaim(claim)}
         >
           Edit
@@ -438,7 +429,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       buttons.push(
         <button
           key="edit-flagged"
-          className="text-purple-600 hover:text-purple-800 text-sm mr-2 hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
+          className="text-neutral-600 hover:text-neutral-800 text-xs mr-2 hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
           onClick={() => handleEditClaim(claim)}
         >
           Edit
@@ -449,7 +440,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     buttons.push(
       <button
         key="track"
-        className="text-purple-600 hover:text-purple-800 text-sm hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
+        className="text-neutral-600 hover:text-neutral-800 text-xs hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
         onClick={() => handleTrackClaim(claim)}
       >
         Track
@@ -504,7 +495,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     if (!selectedClaim || !showViewModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="fixed inset-0 border border-green-300 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           <div className="p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
@@ -1410,43 +1401,37 @@ const ClaimsSummary = ({ onSubmitClick }) => {
            */}
       </div>
 
-      {/* Improved Sticky Filter Toolbar */}
-      <div className="bg-white border rounded-lg p-6 sticky top-0 z-10 shadow-sm">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Search & Filter Claims
-        </h3>
-
-        <div className="space-y-4">
-          {/* Search Bar */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Search Claims
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search by Patient ID, Claim ID, or Provider..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQueryLocal(e.target.value)}
-              />
-              <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
+      <div className="w-full rounded-2xl flex flex-col gap-0 ">
+        {/* Improved Sticky Filter Toolbar */}
+        <div className="sticky top-0 z-10">
+          <h3 className="text-lg text-gray-900 mb-4">Search & Filter Claims</h3>
+          <div className="w-full items-start grid grid-cols-2 md:grid-cols-4 min-[1500px]:grid-cols-8 gap-2">
+            <div className="w-full max-w-[900px] col-span-2 md:col-span-4 lg:col-span-3">
+              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
+                Enter any part of Patient ID, Claim ID, or Provider name to
+                filter results
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search by Patient ID, Claim ID, or Provider..."
+                  className="w-full pl-10 pr-4 py-3 border border-neutral-200 rounded-[8px] text-[0.75rem] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQueryLocal(e.target.value)}
+                />
+                <span className="absolute left-3 top-3 text-gray-400">
+                  <SearchIcon className="text-neutral-400 size-[18px]" />
+                </span>
+              </div>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Enter any part of Patient ID, Claim ID, or Provider name to filter
-              results
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Status Filter Dropdown */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="w-full col-span-2 md:col-span-2 lg:col-span-1">
+              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
                 Claim Status
               </label>
               <div className="relative">
                 <select
-                  className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                  className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
                   onChange={(e) => {
                     const value = e.target.value;
                     if (value) {
@@ -1502,15 +1487,14 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 </div>
               )}
             </div>
-
             {/* Date Range Filters */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="w-full col-span-1">
+              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
                 Date Range Start
               </label>
               <input
                 type="date"
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-2 py-3 text-[0.75rem] border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.dateRange.start}
                 onChange={(e) =>
                   setFilters((prev) => ({
@@ -1520,14 +1504,13 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 }
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="w-full col-span-1">
+              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
                 Date Range End
               </label>
               <input
                 type="date"
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={filters.dateRange.end}
                 onChange={(e) =>
                   setFilters((prev) => ({
@@ -1537,34 +1520,39 @@ const ClaimsSummary = ({ onSubmitClick }) => {
                 }
               />
             </div>
-
             {/* Amount Range */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="w-full col-span-2">
+              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
                 Amount Range
               </label>
-              <div className="flex space-x-2">
+              <div className="flex gap-2 w-fit">
                 <input
                   type="number"
                   placeholder="Min $"
-                  className="flex-1 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={filters.amountRange.min}
                   onChange={(e) =>
                     setFilters((prev) => ({
                       ...prev,
-                      amountRange: { ...prev.amountRange, min: e.target.value },
+                      amountRange: {
+                        ...prev.amountRange,
+                        min: e.target.value,
+                      },
                     }))
                   }
                 />
                 <input
                   type="number"
                   placeholder="Max $"
-                  className="flex-1 px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={filters.amountRange.max}
                   onChange={(e) =>
                     setFilters((prev) => ({
                       ...prev,
-                      amountRange: { ...prev.amountRange, max: e.target.value },
+                      amountRange: {
+                        ...prev.amountRange,
+                        max: e.target.value,
+                      },
                     }))
                   }
                 />
@@ -1572,206 +1560,211 @@ const ClaimsSummary = ({ onSubmitClick }) => {
             </div>
           </div>
 
-          {/* Filter Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-            <div className="text-sm text-gray-600">
-              {filters.status.length > 0 ||
-              filters.dateRange.start ||
-              filters.dateRange.end ||
-              filters.amountRange.min ||
-              filters.amountRange.max ? (
-                <span>Filters applied</span>
-              ) : (
-                <span>No filters applied</span>
-              )}
-            </div>
-
-            <div className="flex space-x-2">
-              <button
-                onClick={() => {
-                  setFilters({
-                    status: [],
-                    dateRange: { start: "", end: "" },
-                    amountRange: { min: "", max: "" },
-                  });
-                  setSearchQueryLocal("");
-                }}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Clear All Filters
-              </button>
-              <DashButton text={"Export Results"} primary={true} />
+          <div className="my-4">
+            {/* Filter Actions */}
+            <div className="flex items-center gap-4">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setFilters({
+                      status: [],
+                      dateRange: { start: "", end: "" },
+                      amountRange: { min: "", max: "" },
+                    });
+                    setSearchQueryLocal("");
+                  }}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Clear All Filters
+                </button>
+                <DashButton text={"Export Results"} primary={true} />
+              </div>
+              <div className="text-sm text-gray-600">
+                {filters.status.length > 0 ||
+                filters.dateRange.start ||
+                filters.dateRange.end ||
+                filters.amountRange.min ||
+                filters.amountRange.max ? (
+                  <span>Filters applied</span>
+                ) : (
+                  <span>No filters applied</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Enhanced Claims Table */}
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Claim ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Patient ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Provider
-              </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSort("date")}
-              >
-                Date{" "}
-                {sortConfig.key === "date" &&
-                  (sortConfig.direction === "asc" ? "↑" : "↓")}
-              </th>
-              <th
-                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                onClick={() => handleSort("amount")}
-              >
-                Amount{" "}
-                {sortConfig.key === "amount" &&
-                  (sortConfig.direction === "asc" ? "↑" : "↓")}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Last Updated
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {filteredClaims.map((claim) => (
-              <tr key={claim.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
+        {/* Enhanced Claims Table */}
+        <div className="bg-white shadow rounded-2xl border overflow-hidden my-2">
+          <table className="w-full">
+            <thead className="bg-neutral-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Claim ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Patient ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Provider
+                </th>
+                <th
+                  className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider cursor-pointer hover:bg-neutral-100"
+                  onClick={() => handleSort("date")}
+                >
+                  Date{" "}
+                  {sortConfig.key === "date" &&
+                    (sortConfig.direction === "asc" ? "↑" : "↓")}
+                </th>
+                <th
+                  className="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider cursor-pointer hover:bg-neutral-100"
+                  onClick={() => handleSort("amount")}
+                >
+                  Amount{" "}
+                  {sortConfig.key === "amount" &&
+                    (sortConfig.direction === "asc" ? "↑" : "↓")}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Last Updated
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-neutral-200">
+              {filteredClaims.map((claim) => (
+                <tr key={claim.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <span
+                        className="text-primary-dark font-mono text-xs cursor-pointer hover:text-primary-light"
+                        onClick={() => {
+                          copyClaimId(claim.id);
+                          setMaskedIds(false);
+                        }}
+                        onMouseLeave={() => setMaskedIds(true)}
+                        title="Click to copy Claim ID"
+                      >
+                        {maskedIds
+                          ? `${claim.id.substring(0, 4)}...${claim.id.slice(
+                              -4
+                            )}`
+                          : claim.id}
+                      </span>
+                      <button
+                        className="ml-2 text-neutral-400 hover:text-neutral-600"
+                        onClick={() => copyClaimId(claim.id)}
+                        title="Copy Claim ID"
+                      >
+                        📋
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <span
+                        className="text-neutral-400 font-mono text-xs cursor-pointer hover:text-primary-light"
+                        onClick={() => {
+                          copyPatientId(claim.patientId);
+                          setMaskedIds(false);
+                        }}
+                        onMouseLeave={() => setMaskedIds(true)}
+                        title="Click to copy Patient ID"
+                      >
+                        {maskedIds
+                          ? `${claim.patientId.substring(
+                              0,
+                              3
+                            )}...${claim.patientId.slice(-4)}`
+                          : claim.patientId}
+                      </span>
+                      <button
+                        className="ml-2 text-gray-400 hover:text-gray-600"
+                        onClick={() => copyPatientId(claim.patientId)}
+                        title="Copy Patient ID"
+                      >
+                        📋
+                      </button>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {claim.patientAge}y, {claim.patientGender}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-xs text-gray-900">
+                      {claim.provider}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                    {claim.date}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
                     <span
-                      className="text-blue-600 font-mono text-sm cursor-pointer hover:text-blue-800"
-                      onClick={() => {
-                        copyClaimId(claim.id);
-                        setMaskedIds(false);
-                      }}
-                      onMouseLeave={() => setMaskedIds(true)}
-                      title="Click to copy Claim ID"
-                    >
-                      {maskedIds
-                        ? `${claim.id.substring(0, 4)}...${claim.id.slice(-4)}`
-                        : claim.id}
-                    </span>
-                    <button
-                      className="ml-2 text-gray-400 hover:text-gray-600"
-                      onClick={() => copyClaimId(claim.id)}
-                      title="Copy Claim ID"
-                    >
-                      📋
-                    </button>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <span
-                      className="text-purple-600 font-mono text-sm cursor-pointer hover:text-purple-800"
-                      onClick={() => {
-                        copyPatientId(claim.patientId);
-                        setMaskedIds(false);
-                      }}
-                      onMouseLeave={() => setMaskedIds(true)}
-                      title="Click to copy Patient ID"
-                    >
-                      {maskedIds
-                        ? `${claim.patientId.substring(
-                            0,
-                            3
-                          )}...${claim.patientId.slice(-4)}`
-                        : claim.patientId}
-                    </span>
-                    <button
-                      className="ml-2 text-gray-400 hover:text-gray-600"
-                      onClick={() => copyPatientId(claim.patientId)}
-                      title="Copy Patient ID"
-                    >
-                      📋
-                    </button>
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {claim.patientAge}y, {claim.patientGender}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{claim.provider}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {claim.date}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <span
-                    className={`text-sm font-medium ${
-                      Number.parseFloat(claim.amount.replace(/[$,]/g, "")) >
-                      5000
-                        ? "text-purple-600 font-bold"
-                        : "text-gray-900"
-                    }`}
-                  >
-                    {claim.amount}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center space-x-2">
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        claim.status === "Paid"
-                          ? "bg-green-100 text-green-800"
-                          : claim.status === "Under Review"
-                          ? "bg-blue-100 text-blue-800"
-                          : claim.status === "Rejected"
-                          ? "bg-red-100 text-red-800"
-                          : claim.status === "Pending Authorization"
-                          ? "bg-orange-100 text-orange-800"
-                          : claim.status === "Draft"
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-yellow-100 text-yellow-800"
+                      className={`text-xs font-medium ${
+                        Number.parseFloat(claim.amount.replace(/[$,]/g, "")) >
+                        5000
+                          ? "text-purple-600 font-bold"
+                          : "text-gray-900"
                       }`}
                     >
-                      {claim.status}
+                      {claim.amount}
                     </span>
-                    {claim.aiFlag && (
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center space-x-2">
                       <span
-                        className="text-xs bg-purple-100 text-purple-800 px-1 py-0.5 rounded cursor-pointer hover:bg-purple-200"
-                        title="AI flagged for review - Click for details"
-                        onClick={() => handleAIFlagDetails(claim)}
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          claim.status === "Paid"
+                            ? "bg-green-100 text-green-800"
+                            : claim.status === "Under Review"
+                            ? "bg-blue-100 text-blue-800"
+                            : claim.status === "Rejected"
+                            ? "bg-red-100 text-red-800"
+                            : claim.status === "Pending Authorization"
+                            ? "bg-orange-100 text-orange-800"
+                            : claim.status === "Draft"
+                            ? "bg-amber-100 text-amber-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
                       >
-                        AI Flag
+                        {claim.status}
                       </span>
-                    )}
-                    {claim.docsMissing && (
-                      <span
-                        className="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded"
-                        title="Missing required documents"
-                      >
-                        Docs Missing
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {claim.lastUpdated}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <div className="flex space-x-1">
-                    {getActionButtons(claim)}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      {claim.aiFlag && (
+                        <span
+                          className="text-xs bg-purple-100 text-purple-800 px-1 py-0.5 rounded cursor-pointer hover:bg-purple-200"
+                          title="AI flagged for review - Click for details"
+                          onClick={() => handleAIFlagDetails(claim)}
+                        >
+                          AI Flag
+                        </span>
+                      )}
+                      {claim.docsMissing && (
+                        <span
+                          className="text-xs bg-orange-100 text-orange-800 px-1 py-0.5 rounded"
+                          title="Missing required documents"
+                        >
+                          Docs Missing
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
+                    {claim.lastUpdated}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-xs">
+                    <div className="flex space-x-1">
+                      {getActionButtons(claim)}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Privacy Notice */}

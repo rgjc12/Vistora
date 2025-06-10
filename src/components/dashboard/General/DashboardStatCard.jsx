@@ -16,7 +16,7 @@ const DashboardStatCard = ({
         ${
           cardHighlighted
             ? "bg-primary-light/15 border-2 border-primary-dark text-black"
-            : "bg-white border border-neutral-200"
+            : "bg-gradient-to-r from-primary-dark to-red-900 text-white border border-neutral-200"
         }
     `}
     >
@@ -24,7 +24,7 @@ const DashboardStatCard = ({
         className={`w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-full border ${
           cardHighlighted
             ? "border-primary-dark text-primary-dark"
-            : "border-neutral-400 text-neutral-400"
+            : "border-white text-white"
         }`}
       >
         {icon ? icon : <AlertCircle className="size-[16px] lg:size-[24px]" />}
@@ -32,22 +32,22 @@ const DashboardStatCard = ({
       <div className="w-fit flex flex-col items-start">
         <p
           className={`${
-            cardHighlighted ? "text-black" : "text-neutral-400"
+            cardHighlighted ? "text-black" : "text-white font-medium"
           } text-[0.7rem] lg:text-[0.8rem]`}
         >
           {cardTitle ? cardTitle : "Card Title"}
         </p>
         <p
           className={`text-xl lg:text-2xl font-medium ${
-            cardMoney ? "text-green-600" : ""
+            cardMoney ? "text-white" : ""
           }`}
         >
           {cardNumber ? cardNumber : "$2,400.00"}
         </p>
 
         <p
-          className={`text-[0.6rem] truncate lg:text-[0.65rem] w-full mt-2 ${
-            analyticsPositive ? "text-green-800" : ""
+          className={`text-[0.6rem] truncate lg:text-[0.7rem] w-full mt-2 ${
+            analyticsPositive ? "text-white" : ""
           } `}
         >
           {cardAnalytics ? cardAnalytics : "12% from last month"}

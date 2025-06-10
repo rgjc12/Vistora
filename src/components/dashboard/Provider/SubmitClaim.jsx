@@ -1,4 +1,15 @@
-import { InfoIcon, LockIcon } from "lucide-react";
+import {
+  Check,
+  CheckSquare,
+  ClipboardEditIcon,
+  File,
+  HeartPulseIcon,
+  InfoIcon,
+  LockIcon,
+  Pill,
+  User,
+} from "lucide-react";
+
 import React, { useState, useEffect } from "react";
 //import { useSelector, useDispatch } from "react-redux";
 //import { setActiveTab } from "../store/slices/uiSlice";
@@ -300,12 +311,12 @@ const SubmitClaim = () => {
   }, []); // Only run once on mount
 
   const steps = [
-    { id: 1, title: "Patient Info", icon: "👤" },
-    { id: 2, title: "Insurance", icon: "🏥" },
-    { id: 3, title: "Service Details", icon: "⚕️" },
-    { id: 4, title: "Provider Info", icon: "🏢" },
-    { id: 5, title: "Documents", icon: "📄" },
-    { id: 6, title: "Review", icon: "✅" },
+    { id: 1, title: "Patient Info", icon: <User /> },
+    { id: 2, title: "Insurance", icon: <ClipboardEditIcon /> },
+    { id: 3, title: "Service Details", icon: <HeartPulseIcon /> },
+    { id: 4, title: "Provider Info", icon: <Pill /> },
+    { id: 5, title: "Documents", icon: <File /> },
+    { id: 6, title: "Review", icon: <CheckSquare /> },
   ];
 
   const handleInputChange = (section, field, value, index = null) => {
@@ -726,7 +737,7 @@ const SubmitClaim = () => {
           </div>
 
           {/* AI Analysis Results */}
-          <div className="bg-primary/15 border border-primary-dark rounded-2xl p-8">
+          <div className="bg-white border border-neutral-200 shadow-xl rounded-2xl p-8">
             <div className="flex items-center space-x-4 mb-6">
               <div className="w-12 h-12 bg-white/50 rounded-full flex items-center justify-center">
                 <span className="text-primary-dark text-2xl">🤖</span>
@@ -735,7 +746,7 @@ const SubmitClaim = () => {
                 <h3 className="text-2xl font-bold text-neutral-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                   AI Analysis Complete
                 </h3>
-                <p className="text-primary-dark">
+                <p className="text-neutral-400">
                   Advanced claim validation and approval prediction
                 </p>
               </div>
@@ -762,15 +773,15 @@ const SubmitClaim = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm text-center">
-                <div className="text-3xl font-bold text-primary mb-2">
+              <div className="bg-white rounded-xl p-6 border shadow-sm text-center">
+                <div className="text-3xl font-bold text-emerald-600 mb-2">
                   {submissionResult.aiValidation.confidence}%
                 </div>
                 <div className="text-sm font-semibold text-neutral-700">
                   AI Confidence
                 </div>
               </div>
-              <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm text-center">
+              <div className="bg-white rounded-xl p-6 border  shadow-sm text-center">
                 <div className="text-3xl font-bold text-emerald-600 mb-2">
                   {submissionResult.aiValidation.fraudScore}%
                 </div>
@@ -778,8 +789,8 @@ const SubmitClaim = () => {
                   Fraud Risk
                 </div>
               </div>
-              <div className="bg-white rounded-xl p-6 border border-purple-100 shadow-sm text-center">
-                <div className="text-3xl font-bold text-primary mb-2">
+              <div className="bg-white rounded-xl p-6 border  shadow-sm text-center">
+                <div className="text-3xl font-bold text-emerald-600 mb-2">
                   {submissionResult.aiValidation.complianceScore}%
                 </div>
                 <div className="text-sm font-semibold text-neutral-700">
@@ -1205,7 +1216,7 @@ const SubmitClaim = () => {
               <h2 className="text-2xl font-bold text-neutral-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                 Insurance Information
               </h2>
-              <p className="text-neutral-600 mt-2 font-['Manrope',_sans-serif]">
+              <p className="text-neutral-600 font-['Manrope',_sans-serif]">
                 Provide primary and secondary insurance details
               </p>
             </div>
@@ -1436,7 +1447,7 @@ const SubmitClaim = () => {
               <h2 className="text-2xl font-bold text-neutral-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                 Service Details
               </h2>
-              <p className="text-neutral-600 mt-2 font-['Manrope',_sans-serif]">
+              <p className="text-neutral-600 font-['Manrope',_sans-serif]">
                 Enter diagnosis codes, procedures, and service information
               </p>
             </div>
@@ -1957,7 +1968,7 @@ const SubmitClaim = () => {
               <h2 className="text-2xl font-bold text-neutral-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                 Provider Information
               </h2>
-              <p className="text-neutral-600 mt-2 font-['Manrope',_sans-serif]">
+              <p className="text-neutral-600 font-['Manrope',_sans-serif]">
                 Enter details about the healthcare provider
               </p>
             </div>
@@ -2282,7 +2293,7 @@ const SubmitClaim = () => {
               )}
             </div>
 
-            <div className="bg-primary/25 border border-primary-dark rounded-2xl p-6">
+            <div className="bg-primary/15 border border-primary-dark rounded-2xl p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-white/25 rounded-full flex items-center justify-center">
                   <span className="text-primary text-xl">
@@ -2322,7 +2333,7 @@ const SubmitClaim = () => {
               <h2 className="text-2xl font-bold text-neutral-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                 Review and Submit
               </h2>
-              <p className="text-neutral-600 mt-2 font-['Manrope',_sans-serif]">
+              <p className="text-neutral-600 font-['Manrope',_sans-serif]">
                 Please review all information before submitting your claim
               </p>
             </div>
@@ -2705,7 +2716,7 @@ const SubmitClaim = () => {
                   step.id < currentStep
                     ? "text-emerald-600"
                     : step.id === currentStep
-                    ? "text-blue-600"
+                    ? "text-primary"
                     : "text-neutral-400"
                 }`}
               >
@@ -2714,11 +2725,11 @@ const SubmitClaim = () => {
                     step.id < currentStep
                       ? "bg-emerald-100 text-emerald-600"
                       : step.id === currentStep
-                      ? "bg-blue-100 text-blue-600"
+                      ? "bg-primary/25 text-primary"
                       : "bg-neutral-100 text-neutral-400"
                   }`}
                 >
-                  {step.id < currentStep ? "✓" : step.icon}
+                  {step.id < currentStep ? <Check /> : step.icon}
                 </div>
                 <div className="text-sm font-semibold">{step.title}</div>
               </div>

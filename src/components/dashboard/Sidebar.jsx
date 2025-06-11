@@ -51,7 +51,7 @@ const Sidebar = ({ tabs, activeTab }) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full min-h-[700px] z-40 bg-primary-dark text-white shadow-md transition-all duration-300 ease-in-out
+        className={`fixed font-['Aktiv_Grotesk',_'Manrope',_sans-serif] top-0 left-0 h-full min-h-[700px] z-40 bg-primary-dark text-white shadow-md transition-all duration-300 ease-in-out
           ${isOpen ? "w-[225px] lg:w-[275px]" : "w-[48px]"} px-2 lg:px-4 py-6`}
       >
         {isMobile && !isOpen && (
@@ -119,7 +119,7 @@ const Sidebar = ({ tabs, activeTab }) => {
               <div
                 onClick={() => handleTabClick(tab.link)}
                 tabIndex={0}
-                className={`w-full p-2 rounded-xl hover:bg-neutral-900/35 cursor-pointer text-sm flex gap-4 items-center 
+                className={`w-full p-2 rounded-xl hover:bg-neutral-900/35 cursor-pointer text-xs flex gap-4 items-center 
                 ${!isOpen && "justify-center"}
                 ${activeTab === tab.label ? "bg-neutral-900/35" : ""}
                 `}
@@ -127,7 +127,9 @@ const Sidebar = ({ tabs, activeTab }) => {
                 <span className="">{tab.icon}</span>
                 {isOpen && (
                   <span
-                    className={`${isOpen ? "flex" : "hidden"} text-[0.85rem]`}
+                    className={`${
+                      isOpen ? "flex" : "hidden"
+                    } text-[0.8rem] font-medium`}
                   >
                     {tab.label}
                   </span>

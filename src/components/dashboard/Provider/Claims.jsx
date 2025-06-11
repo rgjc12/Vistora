@@ -550,7 +550,7 @@ const Claims = () => {
     const insights = claim.aiInsights;
 
     return (
-      <div className="w-80 bg-gradient-to-b from-purple-50 to-indigo-50 border-l-2 border-purple-200 p-6">
+      <div className="w-80 bg-gradient-to-b from-primary-light to-primary-dark border-l-2 border-primary-dark p-6">
         <div className="flex items-center space-x-3 mb-6">
           <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
             <span className="text-purple-600 text-xl">🤖</span>
@@ -1158,24 +1158,24 @@ const Claims = () => {
 
       {/* AI Predictions Card */}
       {flaggedClaimsCount > 0 && (
-        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-2xl p-6">
+        <div className="bg-gradient-to-r from-primary-dark to-red-800 rounded-2xl px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <span className="text-purple-600 text-2xl">🤖</span>
+              <div className="w-10 h-10 bg-white/25 rounded-full flex items-center justify-center">
+                <span className="text-white text-2xl">🤖</span>
               </div>
               <div>
-                <h3 className="font-bold text-purple-900 text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+                <h3 className="font-bold text-white text-lg font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                   AI Predictions
                 </h3>
-                <p className="text-purple-700">
+                <p className="text-white">
                   {flaggedClaimsCount} flagged claims may be at risk this week
                 </p>
               </div>
             </div>
             <button
               onClick={handleViewFlaggedClaims}
-              className="px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-all duration-200 font-semibold"
+              className="px-6 py-3 text-xs bg-red-700 text-white rounded-xl hover:bg-red-500 transition-all duration-200 font-semibold"
             >
               View Flagged Claims →
             </button>
@@ -1206,7 +1206,7 @@ const Claims = () => {
         <DashboardStatCard cardTitle={"AI Flagged"} cardNumber={"0"} />
       </div>
 
-      <div className="w-full flex flex-col gap-0 items-start p-4 py-6 rounded-2xl shadow border border-neutral-200">
+      <div className="w-full flex flex-col gap-0 items-start">
         <h2 className="text-md lg:text-lg">Claims Table</h2>
         <div className="py-2 w-full mb-2">
           <div className="flex flex-col md:flex-row gap-4 max-w-[1000px]">
@@ -1239,13 +1239,13 @@ const Claims = () => {
             </div>
           </div>
         </div>
-        <div className="bg-neutral-50 w-full h-fit min-h-[400px] overflow-hidden">
+        <div className="bg-neutral-50 w-full h-fit min-h-[400px] overflow-hidden rounded-2xl shadow border border-neutral-200">
           {filteredClaims.length === 0 ? (
             <div className="text-center py-2 h-full min-h-[400px] flex flex-col items-center justify-center">
               <div className="text-6xl mb-4 w-fit flex items-center justify-center">
                 <Clipboard className="size-20" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+              <h3 className="text-xl font-bold text-neutral-900 mb-2 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
                 No Claims Found
               </h3>
               <p className="text-neutral-600">
@@ -1257,50 +1257,50 @@ const Claims = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-50 border-b border-slate-200">
+                <thead className="bg-neutral-50 border-b border-neutral-200">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Claim ID
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Patient ID
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Provider
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Service Details
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Date of Service
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Total Charges
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Status
                     </th>
                     <th
-                      className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
+                      className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
                       onClick={() => handleSort("lastUpdated")}
                     >
                       Last Updated{" "}
                       {sortConfig.key === "lastUpdated" &&
                         (sortConfig.direction === "asc" ? "↑" : "↓")}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-bold text-neutral-700 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-neutral-200">
                   {filteredClaims.map((claim) => (
                     <tr
                       key={claim.id}
-                      className="hover:bg-slate-50 transition-colors duration-200"
+                      className="hover:bg-neutral-50 text-[0.75rem] transition-colors duration-200"
                       data-claim-id={claim.id}
                     >
-                      <td className="px-6 py-4 text-sm font-semibold text-slate-900">
+                      <td className="px-6 py-4 text-[0.75rem] font-semibold text-neutral-900">
                         <div className="flex items-center space-x-2">
                           <span>{claim.claimId}</span>
                           {claim.aiInsights.isFlagged && (
@@ -1308,34 +1308,34 @@ const Claims = () => {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900">
+                      <td className="px-6 py-4 text-[0.75rem] text-neutral-900">
                         <div className="font-mono">PT-{claim.id.slice(-4)}</div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-neutral-500">
                           Age: {claim.patientAge}, Gender: {claim.patientGender}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900">
+                      <td className="px-6 py-4 text-[0.75rem] text-neutral-900">
                         {claim.provider}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-600">
+                      <td className="px-6 py-4 text-[0.75rem] text-neutral-600">
                         {claim.details}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900">
+                      <td className="px-6 py-4 text-[0.75rem] text-neutral-900">
                         {claim.dateOfService}
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-emerald-600">
+                      <td className="px-6 py-4 text-[0.75rem] font-semibold text-green-500">
                         ${claim.totalCharges.toFixed(2)}
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(
+                          className={`inline-flex px-3 py-1 text-[0.65rem] font-semibold rounded-full ${getStatusColor(
                             claim.status
                           )}`}
                         >
                           {claim.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-900">
+                      <td className="px-6 py-4 text-xs text-slate-900">
                         <div>{claim.lastUpdatedTimestamp}</div>
                         <div className="text-xs text-slate-500">
                           {claim.lastUpdated}
@@ -1345,27 +1345,27 @@ const Claims = () => {
                         <div className="flex items-center space-x-2">
                           <button
                             onClick={() => handleViewDetails(claim)}
-                            className="text-emerald-600 hover:text-emerald-800 text-sm font-semibold hover:bg-emerald-50 px-2 py-1 rounded transition-all duration-200"
+                            className="text-neutral-600 hover:text-neutral-800 text-xs font-semibold hover:bg-neutral-50 px-2 py-1 rounded transition-all duration-200"
                           >
                             View
                           </button>
                           {claim.isDraft && (
                             <button
                               onClick={() => handleEditDraft(claim)}
-                              className="text-blue-600 hover:text-blue-800 text-sm font-semibold hover:bg-blue-50 px-2 py-1 rounded transition-all duration-200"
+                              className="text-neutral-600 hover:text-neutral-800 text-xs font-semibold hover:bg-neutral-50 px-2 py-1 rounded transition-all duration-200"
                             >
                               Edit
                             </button>
                           )}
                           <button
                             onClick={() => handleTrackClaim(claim)}
-                            className="text-purple-600 hover:text-purple-800 text-sm font-semibold hover:bg-purple-50 px-2 py-1 rounded transition-all duration-200"
+                            className="text-neutral-600 hover:text-neutral-800 text-xs font-semibold hover:bg-neutral-50 px-2 py-1 rounded transition-all duration-200"
                           >
                             Track
                           </button>
                           <button
                             onClick={() => handleRemoveClaim(claim.id)}
-                            className="text-red-600 hover:text-red-800 text-sm font-semibold hover:bg-red-50 px-2 py-1 rounded transition-all duration-200"
+                            className="text-red-600 hover:text-red-800 text-xs font-semibold hover:bg-red-50 px-2 py-1 rounded transition-all duration-200"
                           >
                             Remove
                           </button>
@@ -1379,10 +1379,6 @@ const Claims = () => {
           )}
         </div>
       </div>
-
-      {/* Search and Filters */}
-
-      {/* Claims Table */}
 
       {/* View Modal */}
       <ViewModal />

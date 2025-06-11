@@ -13,18 +13,6 @@ const UserToolBar = () => {
           </div>
           <AlertCircleIcon className="size-[24px]" />
         </span>
-        <div className="px-4 py-2 hidden lg:flex items-center justify-between gap-8 bg-neutral-100 text-neutral-600 text-sm rounded-[10px]">
-          <div className="flex items-center gap-2">
-            <strong>AI Predictions:</strong>
-            <span>1 flagged claims may be at risk this week</span>
-          </div>
-          <a
-            href="/dashboard/claims-summary"
-            className="text-neutral-600 hover:text-neutral-800 w-fit text-[0.65rem] flex items-center gap-1"
-          >
-            View <ArrowRight className="size-[12px]" />
-          </a>
-        </div>
       </div>
       <div className="flex items-center gap-3">
         <span className="relative">

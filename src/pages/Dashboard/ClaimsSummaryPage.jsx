@@ -8,7 +8,7 @@ import UserToolBar from "../../components/dashboard/General/UserToolBar";
 const ClaimsSummaryPage = () => {
   return (
     <div className="w-full h-full min-h-screen font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
-      <Sidebar tabs={mainDashNav} activeTab={"Claims Summary"} />
+      <Sidebar tabs={mainDashNav} activeTab={"Dashboard"} />
       <MainContainer>
         <UserToolBar />
         <div className="w-full p-4">

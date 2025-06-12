@@ -1382,208 +1382,210 @@ const ClaimsSummary = ({ onSubmitClick }) => {
       </div>
 
       {/* Improved Sticky Filter Toolbar */}
-      <div className="bg-white border rounded-lg p-6 sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-gray-900">
-            AI-Enhanced Search & Filter
-          </h3>
-          <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-indigo-100 px-3 py-1 rounded-full">
-            <span className="text-purple-600 text-sm">🤖</span>
-            <span className="text-purple-700 text-xs font-semibold">
-              Smart Filtering
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {/* Search Bar */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              AI-Powered Search
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search by Patient ID, Claim ID, or Provider... (AI Enhanced)"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQueryLocal(e.target.value)}
-              />
-              <span className="absolute left-3 top-3.5 text-purple-400">
-                🔍
+      <div className=" relative">
+        <div className="sticky top-0 z-10 bg-white py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium text-gray-900">
+              AI-Enhanced Search & Filter
+            </h3>
+            <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-indigo-100 px-3 py-1 rounded-full">
+              <span className="text-purple-600 text-sm">🤖</span>
+              <span className="text-purple-700 text-xs font-semibold">
+                Smart Filtering
               </span>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              AI automatically suggests relevant matches and detects patterns
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Status Filter Dropdown */}
-            <div className="w-full col-span-2 md:col-span-2 lg:col-span-1">
-              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
-                Claim Status
+          <div className="space-y-4">
+            {/* Search Bar */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                AI-Powered Search
               </label>
               <div className="relative">
-                <select
-                  className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value) {
-                      handleStatusFilter(value);
-                      e.target.value = ""; // Reset dropdown
-                    }
-                  }}
-                >
-                  <option value="">Select status to filter...</option>
-                  <option value="Draft">Draft</option>
-                  <option value="Submitted">Submitted</option>
-                  <option value="Under Review">Under Review</option>
-                  <option value="Pending Authorization">
-                    Pending Authorization
-                  </option>
-                  <option value="Paid">Paid</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                <input
+                  type="text"
+                  placeholder="Search by Patient ID, Claim ID, or Provider... (AI Enhanced)"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQueryLocal(e.target.value)}
+                />
+                <span className="absolute left-3 top-3.5 text-purple-400">
+                  🔍
+                </span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                AI automatically suggests relevant matches and detects patterns
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Status Filter Dropdown */}
+              <div className="w-full col-span-2 md:col-span-2 lg:col-span-1">
+                <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
+                  Claim Status
+                </label>
+                <div className="relative">
+                  <select
+                    className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value) {
+                        handleStatusFilter(value);
+                        e.target.value = ""; // Reset dropdown
+                      }
+                    }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-
-              {/* Selected Filters Display */}
-              {filters.status.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {filters.status.map((status) => (
-                    <span
-                      key={status}
-                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"
+                    <option value="">Select status to filter...</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Submitted">Submitted</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Pending Authorization">
+                      Pending Authorization
+                    </option>
+                    <option value="Paid">Paid</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      {status}
-                      <button
-                        onClick={() => handleStatusFilter(status)}
-                        className="ml-1 text-purple-600 hover:text-purple-800"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
                 </div>
-              )}
-            </div>
-            {/* Date Range Filters */}
-            <div className="w-full col-span-1">
-              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
-                Date Range Start
-              </label>
-              <input
-                type="date"
-                className="w-full px-2 py-3 text-[0.75rem] border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={filters.dateRange.start}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    dateRange: { ...prev.dateRange, start: e.target.value },
-                  }))
-                }
-              />
-            </div>
-            <div className="w-full col-span-1">
-              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
-                Date Range End
-              </label>
-              <input
-                type="date"
-                className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={filters.dateRange.end}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    dateRange: { ...prev.dateRange, end: e.target.value },
-                  }))
-                }
-              />
-            </div>
-            {/* Amount Range */}
-            <div className="w-full col-span-2">
-              <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
-                Amount Range
-              </label>
-              <div className="flex gap-2 w-fit">
-                <input
-                  type="number"
-                  placeholder="Min $"
-                  className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  value={filters.amountRange.min}
-                  onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      amountRange: {
-                        ...prev.amountRange,
-                        min: e.target.value,
-                      },
-                    }))
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="Max $"
-                  className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  value={filters.amountRange.max}
-                  onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      amountRange: {
-                        ...prev.amountRange,
-                        max: e.target.value,
-                      },
-                    }))
-                  }
-                />
-              </div>
-            </div>
-          </div>
 
-          <div className="my-4">
-            {/* Filter Actions */}
-            <div className="flex items-center gap-4">
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => {
-                    setFilters({
-                      status: [],
-                      dateRange: { start: "", end: "" },
-                      amountRange: { min: "", max: "" },
-                    });
-                    setSearchQueryLocal("");
-                  }}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
-                >
-                  Clear All Filters
-                </button>
-                <DashButton text={"Export Results"} primary={true} />
-              </div>
-              <div className="text-sm text-gray-600">
-                {filters.status.length > 0 ||
-                filters.dateRange.start ||
-                filters.dateRange.end ||
-                filters.amountRange.min ||
-                filters.amountRange.max ? (
-                  <span>Filters applied</span>
-                ) : (
-                  <span>No filters applied</span>
+                {/* Selected Filters Display */}
+                {filters.status.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {filters.status.map((status) => (
+                      <span
+                        key={status}
+                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"
+                      >
+                        {status}
+                        <button
+                          onClick={() => handleStatusFilter(status)}
+                          className="ml-1 text-purple-600 hover:text-purple-800"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
                 )}
+              </div>
+              {/* Date Range Filters */}
+              <div className="w-full col-span-1">
+                <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
+                  Date Range Start
+                </label>
+                <input
+                  type="date"
+                  className="w-full px-2 py-3 text-[0.75rem] border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={filters.dateRange.start}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      dateRange: { ...prev.dateRange, start: e.target.value },
+                    }))
+                  }
+                />
+              </div>
+              <div className="w-full col-span-1">
+                <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
+                  Date Range End
+                </label>
+                <input
+                  type="date"
+                  className="w-full text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={filters.dateRange.end}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      dateRange: { ...prev.dateRange, end: e.target.value },
+                    }))
+                  }
+                />
+              </div>
+              {/* Amount Range */}
+              <div className="w-full col-span-2">
+                <label className="block text-[0.75rem] font-medium text-gray-700 mb-2">
+                  Amount Range
+                </label>
+                <div className="flex gap-2 w-fit">
+                  <input
+                    type="number"
+                    placeholder="Min $"
+                    className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={filters.amountRange.min}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        amountRange: {
+                          ...prev.amountRange,
+                          min: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max $"
+                    className="w-fit text-[0.75rem] px-2 py-3 border border-neutral-200 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={filters.amountRange.max}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        amountRange: {
+                          ...prev.amountRange,
+                          max: e.target.value,
+                        },
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="my-4">
+              {/* Filter Actions */}
+              <div className="flex items-center gap-4">
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      setFilters({
+                        status: [],
+                        dateRange: { start: "", end: "" },
+                        amountRange: { min: "", max: "" },
+                      });
+                      setSearchQueryLocal("");
+                    }}
+                    className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Clear All Filters
+                  </button>
+                  <DashButton text={"Export Results"} primary={true} />
+                </div>
+                <div className="text-sm text-gray-600">
+                  {filters.status.length > 0 ||
+                  filters.dateRange.start ||
+                  filters.dateRange.end ||
+                  filters.amountRange.min ||
+                  filters.amountRange.max ? (
+                    <span>Filters applied</span>
+                  ) : (
+                    <span>No filters applied</span>
+                  )}
+                </div>
               </div>
             </div>
           </div>

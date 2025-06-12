@@ -550,14 +550,14 @@ const Claims = () => {
     const insights = claim.aiInsights;
 
     return (
-      <div className="w-80 bg-gradient-to-b from-primary-light to-primary-dark border-l-2 border-primary-dark p-6">
+      <div className="w-80 bg-gradient-to-b from-primary-light to-primary-dark p-6">
         <div className="flex items-center space-x-3 mb-6">
           <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
             <span className="text-purple-600 text-xl">🤖</span>
           </div>
           <div>
-            <h3 className="font-bold text-purple-900 text-lg">AI Analysis</h3>
-            <p className="text-purple-700 text-sm">Smart claim insights</p>
+            <h3 className="font-bold text-white text-lg">AI Analysis</h3>
+            <p className=" text-white text-sm">Smart claim insights</p>
           </div>
         </div>
 
@@ -646,8 +646,8 @@ const Claims = () => {
     if (!showAuditModal || !selectedAuditClaim) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
           <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-emerald-50 to-teal-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -749,8 +749,8 @@ const Claims = () => {
     const flaggedClaims = claims.filter((claim) => claim.aiInsights.isFlagged);
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
           <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-red-50 to-orange-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -851,10 +851,10 @@ const Claims = () => {
     if (!selectedClaim || !showViewModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-2xl max-w-7xl w-full max-h-[90vh] overflow-hidden flex">
           {/* Main Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto no-scrollbar">
             <div className="p-6 border-b border-slate-200">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
@@ -1087,7 +1087,7 @@ const Claims = () => {
     if (!showRemoveModal || !claimToRemove) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-2xl max-w-md w-full">
           <div className="p-6 border-b border-slate-200">
             <h3 className="text-lg font-bold text-slate-900">Remove Claim</h3>

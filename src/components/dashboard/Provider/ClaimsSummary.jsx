@@ -538,8 +538,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     if (!selectedClaim || !showViewModal) return null;
 
     return (
-      <div className="fixed inset-0 border border-green-300 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
           <div className="p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-slate-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
@@ -548,7 +548,7 @@ const ClaimsSummary = ({ onSubmitClick }) => {
 
               <button
                 onClick={() => setShowViewModal(false)}
-                className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100"
+                className="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <span className="text-2xl">✕</span>
               </button>
@@ -808,8 +808,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     if (!selectedAIInsights || !showAIModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
           <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-purple-50 to-indigo-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -1073,8 +1073,8 @@ const ClaimsSummary = ({ onSubmitClick }) => {
     if (!showFlaggedClaimsModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto no-scrollbar">
           <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-red-50 to-orange-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">

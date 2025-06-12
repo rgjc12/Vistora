@@ -20,6 +20,16 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 @layer base {
@@ -102,14 +112,19 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   @keyframes fade-in-out {
-    0%, 100% { opacity: 0; }
-    10%, 90% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
   }
-  
+
   .animate-fade-in-out {
     animation: fade-in-out 3s ease-in-out;
   }
-  
 }
 
 @layer base {

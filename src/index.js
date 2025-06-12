@@ -24,6 +24,7 @@ import ProviderDash from "./pages/Dashboard/Provider Dash/ProviderDash";
 import ProfilePage from "./pages/Dashboard/ProfilePage";
 import ToastManager from "./components/ui/ToastManager";
 import SubmitClaimPage from "./pages/Dashboard/SubmitClaimPage";
+import HelpAndSupportPage from "./pages/Dashboard/HelpAndSupportPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -72,6 +73,7 @@ root.render(
                 path="/dashboard/notifications"
                 element={<NotificationsPage />}
               />
+              <Route path="/dashboard/help" element={<HelpAndSupportPage />} />
               <Route path="/dashboard/profile" element={<ProfilePage />} />
             </Routes>
           </AppWrapper>

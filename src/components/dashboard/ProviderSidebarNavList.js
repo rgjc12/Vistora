@@ -39,7 +39,7 @@ export const mainDashNav = [
   {
     label: "Help & Support",
     icon: <ShieldQuestionIcon />,
-    link: "/dashboard/",
+    link: "/dashboard/help",
   },
   {
     label: "Profile",

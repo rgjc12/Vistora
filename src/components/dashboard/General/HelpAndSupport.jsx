@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import FAQItem from "../../components/faq/FAQItem";
-import { faqData } from "./data/faqData";
-import { useNavigate } from "react-router-dom";
+"use client";
+import React, { useEffect, useState } from "react";
+import { faqData } from "../../../pages/FAQ/data/faqData";
+import FAQItem from "../../faq/FAQItem";
 
-const FAQPage = () => {
+const HelpAndSupport = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeIndex, setActiveIndex] = useState(null);
   const [mounted, setMounted] = useState(false);
@@ -22,20 +22,13 @@ const FAQPage = () => {
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const navigate = useNavigate();
-
   return (
-    <div
-      className={`container  mx-auto px-4 py-12 max-w-4xl transition-opacity duration-1000 ${
-        mounted ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <div className="text-center mb-12 animate-fadeIn flex flex-col items-center w-full">
-        <h2 className="text-4xl lg:text-5xl font-light mb-4 font-poppins">
-          Vistora FAQ
-        </h2>
-        <p className="text-lg mb-8 font-poppins max-w-[600px]">
+    <div className="w-full font-['Manrope',_sans-serif] my-4 mb-16">
+      <div className="text-center mb-2 flex flex-col items-center w-full gap-2">
+        <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+          Vistora Help & Support
+        </h1>
+        <p className="text-[0.9rem] text-neutral-400 mb-4">
           Frequently asked questions about Vistora's decentralized AI platform
           for the Ayushman Bharat Scheme
         </p>
@@ -65,7 +58,7 @@ const FAQPage = () => {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 w-full max-w-7xl mx-auto">
         {filteredFAQs.length > 0 ? (
           filteredFAQs.map((faq, index) => (
             <FAQItem
@@ -79,7 +72,7 @@ const FAQPage = () => {
             />
           ))
         ) : (
-          <div className="text-center py-8 text-gray-200 font-poppins bg-red-800/50 rounded-lg backdrop-blur-sm">
+          <div className="text-center py-8 text-gray-200 bg-red-800/50 font-['Aktiv_Grotesk',_'Manrope',_sans-serif] rounded-lg backdrop-blur-sm">
             No FAQs match your search. Please try different keywords.
           </div>
         )}
@@ -88,4 +81,4 @@ const FAQPage = () => {
   );
 };
 
-export default FAQPage;
+export default HelpAndSupport;

@@ -122,91 +122,63 @@ const Profile = () => {
   }
 
   return (
-    <div className="w-full h-full p-4 flex flex-col gap-4">
-      <div className="w-full flex items-center border-b border-neutral-200 py-2">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-          Profile
-        </h1>
+    <div className="w-full relative">
+      <div className="header absolute -z-0 top-0 left-0 right-0 w-full h-[275px] md:h-[325px] lg:h-[350px] bg-neutral-100 overflow-hidden">
+        <img
+          src="/images/flower-wet-hero.jpg"
+          className="object-cover w-full h-auto"
+        />
       </div>
-      <div className="w-full flex flex-col md:flex-row gap-12 items-start">
-        <div className="w-fit flex flex-col gap-4">
-          <div className="flex overflow-hidden items-center justify-center w-28 h-28 lg:w-[200px] lg:h-[200px] rounded-full bg-neutral-200 text-neutral-400 p-4"></div>
-          <div className="flex flex-col items-center gap-2 w-full">
-            <button className="w-fit min-w-[120px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
-              Update
-            </button>
-            <button className="w-fit min-w-[120px] px-4 py-1 rounded-xl border border-neutral-800 text-neutral-800 text-[0.75rem] hover:bg-neutral-200">
-              Remove
-            </button>
-          </div>
+      <div className="w-full relative p-4 flex flex-col gap-2 z-10 pt-[180px] md:pt-[200px] lg:pt-[200px]">
+        <div className="flex border-[6px] border-white overflow-hidden items-center justify-center w-52 h-52  md:w-64 md:h-64 lg:w-[300px] lg:h-[300px] rounded-full bg-neutral-200 text-neutral-400">
+          <img
+            src="/images/testimonial.jpg"
+            alt="testimonial"
+            className="w-full h-full object-cover"
+          />
         </div>
-        <div className="w-full flex flex-col gap-10 py-4 max-w-[600px]">
-          <div className="flex flex-col gap-4">
-            <div className="w-full flex items-center gap-6 justify-start">
-              <h2 className="text-lg font-bold">Account Details</h2>
-
-            </div>
-            <div className="w-full max-w-[800px] flex flex-col gap-4">
-              {!editAccDetails ? (
-                <>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">User Name</span>
-                    <span className="font-medium text-lg">{userName}</span>
-                  </div>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">Account Email</span>
-                    <span className="font-medium text-lg">{userEmail}</span>
-                  </div>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">Contact Number</span>
-                    <span className="font-medium text-lg">{userPhone}</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="w-full flex flex-wrap items-center justify-end gap-2">
-                    <button
-                      onClick={handleAccDetailsConfirm}
-                      className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-primary text-white font-semibold text-[0.75rem] hover:bg-primary-dark"
-                    >
-                      Save Changes
-                    </button>
-                    <button
-                      onClick={handleAccDetailsCancel}
-                      className="w-fit min-w-[120px] h-10 px-4 py-2 rounded-xl bg-black text-white font-semibold text-[0.75rem] hover:bg-neutral-800"
-                    >
-                      Discard Changes
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+        <div className="w-full max-w-[800px] mx-auto xl:max-w-none xl:ml-[300px] mr-0 flex flex-col xl:flex-row xl:gap-12">
+          <div className="flex flex-col lg:p-4 gap-2 items-start">
+            <h2 className="text-4xl font-medium leading-tight">{userName}</h2>
+            <span className="flex items-center gap-2">
+              <p className="text-neutral-400 text-[0.95rem] md:text-[1rem]">
+                {userEmail}
+              </p>
+              <p className="text-neutral-400 text-[0.95rem] md:text-[1rem]">
+                |
+              </p>
+              <p className="text-neutral-400 text-[0.95rem] md:text-[1rem]">
+                {userPhone}
+              </p>
+            </span>
           </div>
-          <div className="flex flex-col gap-4 mb-12">
-            <div className="w-full flex items-center gap-6 justify-start">
-              <h2 className="text-lg font-bold">Organization Details</h2>
-            </div>
-            <div className="w-full max-w-[800px] flex flex-col gap-4">
-              {!editOrganization ? (
-                <>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">Organization Name</span>
-                    <span className="font-medium text-lg">{orgName}</span>
-                  </div>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">Organization Address</span>
-                    <span className="font-medium text-lg">{orgAddress}</span>
-                  </div>
-                  <div className="w-full flex flex-col items-start">
-                    <span className="">Organization Email</span>
-                    <span className="font-medium text-lg">{orgEmail}</span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  
-                </>
-              )}
+          <div className="w-full flex flex-col gap-10 py-4 lg:pl-4 max-w-[600px] xl:border-l xl:border-neutral-200">
+            <div className="flex flex-col gap-4 mb-12">
+              <div className="w-full flex items-center gap-2 justify-start">
+                <h2 className="text-lg font-medium text-primary">
+                  Organization Details
+                </h2>
+              </div>
+              <div className="w-full max-w-[800px] flex flex-col gap-4 pl-4">
+                {!editOrganization ? (
+                  <>
+                    <div className="w-full flex flex-col items-start">
+                      <span className="text-neutral-400">Name</span>
+                      <span className="font-medium text-lg">{orgName}</span>
+                    </div>
+                    <div className="w-full flex flex-col items-start">
+                      <span className="text-neutral-400">Address</span>
+                      <span className="font-medium text-lg">{orgAddress}</span>
+                    </div>
+                    <div className="w-full flex flex-col items-start">
+                      <span className="text-neutral-400">Email</span>
+                      <span className="font-medium text-lg">{orgEmail}</span>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
           </div>
         </div>

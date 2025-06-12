@@ -24,7 +24,10 @@ const UserToolBar = () => {
             className="size-[24px] text-neutral-400 hover:text-primary cursor-pointer"
           />
         </span>
-        <div className="w-12 h-12 overflow-hidden rounded-full bg-neutral-200 cursor-pointer hover:border-2 hover:border-primary">
+        <div
+          onClick={() => navigate("/dashboard/profile")}
+          className="w-12 h-12 overflow-hidden rounded-full bg-neutral-200 cursor-pointer hover:border-2 hover:border-primary"
+        >
           <img
             src="/images/testimonial.jpg"
             className="w-full h-auto object-cover "

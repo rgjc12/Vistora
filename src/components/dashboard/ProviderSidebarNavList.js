@@ -12,7 +12,7 @@ import {
 
 export const mainDashNav = [
   {
-    label: "Claims Summary",
+    label: "Dashboard",
     icon: <LayoutDashboard />,
     link: "/dashboard/claims-summary",
   },

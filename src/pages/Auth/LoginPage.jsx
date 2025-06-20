@@ -22,6 +22,8 @@ function LoginPage() {
   const handleFirebaseAuthError = (error) => {
     const errorCode = error.code;
 
+    console.log(error);
+
     switch (errorCode) {
       case "auth/user-not-found":
         alert("No account found with this email.");
@@ -46,6 +48,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
+    console.log("Entered handle submit");
 
     if (!email || !password) {
       setFormError("Please enter both email and password");

@@ -1,44 +1,66 @@
-import { File, LayoutDashboard, Settings } from "lucide-react";
+import { LayoutDashboard, FileText, AlertTriangle, Shield, Building2, Scale, Users, Settings } from "lucide-react"
 
 export const mainDashTPANav = [
   {
     label: "Dashboard",
-    icon: <LayoutDashboard />,
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    iconEmoji: "📊",
     link: "/dashboard/tpa/home",
+    description: "Main dashboard and analytics",
+    component: "Dashboard",
   },
   {
-    label: "Claims Review",
-    icon: <File />,
+    label: "Claims",
+    icon: <FileText className="w-5 h-5" />,
+    iconEmoji: "📋",
     link: "/dashboard/tpa/claimsReview",
+    description: "Comprehensive claims management and oversight",
+    component: "ClaimsReview",
   },
   {
     label: "Flagged Claims",
-    icon: <File />,
+    icon: <AlertTriangle className="w-5 h-5" />,
+    iconEmoji: "🚩",
     link: "/dashboard/tpa/flaggedClaims",
+    description: "High-risk claims requiring attention",
+    component: "FraudIntelligence",
+    priority: "high",
   },
   {
     label: "Fraud Signals",
-    icon: <File />,
+    icon: <Shield className="w-5 h-5" />,
+    iconEmoji: "🚨",
     link: "/dashboard/tpa/fraudSignals",
+    description: "AI-powered fraud detection and alerts",
+    component: "FraudIntelligence",
+    priority: "critical",
   },
   {
     label: "Providers",
-    icon: <File />,
+    icon: <Building2 className="w-5 h-5" />,
+    iconEmoji: "🏥",
     link: "/dashboard/tpa/providers",
+    description: "Manage healthcare provider network",
   },
   {
     label: "Appeals Management",
-    icon: <File />,
+    icon: <Scale className="w-5 h-5" />,
+    iconEmoji: "⚖️",
     link: "/dashboard/tpa/appealsManagement",
+    description: "Handle claim appeals and disputes",
   },
   {
     label: "Team Management",
-    icon: <File />,
+    icon: <Users className="w-5 h-5" />,
+    iconEmoji: "👥",
     link: "/dashboard/tpa/teamManagement",
+    description: "Manage team members and permissions",
   },
   {
     label: "Settings",
-    icon: <Settings />,
+    icon: <Settings className="w-5 h-5" />,
+    iconEmoji: "⚙️",
     link: "/dashboard/tpa/settings",
+    description: "Configure system preferences",
   },
-];
+]

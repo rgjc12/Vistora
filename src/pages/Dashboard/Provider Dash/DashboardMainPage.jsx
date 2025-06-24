@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "../../components/dashboard/Sidebar";
-import MainContainer from "../../components/dashboard/MainContainer";
-import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
+import Sidebar from "../../../components/dashboard/Sidebar";
+import MainContainer from "../../../components/dashboard/MainContainer";
+import { mainDashNav } from "../../../components/dashboard/ProviderSidebarNavList";
 
 const DashboardMainPage = () => {
   return (

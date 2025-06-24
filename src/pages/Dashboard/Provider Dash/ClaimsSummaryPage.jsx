@@ -1,9 +1,9 @@
 import React from "react";
-import Sidebar from "../../components/dashboard/Sidebar";
-import MainContainer from "../../components/dashboard/MainContainer";
-import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
-import ClaimsSummary from "../../components/dashboard/Provider/ClaimsSummary";
-import UserToolBar from "../../components/dashboard/General/UserToolBar";
+import Sidebar from "../../../components/dashboard/Sidebar";
+import MainContainer from "../../../components/dashboard/MainContainer";
+import { mainDashNav } from "../../../components/dashboard/ProviderSidebarNavList";
+import ClaimsSummary from "../../../components/dashboard/Provider/ClaimsSummary";
+import UserToolBar from "../../../components/dashboard/General/UserToolBar";
 
 const ClaimsSummaryPage = () => {
   return (

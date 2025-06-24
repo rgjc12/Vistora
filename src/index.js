@@ -8,23 +8,30 @@ import FAQ from "./pages/FAQ/FAQ";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage"; // 👈 Import it here
 import LoginPage from "./pages/Auth/LoginPage"; // optional, if separated
 import "./styles/index.css";
-
 //import Profile from "./pages/Profile/Profile";
-import DashboardMainPage from "./pages/Dashboard/DashboardMainPage";
+import DashboardMainPage from "./pages/Dashboard/Provider Dash/DashboardMainPage";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
-import ClaimsSummaryPage from "./pages/Dashboard/ClaimsSummaryPage";
-import DasboardSettingsPage from "./pages/Dashboard/DasboardSettingsPage";
-import TasksPage from "./pages/Dashboard/TasksPage";
+import ClaimsSummaryPage from "./pages/Dashboard/Provider Dash/ClaimsSummaryPage";
+import DasboardSettingsPage from "./pages/Dashboard/Provider Dash/DasboardSettingsPage";
+import TasksPage from "./pages/Dashboard/Provider Dash/TasksPage";
 import AppWrapper from "./pages/AppWrapper/AppWrapper";
-import NotificationsPage from "./pages/Dashboard/NotificationsPage";
-import TaskDetailPage from "./pages/Dashboard/TaskDetailPage";
-import ClaimPage from "./pages/Dashboard/ClaimPage";
-import ProviderDash from "./pages/Dashboard/Provider Dash/ProviderDash";
-import ProfilePage from "./pages/Dashboard/ProfilePage";
+import NotificationsPage from "./pages/Dashboard/Provider Dash/NotificationsPage";
+import TaskDetailPage from "./pages/Dashboard/Provider Dash/TaskDetailPage";
+import ClaimPage from "./pages/Dashboard/Provider Dash/ClaimPage";
+//import ProviderDash from "./pages/Dashboard/Provider Dash/ProviderDash";
+import ProfilePage from "./pages/Dashboard/Provider Dash/ProfilePage";
 import ToastManager from "./components/ui/ToastManager";
-import SubmitClaimPage from "./pages/Dashboard/SubmitClaimPage";
-import HelpAndSupportPage from "./pages/Dashboard/HelpAndSupportPage";
+import SubmitClaimPage from "./pages/Dashboard/Provider Dash/SubmitClaimPage";
+import HelpAndSupportPage from "./pages/Dashboard/Provider Dash/HelpAndSupportPage";
+import DashboardTpaHome from "./pages/Dashboard/TPA-Dash/DashboardTpaHome";
+import ClaimsReviewPage from "./pages/Dashboard/TPA-Dash/ClaimsReviewPage";
+import FlaggedClaimsPage from "./pages/Dashboard/TPA-Dash/FlaggedClaimsPage";
+import FraudSignalsPage from "./pages/Dashboard/TPA-Dash/FraudSignalsPage";
+import Providers from "./pages/Dashboard/TPA-Dash/Providers";
+import AppealsManagementPage from "./pages/Dashboard/TPA-Dash/AppealsManagementPage";
+import TeamManagementPage from "./pages/Dashboard/TPA-Dash/TeamManagementPage";
+import SettingsPage from "./pages/Dashboard/TPA-Dash/SettingsPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -44,13 +51,8 @@ root.render(
                 element={<ForgotPasswordPage />}
               />
               <Route path="/FAQ" element={<FAQ />} />
-              {/**
-             * 
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/verification" element={<VerificationPage />} />
-            <Route path="/profile" element={<Profile />} />
-             */}
               <Route path="/dashboard" element={<DashboardMainPage />} />
+              {/* Provider */}
               <Route
                 path="/dashboard/claims-summary"
                 element={<ClaimsSummaryPage />}
@@ -75,6 +77,38 @@ root.render(
               />
               <Route path="/dashboard/help" element={<HelpAndSupportPage />} />
               <Route path="/dashboard/profile" element={<ProfilePage />} />
+              {/* Provider */}
+              {/* TPA */}
+              <Route
+                path="/dashboard/tpa/home"
+                element={<DashboardTpaHome />}
+              />
+              <Route
+                path="/dashboard/tpa/claimsReview"
+                element={<ClaimsReviewPage />}
+              />
+              <Route
+                path="/dashboard/tpa/flaggedClaims"
+                element={<FlaggedClaimsPage />}
+              />
+              <Route
+                path="/dashboard/tpa/fraudSignals"
+                element={<FraudSignalsPage />}
+              />
+              <Route path="/dashboard/tpa/providers" element={<Providers />} />
+              <Route
+                path="/dashboard/tpa/appealsManagement"
+                element={<AppealsManagementPage />}
+              />
+              <Route
+                path="/dashboard/tpa/teamManagement"
+                element={<TeamManagementPage />}
+              />
+              <Route
+                path="/dashboard/tpa/settings"
+                element={<SettingsPage />}
+              />
+              {/* TPA */}
             </Routes>
           </AppWrapper>
         </ToastManager>

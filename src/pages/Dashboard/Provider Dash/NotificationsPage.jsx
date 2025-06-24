@@ -1,9 +1,9 @@
 import React from "react";
-import Sidebar from "../../components/dashboard/Sidebar";
-import MainContainer from "../../components/dashboard/MainContainer";
-import Notifications from "../../components/dashboard/General/Notifications";
-import { mainDashNav } from "../../components/dashboard/ProviderSidebarNavList";
-import UserToolBar from "../../components/dashboard/General/UserToolBar";
+import Sidebar from "../../../components/dashboard/Sidebar";
+import MainContainer from "../../../components/dashboard/MainContainer";
+import Notifications from "../../../components/dashboard/General/Notifications";
+import { mainDashNav } from "../../../components/dashboard/ProviderSidebarNavList";
+import UserToolBar from "../../../components/dashboard/General/UserToolBar";
 
 const NotificationsPage = () => {
   return (

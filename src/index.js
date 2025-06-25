@@ -32,6 +32,7 @@ import Providers from "./pages/Dashboard/TPA-Dash/Providers";
 import AppealsManagementPage from "./pages/Dashboard/TPA-Dash/AppealsManagementPage";
 import TeamManagementPage from "./pages/Dashboard/TPA-Dash/TeamManagementPage";
 import SettingsPage from "./pages/Dashboard/TPA-Dash/SettingsPage";
+import DashboardRedirect from "./pages/Dashboard/DashboardRedirect";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -51,7 +52,7 @@ root.render(
                 element={<ForgotPasswordPage />}
               />
               <Route path="/FAQ" element={<FAQ />} />
-              <Route path="/dashboard" element={<DashboardMainPage />} />
+              <Route path="/dashboard" element={<DashboardRedirect />} />
               {/* Provider */}
               <Route
                 path="/dashboard/provider/home"

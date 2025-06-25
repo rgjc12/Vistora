@@ -91,7 +91,10 @@ const Sidebar = ({ tabs, activeTab }) => {
                   className="object-cover h-full"
                 />
               </div>
-              <a href="/dashboard/profile" className="cursor-pointer w-fit ">
+              <a
+                href="/dashboard/provider/profile"
+                className="cursor-pointer w-fit "
+              >
                 {isLoading ? (
                   <div className="w-[100px] h-4 rounded bg-neutral-400 animate-loading"></div>
                 ) : user ? (

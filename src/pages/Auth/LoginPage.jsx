@@ -72,21 +72,26 @@ function LoginPage() {
       dispatch(
         login({
           user: {
-            name:
-              profileData.name || user.name || user.displayName || "No name",
-            email: user.email,
             uid: user.uid,
+            email: user.email,
             role: role,
+            name: profileData?.name || "No Name",
+            userType: profileData?.userType || "None",
+            phone: profileData?.phone || "",
+            organizationAddress: profileData?.organizationAddress || "",
+            organizationName: profileData?.organizationName,
+            organizationEmail: profileData?.organizationEmail,
           },
           token,
+          role: role,
         })
       );
 
       // Redirect to role-specific dashboard
       if (role === "TPA") {
-        navigate("/dashboard/tpa");
+        navigate("/dashboard/tpa/home");
       } else if (role === "Provider") {
-        navigate("/dashboard/provider");
+        navigate("/dashboard/provider/home");
       } else {
         navigate("/dashboard"); // fallback route
       }

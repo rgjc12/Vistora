@@ -14,41 +14,41 @@ export const mainDashNav = [
   {
     label: "Dashboard",
     icon: <LayoutDashboard />,
-    link: "/dashboard/claims-summary",
+    link: "/dashboard/provider/home",
   },
   {
     label: "Claims",
     icon: <File />,
-    link: "/dashboard/claims",
+    link: "/dashboard/provider/claims",
   },
   {
     label: "Submit New Claim",
     icon: <FilePlus />,
-    link: "/dashboard/SubmitClaim",
+    link: "/dashboard/provider/submitClaim",
   },
   {
     label: "Tasks",
     icon: <ListChecks />,
-    link: "/dashboard/tasks",
+    link: "/dashboard/provider/tasks",
   },
   {
     label: "Notifications",
     icon: <Bell />,
-    link: "/dashboard/notifications",
+    link: "/dashboard/provider/notifications",
   },
   {
     label: "Help & Support",
     icon: <ShieldQuestionIcon />,
-    link: "/dashboard/help",
+    link: "/dashboard/provider/help",
   },
   {
     label: "Profile",
     icon: <User />,
-    link: "/dashboard/profile",
+    link: "/dashboard/provider/profile",
   },
   {
     label: "Settings",
     icon: <Settings />,
-    link: "/dashboard/settings",
+    link: "/dashboard/provider/settings",
   },
 ];

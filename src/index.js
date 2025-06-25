@@ -54,29 +54,38 @@ root.render(
               <Route path="/dashboard" element={<DashboardMainPage />} />
               {/* Provider */}
               <Route
-                path="/dashboard/claims-summary"
+                path="/dashboard/provider/home"
                 element={<ClaimsSummaryPage />}
               />
               <Route
-                path="/dashboard/SubmitClaim"
+                path="/dashboard/provider/submitClaim"
                 element={<SubmitClaimPage />}
               />
-              <Route path="/dashboard/claims" element={<ClaimPage />} />
               <Route
-                path="/dashboard/settings"
+                path="/dashboard/provider/claims"
+                element={<ClaimPage />}
+              />
+              <Route
+                path="/dashboard/provider/settings"
                 element={<DasboardSettingsPage />}
               />
-              <Route path="/dashboard/tasks" element={<TasksPage />} />
+              <Route path="/dashboard/provider/tasks" element={<TasksPage />} />
               <Route
-                path="/dashboard/tasks/:taskId/taskDetails"
+                path="/dashboard/provider/tasks/:taskId/taskDetails"
                 element={<TaskDetailPage />}
               />
               <Route
-                path="/dashboard/notifications"
+                path="/dashboard/provider/notifications"
                 element={<NotificationsPage />}
               />
-              <Route path="/dashboard/help" element={<HelpAndSupportPage />} />
-              <Route path="/dashboard/profile" element={<ProfilePage />} />
+              <Route
+                path="/dashboard/provider/help"
+                element={<HelpAndSupportPage />}
+              />
+              <Route
+                path="/dashboard/provider/profile"
+                element={<ProfilePage />}
+              />
               {/* Provider */}
               {/* TPA */}
               <Route

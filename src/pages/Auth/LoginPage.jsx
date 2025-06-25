@@ -67,6 +67,7 @@ function LoginPage() {
       // ✅ Fetch profile from Firestore
       const profileData = await getUserProfile(user.uid);
       //console.log(profileData);
+      const role = profileData.role || "No role";
 
       dispatch(
         login({
@@ -75,18 +76,20 @@ function LoginPage() {
               profileData.name || user.name || user.displayName || "No name",
             email: user.email,
             uid: user.uid,
-            role: profileData.role || "admin",
+            role: role,
           },
           token,
         })
       );
-      /*  
-      if (!user.emailVerified) {
-        throw new Error("Email not verified");
+
+      // Redirect to role-specific dashboard
+      if (role === "TPA") {
+        navigate("/dashboard/tpa");
+      } else if (role === "Provider") {
+        navigate("/dashboard/provider");
       } else {
-        navigate("/dashboard");
-      }*/
-      navigate("/dashboard/claims-summary");
+        navigate("/dashboard"); // fallback route
+      }
     } catch (error) {
       console.log("An error occurred: ", error);
       handleFirebaseAuthError(error);

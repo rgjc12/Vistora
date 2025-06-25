@@ -25,15 +25,16 @@ const AppWrapper = ({ children }) => {
               user: {
                 uid: user.uid,
                 email: user.email,
+                role: data?.role || "No role",
                 name: data?.name || "No Name",
-                userType: data?.userType || "Healthcare Provider",
+                userType: data?.userType || "None",
                 phone: data?.phone || "",
                 organizationAddress: data?.organizationAddress || "",
                 organizationName: data?.organizationName,
                 organizationEmail: data?.organizationEmail,
               },
               token,
-              role: data?.userType || "Healthcare Provider",
+              role: data?.role || "No Role",
             })
           );
         } catch (err) {

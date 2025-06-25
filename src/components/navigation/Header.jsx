@@ -52,7 +52,7 @@ const Header = () => {
             </a>
             {user && (
               <a
-                href="/dashboard/claims-summary"
+                href="/dashboard/"
                 className="text-gray-200 hover:text-white  hover:underline hover:underline-offset-8"
               >
                 My Dashboard

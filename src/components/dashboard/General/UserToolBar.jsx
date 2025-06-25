@@ -1,9 +1,32 @@
 import { AlertCircleIcon, ArrowRight, Bell } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const UserToolBar = () => {
   const navigate = useNavigate();
+  const { role } = useSelector((state) => state.auth);
+
+  const handleProfileClick = () => {
+    if (role === "TPA") {
+      navigate("/dashboard/tpa/home");
+    } else if (role === "Provider") {
+      navigate("/dashboard/provider/profile");
+    } else {
+      navigate("/dashboard/");
+    }
+  };
+
+  const handleNotificationsClick = () => {
+    if (role === "TPA") {
+      navigate("/dashboard/tpa/home");
+    } else if (role === "Provider") {
+      navigate("/dashboard/provider/notifications");
+    } else {
+      navigate("/dashboard/");
+    }
+  };
+
   return (
     <div className="w-full p-4 flex flex-wrap items-center justify-between border-b border-neutral-200">
       <div className="flex items-center gap-2">
@@ -20,12 +43,12 @@ const UserToolBar = () => {
             5
           </div>
           <Bell
-            onClick={() => navigate("/dashboard/notifications")}
+            onClick={handleNotificationsClick}
             className="size-[24px] text-neutral-400 hover:text-primary cursor-pointer"
           />
         </span>
         <div
-          onClick={() => navigate("/dashboard/profile")}
+          onClick={handleProfileClick}
           className="w-12 h-12 overflow-hidden rounded-full bg-neutral-200 cursor-pointer hover:border-2 hover:border-primary"
         >
           <img

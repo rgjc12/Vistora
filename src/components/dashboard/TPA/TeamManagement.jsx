@@ -411,12 +411,10 @@ const TeamManagement = () => {
                   <td className="py-5 px-6 text-gray-600">{member.regionAccess}</td>
                   <td className="py-5 px-6 text-gray-500">{formatTimeAgo(member.lastActive)}</td>
                   <td className="py-5 px-6">
-                    <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
                       <div className={`w-2 h-2 rounded-full ${member.status === "Active" ? "bg-green-500" : "bg-red-400"}`}></div>
-                      <span className={`px-3 py-1.5 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
-                        {member.status}
-                      </span>
-                    </div>
+                      {member.status}
+                    </span>
                   </td>
                   <td className="py-5 px-6">
                     <div className="relative">

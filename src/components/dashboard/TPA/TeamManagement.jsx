@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Search,
@@ -197,14 +196,14 @@ const TeamManagement = () => {
     const now = new Date();
     const date = new Date(dateString);
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) return "Just now";
     if (diffInHours < 24) return `${diffInHours} hours ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays === 1) return "1 day ago";
     if (diffInDays < 30) return `${diffInDays} days ago`;
-    
+
     const diffInMonths = Math.floor(diffInDays / 30);
     if (diffInMonths === 1) return "1 month ago";
     return `${diffInMonths} months ago`;
@@ -215,7 +214,7 @@ const TeamManagement = () => {
                          member.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = roleFilter === "All roles" || member.role === roleFilter;
     const matchesRegion = regionFilter === "All regions" || member.regionAccess === regionFilter;
-    
+
     return matchesSearch && matchesRole && matchesRegion;
   });
 
@@ -320,7 +319,7 @@ const TeamManagement = () => {
 
   if (showUserActivityLogs && selectedMember) {
     const userLogs = getUserActivityLogs(selectedMember.name);
-    
+
     return (
       <div className="space-y-8 font-['Manrope',_sans-serif] p-6">
         {/* User Activity Logs Header */}
@@ -385,7 +384,7 @@ const TeamManagement = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
@@ -670,9 +669,9 @@ const TeamManagement = () => {
                       >
                         <MoreVertical className="w-4 h-4 text-gray-500" />
                       </button>
-                      
+
                       {activeDropdown === member.id && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-10 py-1">
+                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-50 py-1">
                           <button
                             onClick={() => handleEditMember(member)}
                             className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
@@ -681,7 +680,7 @@ const TeamManagement = () => {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleViewUserActivityLog(member)}
+                            onClick={() =>handleViewUserActivityLog(member)}
                             className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
                           >
                             <Activity className="w-4 h-4" />
@@ -713,9 +712,9 @@ const TeamManagement = () => {
         </div>
       </div>
 
-      
+
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4 slick-scrollbar">
+        <div className="fixed inset-[-5rem] bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4 slick-scrollbar">
           <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100 slick-scrollbar">
             {/* Modal Header */}
             <div className="relative bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8 border-b border-gray-100">
@@ -863,7 +862,7 @@ const TeamManagement = () => {
                         <p className="text-xs text-gray-500 mt-1">Adds an extra layer of security to the account</p>
                       </div>
                     </label>
-                    
+
                     <label className="flex items-start gap-4 p-4 bg-gray-50/50 rounded-2xl border-2 border-transparent hover:border-blue-200 cursor-pointer transition-all duration-200 group">
                       <input
                         type="checkbox"
@@ -903,10 +902,10 @@ const TeamManagement = () => {
 
       {/* Edit Member Modal */}
       {showEditModal && selectedMember && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-lg flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-[-6rem] bg-black/50 backdrop-blur-lg flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100">
             {/* Modal Header */}
-            <div className="relative bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 p-8 border-b border-gray-100">
+            <div className="relative bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 p-6 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className={`w-16 h-16 ${selectedMember.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg`}>

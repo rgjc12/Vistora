@@ -135,3 +135,29 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Custom Slick Scrollbar */
+.slick-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.slick-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slick-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* or use theme color */
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.slick-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* darker on hover */
+}
+
+/* For Firefox */
+.slick-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}

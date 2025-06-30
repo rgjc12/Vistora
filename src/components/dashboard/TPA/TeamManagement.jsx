@@ -352,7 +352,7 @@ const TeamManagement = () => {
               {selectedMember.avatar}
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-900">{selectedMember.name}</h3>
+              <h3 className="text-xl font-bold text-gray-900">{selectedMember.name}</h3>
               <p className="text-gray-600">{selectedMember.email}</p>
               <div className="flex items-center gap-4 mt-2">
                 <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(selectedMember.role)}`}>
@@ -642,7 +642,7 @@ const TeamManagement = () => {
                       <div className={`w-11 h-11 ${member.color} rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm`}>
                         {member.avatar}
                       </div>
-                      <div className="font-medium text-gray-900">{member.name}</div>
+                      <div className="font-semibold text-gray-900">{member.name}</div>
                     </div>
                   </td>
                   <td className="py-5 px-6 text-gray-600">{member.email}</td>
@@ -713,10 +713,10 @@ const TeamManagement = () => {
         </div>
       </div>
 
-      {/* Add Member Modal */}
+      
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4 slick-scrollbar">
+          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100 slick-scrollbar">
             {/* Modal Header */}
             <div className="relative bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8 border-b border-gray-100">
               <div className="flex items-center justify-between">
@@ -903,7 +903,7 @@ const TeamManagement = () => {
 
       {/* Edit Member Modal */}
       {showEditModal && selectedMember && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-lg flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-lg flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100">
             {/* Modal Header */}
             <div className="relative bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 p-8 border-b border-gray-100">

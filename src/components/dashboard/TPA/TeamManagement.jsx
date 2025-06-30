@@ -26,6 +26,7 @@ const TeamManagement = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showActivityLogs, setShowActivityLogs] = useState(false);
+  const [showUserActivityLogs, setShowUserActivityLogs] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -110,6 +111,70 @@ const TeamManagement = () => {
       timestamp: "2024-01-13T09:15:00Z",
       module: "Team Management",
       ipAddress: "192.168.1.102",
+    },
+    {
+      id: 4,
+      userName: "Eleanor Pena",
+      action: "Logged into system",
+      timestamp: "2024-01-15T08:00:00Z",
+      module: "Authentication",
+      ipAddress: "192.168.1.100",
+    },
+    {
+      id: 5,
+      userName: "Eleanor Pena",
+      action: "Downloaded claims report",
+      timestamp: "2024-01-15T11:15:00Z",
+      module: "Reports",
+      ipAddress: "192.168.1.100",
+    },
+    {
+      id: 6,
+      userName: "Wade Warren",
+      action: "Updated provider information",
+      timestamp: "2024-01-14T14:30:00Z",
+      module: "Provider Management",
+      ipAddress: "192.168.1.101",
+    },
+    {
+      id: 7,
+      userName: "Wade Warren",
+      action: "Reviewed Appeal #891",
+      timestamp: "2024-01-14T16:00:00Z",
+      module: "Appeals Management",
+      ipAddress: "192.168.1.101",
+    },
+    {
+      id: 8,
+      userName: "Jenny Wilson",
+      action: "Processed reimbursement batch",
+      timestamp: "2024-01-13T10:45:00Z",
+      module: "Reimbursements",
+      ipAddress: "192.168.1.102",
+    },
+    {
+      id: 9,
+      userName: "Jenny Wilson",
+      action: "Generated audit report",
+      timestamp: "2024-01-13T14:20:00Z",
+      module: "Audit",
+      ipAddress: "192.168.1.102",
+    },
+    {
+      id: 10,
+      userName: "Robert Fox",
+      action: "Updated security settings",
+      timestamp: "2024-01-10T09:30:00Z",
+      module: "Settings",
+      ipAddress: "192.168.1.103",
+    },
+    {
+      id: 11,
+      userName: "Robert Fox",
+      action: "Reviewed fraud alerts",
+      timestamp: "2024-01-10T13:45:00Z",
+      module: "Fraud Detection",
+      ipAddress: "192.168.1.103",
     },
   ]);
 
@@ -217,6 +282,12 @@ const TeamManagement = () => {
     setActiveDropdown(null);
   };
 
+  const handleViewUserActivityLog = (member) => {
+    setSelectedMember(member);
+    setShowUserActivityLogs(true);
+    setActiveDropdown(null);
+  };
+
   const getRoleColor = (role) => {
     switch (role) {
       case "Admin":
@@ -236,11 +307,183 @@ const TeamManagement = () => {
       : "bg-red-50 text-red-700 border border-red-100";
   };
 
+  const getUserActivityLogs = (userName) => {
+    return activityLogs.filter(log => log.userName === userName)
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  };
+
   useEffect(() => {
     const handleClickOutside = () => setActiveDropdown(null);
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
+
+  if (showUserActivityLogs && selectedMember) {
+    const userLogs = getUserActivityLogs(selectedMember.name);
+    
+    return (
+      <div className="space-y-8 font-['Manrope',_sans-serif] p-6">
+        {/* User Activity Logs Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+              Activity Log - {selectedMember.name}
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Monitor {selectedMember.name}'s actions and system access
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setShowUserActivityLogs(false);
+              setSelectedMember(null);
+            }}
+            className="flex items-center gap-2 px-5 py-2.5 text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm"
+          >
+            <X className="w-4 h-4" />
+            Back to Team
+          </button>
+        </div>
+
+        {/* User Info Card */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6">
+          <div className="flex items-center gap-4">
+            <div className={`w-16 h-16 ${selectedMember.color} rounded-full flex items-center justify-center text-white font-semibold text-xl shadow-sm`}>
+              {selectedMember.avatar}
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold text-gray-900">{selectedMember.name}</h3>
+              <p className="text-gray-600">{selectedMember.email}</p>
+              <div className="flex items-center gap-4 mt-2">
+                <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(selectedMember.role)}`}>
+                  {selectedMember.role}
+                </span>
+                <span className="text-sm text-gray-500">{selectedMember.regionAccess}</span>
+                <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(selectedMember.status)}`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${selectedMember.status === "Active" ? "bg-green-500" : "bg-red-400"}`}></div>
+                  {selectedMember.status}
+                </span>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Last Active</p>
+              <p className="font-medium text-gray-700">{formatTimeAgo(selectedMember.lastActive)}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Activity Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                <Activity className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Total Actions</p>
+                <p className="text-2xl font-semibold text-gray-900">{userLogs.length}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                <Shield className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Modules Accessed</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {new Set(userLogs.map(log => log.module)).size}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-purple-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Days Active</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {userLogs.length > 0 
+                    ? Math.ceil((new Date() - new Date(Math.min(...userLogs.map(log => new Date(log.timestamp))))) / (1000 * 60 * 60 * 24))
+                    : 0
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-orange-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">IP Addresses</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {new Set(userLogs.map(log => log.ipAddress)).size}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* User Activity Logs Table */}
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+            <h3 className="text-lg font-semibold text-gray-900">Activity History</h3>
+          </div>
+          <div className="overflow-x-auto">
+            {userLogs.length > 0 ? (
+              <table className="w-full">
+                <thead className="bg-gray-50/50 border-b border-gray-100">
+                  <tr>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700">Action Taken</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700">Timestamp</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700">Module</th>
+                    <th className="text-left py-4 px-6 font-semibold text-gray-700">IP Address</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {userLogs.map((log) => (
+                    <tr key={log.id} className="hover:bg-gray-50/50 transition-colors duration-150">
+                      <td className="py-4 px-6">
+                        <div className="font-medium text-gray-900">{log.action}</div>
+                      </td>
+                      <td className="py-4 px-6 text-gray-500">
+                        <div>{new Date(log.timestamp).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-400">
+                          {new Date(log.timestamp).toLocaleTimeString()}
+                        </div>
+                      </td>
+                      <td className="py-4 px-6">
+                        <span className="px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+                          {log.module}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-gray-500 font-mono text-sm">{log.ipAddress}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="p-12 text-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Activity className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Activity Found</h3>
+                <p className="text-gray-500">This user has no recorded activity yet.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showActivityLogs) {
     return (
@@ -438,7 +681,7 @@ const TeamManagement = () => {
                             Edit
                           </button>
                           <button
-                            onClick={() => {/* View activity log */}}
+                            onClick={() => handleViewUserActivityLog(member)}
                             className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
                           >
                             <Activity className="w-4 h-4" />

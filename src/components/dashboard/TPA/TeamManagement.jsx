@@ -220,20 +220,20 @@ const TeamManagement = () => {
   const getRoleColor = (role) => {
     switch (role) {
       case "Admin":
-        return "bg-purple-100 text-purple-800 border-purple-200";
+        return "bg-purple-50 text-purple-700 border-purple-100";
       case "Reviewer":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-blue-50 text-blue-700 border-blue-100";
       case "Viewer":
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gray-50 text-gray-700 border-gray-100";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gray-50 text-gray-700 border-gray-100";
     }
   };
 
   const getStatusColor = (status) => {
     return status === "Active" 
-      ? "bg-green-100 text-green-800" 
-      : "bg-red-100 text-red-800";
+      ? "bg-green-50 text-green-700 border border-green-100" 
+      : "bg-red-50 text-red-700 border border-red-100";
   };
 
   useEffect(() => {
@@ -244,20 +244,20 @@ const TeamManagement = () => {
 
   if (showActivityLogs) {
     return (
-      <div className="space-y-6 font-['Manrope',_sans-serif]">
+      <div className="space-y-8 font-['Manrope',_sans-serif] p-6">
         {/* Activity Logs Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+            <h1 className="text-3xl font-semibold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
               Team Activity Logs
             </h1>
-            <p className="text-[0.9rem] text-neutral-400">
+            <p className="text-gray-500 mt-2">
               Monitor team member actions and system access
             </p>
           </div>
           <button
             onClick={() => setShowActivityLogs(false)}
-            className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="flex items-center gap-2 px-5 py-2.5 text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm"
           >
             <X className="w-4 h-4" />
             Back to Team
@@ -265,34 +265,34 @@ const TeamManagement = () => {
         </div>
 
         {/* Activity Logs Table */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-gray-50/50 border-b border-gray-100">
                 <tr>
-                  <th className="text-left py-4 px-6 font-medium text-gray-700">User Name</th>
-                  <th className="text-left py-4 px-6 font-medium text-gray-700">Action Taken</th>
-                  <th className="text-left py-4 px-6 font-medium text-gray-700">Timestamp</th>
-                  <th className="text-left py-4 px-6 font-medium text-gray-700">Module</th>
-                  <th className="text-left py-4 px-6 font-medium text-gray-700">IP Address</th>
+                  <th className="text-left py-5 px-6 font-semibold text-gray-700">User Name</th>
+                  <th className="text-left py-5 px-6 font-semibold text-gray-700">Action Taken</th>
+                  <th className="text-left py-5 px-6 font-semibold text-gray-700">Timestamp</th>
+                  <th className="text-left py-5 px-6 font-semibold text-gray-700">Module</th>
+                  <th className="text-left py-5 px-6 font-semibold text-gray-700">IP Address</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-50">
                 {activityLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50">
-                    <td className="py-4 px-6">
+                  <tr key={log.id} className="hover:bg-gray-50/50 transition-colors duration-150">
+                    <td className="py-5 px-6">
                       <div className="font-medium text-gray-900">{log.userName}</div>
                     </td>
-                    <td className="py-4 px-6 text-gray-700">{log.action}</td>
-                    <td className="py-4 px-6 text-gray-500">
+                    <td className="py-5 px-6 text-gray-600">{log.action}</td>
+                    <td className="py-5 px-6 text-gray-500">
                       {formatTimeAgo(log.timestamp)}
                     </td>
-                    <td className="py-4 px-6">
-                      <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                    <td className="py-5 px-6">
+                      <span className="px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-700 rounded-full border border-blue-100">
                         {log.module}
                       </span>
                     </td>
-                    <td className="py-4 px-6 text-gray-500 font-mono text-sm">{log.ipAddress}</td>
+                    <td className="py-5 px-6 text-gray-500 font-mono text-sm">{log.ipAddress}</td>
                   </tr>
                 ))}
               </tbody>
@@ -304,29 +304,29 @@ const TeamManagement = () => {
   }
 
   return (
-    <div className="space-y-6 font-['Manrope',_sans-serif]">
+    <div className="space-y-8 font-['Manrope',_sans-serif] p-6 bg-gray-50/30 min-h-screen">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="w-fit flex flex-col items-start gap-0">
-          <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+      <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="w-fit flex flex-col items-start gap-1">
+          <h1 className="text-3xl font-semibold text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
             Team Management
           </h1>
-          <p className="text-[0.9rem] text-neutral-400">
+          <p className="text-gray-500">
             Manage team members, roles, and permissions
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => setShowActivityLogs(true)}
-            className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="flex items-center gap-2 px-5 py-2.5 text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm"
           >
             <Download className="w-4 h-4" />
             Export Team Activity Logs
           </button>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
           >
             <Plus className="w-4 h-4" />
             Add New Team Member
@@ -335,15 +335,15 @@ const TeamManagement = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-xl border border-gray-200">
-        <div className="flex items-center gap-2 flex-1 min-w-[300px]">
-          <Search className="w-4 h-4 text-gray-400" />
+      <div className="flex flex-wrap items-center gap-4 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex items-center gap-3 flex-1 min-w-[300px] bg-gray-50/50 rounded-xl px-4 py-3 border border-gray-100">
+          <Search className="w-5 h-5 text-gray-400" />
           <input
             type="text"
             placeholder="Search name or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 border-0 outline-none text-gray-700 placeholder-gray-400"
+            className="flex-1 border-0 outline-none bg-transparent text-gray-700 placeholder-gray-400"
           />
         </div>
 
@@ -352,107 +352,111 @@ const TeamManagement = () => {
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             >
               {roles.map(role => (
                 <option key={role} value={role}>{role}</option>
               ))}
             </select>
-            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
           </div>
 
           <div className="relative">
             <select
               value={regionFilter}
               onChange={(e) => setRegionFilter(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             >
               {regions.map(region => (
                 <option key={region} value={region}>{region}</option>
               ))}
             </select>
-            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
       </div>
 
       {/* Team Members Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-gray-50/50 border-b border-gray-100">
               <tr>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Name</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Email</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Role</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Region Access</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Last Active</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Status</th>
-                <th className="text-left py-4 px-6 font-medium text-gray-700">Actions</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Name</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Email</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Role</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Region Access</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Last Active</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Status</th>
+                <th className="text-left py-5 px-6 font-semibold text-gray-700">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-50">
               {filteredMembers.map((member) => (
-                <tr key={member.id} className="hover:bg-gray-50">
-                  <td className="py-4 px-6">
+                <tr key={member.id} className="hover:bg-gray-50/50 transition-colors duration-150">
+                  <td className="py-5 px-6">
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 ${member.color} rounded-full flex items-center justify-center text-white font-medium`}>
+                      <div className={`w-11 h-11 ${member.color} rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm`}>
                         {member.avatar}
                       </div>
                       <div className="font-medium text-gray-900">{member.name}</div>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-gray-600">{member.email}</td>
-                  <td className="py-4 px-6">
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(member.role)}`}>
+                  <td className="py-5 px-6 text-gray-600">{member.email}</td>
+                  <td className="py-5 px-6">
+                    <span className={`px-3 py-1.5 text-xs font-medium rounded-full border ${getRoleColor(member.role)}`}>
                       {member.role}
                     </span>
                   </td>
-                  <td className="py-4 px-6 text-gray-600">{member.regionAccess}</td>
-                  <td className="py-4 px-6 text-gray-500">{formatTimeAgo(member.lastActive)}</td>
-                  <td className="py-4 px-6">
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
-                      {member.status}
-                    </span>
+                  <td className="py-5 px-6 text-gray-600">{member.regionAccess}</td>
+                  <td className="py-5 px-6 text-gray-500">{formatTimeAgo(member.lastActive)}</td>
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${member.status === "Active" ? "bg-green-500" : "bg-red-400"}`}></div>
+                      <span className={`px-3 py-1.5 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
+                        {member.status}
+                      </span>
+                    </div>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-5 px-6">
                     <div className="relative">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveDropdown(activeDropdown === member.id ? null : member.id);
                         }}
-                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-150"
                       >
                         <MoreVertical className="w-4 h-4 text-gray-500" />
                       </button>
                       
                       {activeDropdown === member.id && (
-                        <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-10 py-1">
                           <button
                             onClick={() => handleEditMember(member)}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                            className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
                           >
                             <Edit className="w-4 h-4" />
                             Edit
                           </button>
                           <button
                             onClick={() => {/* View activity log */}}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                            className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
                           >
                             <Activity className="w-4 h-4" />
                             Activity Log
                           </button>
                           <button
                             onClick={() => handleSuspendMember(member.id)}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                            className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-2 text-gray-700 transition-colors duration-150"
                           >
                             <UserMinus className="w-4 h-4" />
                             {member.status === "Active" ? "Suspend" : "Activate"}
                           </button>
+                          <hr className="my-1 border-gray-100" />
                           <button
                             onClick={() => handleRemoveMember(member.id)}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-red-600"
+                            className="w-full text-left px-4 py-2.5 hover:bg-red-50 flex items-center gap-2 text-red-600 transition-colors duration-150"
                           >
                             <Trash2 className="w-4 h-4" />
                             Remove
@@ -470,22 +474,22 @@ const TeamManagement = () => {
 
       {/* Add Member Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Add New Team Member</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Add New Team Member</h2>
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
+                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-150"
                 >
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     <User className="w-4 h-4 inline mr-2" />
                     Name
                   </label>
@@ -493,13 +497,13 @@ const TeamManagement = () => {
                     type="text"
                     value={newMember.name}
                     onChange={(e) => setNewMember({...newMember, name: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     <Mail className="w-4 h-4 inline mr-2" />
                     Email Address
                   </label>
@@ -507,20 +511,20 @@ const TeamManagement = () => {
                     type="email"
                     value={newMember.email}
                     onChange={(e) => setNewMember({...newMember, email: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="Enter email address"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     <Shield className="w-4 h-4 inline mr-2" />
                     Role
                   </label>
                   <select
                     value={newMember.role}
                     onChange={(e) => setNewMember({...newMember, role: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   >
                     {roleOptions.map(role => (
                       <option key={role} value={role}>{role}</option>
@@ -529,14 +533,14 @@ const TeamManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     <MapPin className="w-4 h-4 inline mr-2" />
                     Region Access
                   </label>
                   <select
                     value={newMember.regionAccess}
                     onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   >
                     <option value="">Select region</option>
                     {regionOptions.map(region => (
@@ -546,7 +550,7 @@ const TeamManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
                     <Calendar className="w-4 h-4 inline mr-2" />
                     Access Expiry (Optional)
                   </label>
@@ -554,43 +558,43 @@ const TeamManagement = () => {
                     type="date"
                     value={newMember.accessExpiry}
                     onChange={(e) => setNewMember({...newMember, accessExpiry: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="flex items-center">
+                <div className="space-y-4 pt-4 border-t border-gray-100">
+                  <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={newMember.twoFactorEnabled}
                       onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Enable Two-Factor Authentication</span>
+                    <span className="text-sm text-gray-700">Enable Two-Factor Authentication</span>
                   </label>
                   
-                  <label className="flex items-center">
+                  <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={newMember.forcePasswordReset}
                       onChange={(e) => setNewMember({...newMember, forcePasswordReset: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Force Password Reset on First Login</span>
+                    <span className="text-sm text-gray-700">Force Password Reset on First Login</span>
                   </label>
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex gap-4 mt-8 pt-6 border-t border-gray-100">
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                  className="flex-1 px-6 py-3 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddMember}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
                   <Save className="w-4 h-4" />
                   Add Member
@@ -603,46 +607,46 @@ const TeamManagement = () => {
 
       {/* Edit Member Modal */}
       {showEditModal && selectedMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Edit Team Member</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Edit Team Member</h2>
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
+                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-150"
                 >
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Name</label>
                   <input
                     type="text"
                     value={newMember.name}
                     onChange={(e) => setNewMember({...newMember, name: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Email</label>
                   <input
                     type="email"
                     value={newMember.email}
                     onChange={(e) => setNewMember({...newMember, email: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Role</label>
                   <select
                     value={newMember.role}
                     onChange={(e) => setNewMember({...newMember, role: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   >
                     {roleOptions.map(role => (
                       <option key={role} value={role}>{role}</option>
@@ -651,11 +655,11 @@ const TeamManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Region Access</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Region Access</label>
                   <select
                     value={newMember.regionAccess}
                     onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   >
                     {regionOptions.map(region => (
                       <option key={region} value={region}>{region}</option>
@@ -663,29 +667,29 @@ const TeamManagement = () => {
                   </select>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="flex items-center">
+                <div className="pt-4 border-t border-gray-100">
+                  <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={newMember.twoFactorEnabled}
                       onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Two-Factor Authentication</span>
+                    <span className="text-sm text-gray-700">Two-Factor Authentication</span>
                   </label>
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex gap-4 mt-8 pt-6 border-t border-gray-100">
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                  className="flex-1 px-6 py-3 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleUpdateMember}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                 >
                   <Save className="w-4 h-4" />
                   Update Member

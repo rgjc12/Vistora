@@ -1,10 +1,703 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Filter,
+  Plus,
+  Download,
+  MoreVertical,
+  Edit,
+  Eye,
+  Trash2,
+  UserMinus,
+  Calendar,
+  Shield,
+  X,
+  Save,
+  ChevronDown,
+  User,
+  Mail,
+  MapPin,
+  Clock,
+  Activity,
+} from "lucide-react";
 
 const TeamManagement = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("All roles");
+  const [regionFilter, setRegionFilter] = useState("All regions");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showActivityLogs, setShowActivityLogs] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  // Mock data for team members
+  const [teamMembers, setTeamMembers] = useState([
+    {
+      id: 1,
+      name: "Eleanor Pena",
+      email: "eleanor.pena@tpacompany.com",
+      role: "Admin",
+      regionAccess: "North America",
+      lastActive: "2024-01-15T10:30:00Z",
+      status: "Active",
+      avatar: "EP",
+      color: "bg-blue-500",
+      joinDate: "2023-06-15",
+      twoFactorEnabled: true,
+    },
+    {
+      id: 2,
+      name: "Wade Warren",
+      email: "wade.warren@tpacompany.com",
+      role: "Reviewer",
+      regionAccess: "Europe",
+      lastActive: "2024-01-14T15:45:00Z",
+      status: "Active",
+      avatar: "WW",
+      color: "bg-orange-500",
+      joinDate: "2023-08-20",
+      twoFactorEnabled: false,
+    },
+    {
+      id: 3,
+      name: "Jenny Wilson",
+      email: "jenny.wilson@tpacompany.com",
+      role: "Reviewer",
+      regionAccess: "Asia Pacific",
+      lastActive: "2024-01-13T09:15:00Z",
+      status: "Active",
+      avatar: "JW",
+      color: "bg-purple-500",
+      joinDate: "2023-09-10",
+      twoFactorEnabled: true,
+    },
+    {
+      id: 4,
+      name: "Robert Fox",
+      email: "robert.fox@tpacompany.com",
+      role: "Admin",
+      regionAccess: "Global",
+      lastActive: "2024-01-10T12:00:00Z",
+      status: "Disabled",
+      avatar: "RF",
+      color: "bg-green-500",
+      joinDate: "2023-05-01",
+      twoFactorEnabled: true,
+    },
+  ]);
+
+  // Mock data for activity logs
+  const [activityLogs, setActivityLogs] = useState([
+    {
+      id: 1,
+      userName: "Eleanor Pena",
+      action: "Approved Claim #482",
+      timestamp: "2024-01-15T10:30:00Z",
+      module: "Claims Review",
+      ipAddress: "192.168.1.100",
+    },
+    {
+      id: 2,
+      userName: "Wade Warren",
+      action: "Flagged Claim #483 for review",
+      timestamp: "2024-01-14T15:45:00Z",
+      module: "Claims Review",
+      ipAddress: "192.168.1.101",
+    },
+    {
+      id: 3,
+      userName: "Jenny Wilson",
+      action: "Updated team member permissions",
+      timestamp: "2024-01-13T09:15:00Z",
+      module: "Team Management",
+      ipAddress: "192.168.1.102",
+    },
+  ]);
+
+  const [newMember, setNewMember] = useState({
+    name: "",
+    email: "",
+    role: "Viewer",
+    regionAccess: "",
+    twoFactorEnabled: false,
+    forcePasswordReset: false,
+    accessExpiry: "",
+  });
+
+  const roles = ["All roles", "Admin", "Reviewer", "Viewer"];
+  const regions = ["All regions", "North America", "Europe", "Asia Pacific", "Global"];
+  const roleOptions = ["Admin", "Reviewer", "Viewer"];
+  const regionOptions = ["North America", "Europe", "Asia Pacific", "Global"];
+
+  const formatTimeAgo = (dateString) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return "Just now";
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) return "1 day ago";
+    if (diffInDays < 30) return `${diffInDays} days ago`;
+    
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths === 1) return "1 month ago";
+    return `${diffInMonths} months ago`;
+  };
+
+  const filteredMembers = teamMembers.filter((member) => {
+    const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         member.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = roleFilter === "All roles" || member.role === roleFilter;
+    const matchesRegion = regionFilter === "All regions" || member.regionAccess === regionFilter;
+    
+    return matchesSearch && matchesRole && matchesRegion;
+  });
+
+  const handleAddMember = () => {
+    if (newMember.name && newMember.email) {
+      const member = {
+        id: teamMembers.length + 1,
+        ...newMember,
+        status: "Active",
+        avatar: newMember.name.split(" ").map(n => n[0]).join(""),
+        color: `bg-${['blue', 'green', 'purple', 'orange', 'pink'][Math.floor(Math.random() * 5)]}-500`,
+        lastActive: new Date().toISOString(),
+        joinDate: new Date().toISOString().split('T')[0],
+      };
+      setTeamMembers([...teamMembers, member]);
+      setNewMember({
+        name: "",
+        email: "",
+        role: "Viewer",
+        regionAccess: "",
+        twoFactorEnabled: false,
+        forcePasswordReset: false,
+        accessExpiry: "",
+      });
+      setShowAddModal(false);
+    }
+  };
+
+  const handleEditMember = (member) => {
+    setSelectedMember(member);
+    setNewMember({ ...member });
+    setShowEditModal(true);
+    setActiveDropdown(null);
+  };
+
+  const handleUpdateMember = () => {
+    setTeamMembers(teamMembers.map(member => 
+      member.id === selectedMember.id ? { ...member, ...newMember } : member
+    ));
+    setShowEditModal(false);
+    setSelectedMember(null);
+    setNewMember({
+      name: "",
+      email: "",
+      role: "Viewer",
+      regionAccess: "",
+      twoFactorEnabled: false,
+      forcePasswordReset: false,
+      accessExpiry: "",
+    });
+  };
+
+  const handleRemoveMember = (memberId) => {
+    setTeamMembers(teamMembers.filter(member => member.id !== memberId));
+    setActiveDropdown(null);
+  };
+
+  const handleSuspendMember = (memberId) => {
+    setTeamMembers(teamMembers.map(member => 
+      member.id === memberId 
+        ? { ...member, status: member.status === "Active" ? "Disabled" : "Active" }
+        : member
+    ));
+    setActiveDropdown(null);
+  };
+
+  const getRoleColor = (role) => {
+    switch (role) {
+      case "Admin":
+        return "bg-purple-100 text-purple-800 border-purple-200";
+      case "Reviewer":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "Viewer":
+        return "bg-gray-100 text-gray-800 border-gray-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
+  const getStatusColor = (status) => {
+    return status === "Active" 
+      ? "bg-green-100 text-green-800" 
+      : "bg-red-100 text-red-800";
+  };
+
+  useEffect(() => {
+    const handleClickOutside = () => setActiveDropdown(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  if (showActivityLogs) {
+    return (
+      <div className="space-y-6 font-['Manrope',_sans-serif]">
+        {/* Activity Logs Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+              Team Activity Logs
+            </h1>
+            <p className="text-[0.9rem] text-neutral-400">
+              Monitor team member actions and system access
+            </p>
+          </div>
+          <button
+            onClick={() => setShowActivityLogs(false)}
+            className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+          >
+            <X className="w-4 h-4" />
+            Back to Team
+          </button>
+        </div>
+
+        {/* Activity Logs Table */}
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="text-left py-4 px-6 font-medium text-gray-700">User Name</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-700">Action Taken</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-700">Timestamp</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-700">Module</th>
+                  <th className="text-left py-4 px-6 font-medium text-gray-700">IP Address</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {activityLogs.map((log) => (
+                  <tr key={log.id} className="hover:bg-gray-50">
+                    <td className="py-4 px-6">
+                      <div className="font-medium text-gray-900">{log.userName}</div>
+                    </td>
+                    <td className="py-4 px-6 text-gray-700">{log.action}</td>
+                    <td className="py-4 px-6 text-gray-500">
+                      {formatTimeAgo(log.timestamp)}
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                        {log.module}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-gray-500 font-mono text-sm">{log.ipAddress}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      Team Management
-      {/** Replace this component for the dashboard page */}
+    <div className="space-y-6 font-['Manrope',_sans-serif]">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="w-fit flex flex-col items-start gap-0">
+          <h1 className="text-2xl md:text-3xl font-medium text-gray-900 font-['Aktiv_Grotesk',_'Manrope',_sans-serif]">
+            Team Management
+          </h1>
+          <p className="text-[0.9rem] text-neutral-400">
+            Manage team members, roles, and permissions
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowActivityLogs(true)}
+            className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+          >
+            <Download className="w-4 h-4" />
+            Export Team Activity Logs
+          </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            <Plus className="w-4 h-4" />
+            Add New Team Member
+          </button>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-xl border border-gray-200">
+        <div className="flex items-center gap-2 flex-1 min-w-[300px]">
+          <Search className="w-4 h-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search name or email"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 border-0 outline-none text-gray-700 placeholder-gray-400"
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {roles.map(role => (
+                <option key={role} value={role}>{role}</option>
+              ))}
+            </select>
+            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+          </div>
+
+          <div className="relative">
+            <select
+              value={regionFilter}
+              onChange={(e) => setRegionFilter(e.target.value)}
+              className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {regions.map(region => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
+            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+
+      {/* Team Members Table */}
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Name</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Email</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Role</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Region Access</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Last Active</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Status</th>
+                <th className="text-left py-4 px-6 font-medium text-gray-700">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {filteredMembers.map((member) => (
+                <tr key={member.id} className="hover:bg-gray-50">
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 ${member.color} rounded-full flex items-center justify-center text-white font-medium`}>
+                        {member.avatar}
+                      </div>
+                      <div className="font-medium text-gray-900">{member.name}</div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-gray-600">{member.email}</td>
+                  <td className="py-4 px-6">
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(member.role)}`}>
+                      {member.role}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6 text-gray-600">{member.regionAccess}</td>
+                  <td className="py-4 px-6 text-gray-500">{formatTimeAgo(member.lastActive)}</td>
+                  <td className="py-4 px-6">
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(member.status)}`}>
+                      {member.status}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDropdown(activeDropdown === member.id ? null : member.id);
+                        }}
+                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        <MoreVertical className="w-4 h-4 text-gray-500" />
+                      </button>
+                      
+                      {activeDropdown === member.id && (
+                        <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                          <button
+                            onClick={() => handleEditMember(member)}
+                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                          >
+                            <Edit className="w-4 h-4" />
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => {/* View activity log */}}
+                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                          >
+                            <Activity className="w-4 h-4" />
+                            Activity Log
+                          </button>
+                          <button
+                            onClick={() => handleSuspendMember(member.id)}
+                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                          >
+                            <UserMinus className="w-4 h-4" />
+                            {member.status === "Active" ? "Suspend" : "Activate"}
+                          </button>
+                          <button
+                            onClick={() => handleRemoveMember(member.id)}
+                            className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-red-600"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Remove
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Add Member Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">Add New Team Member</h2>
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <User className="w-4 h-4 inline mr-2" />
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newMember.name}
+                    onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter full name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Mail className="w-4 h-4 inline mr-2" />
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={newMember.email}
+                    onChange={(e) => setNewMember({...newMember, email: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter email address"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Shield className="w-4 h-4 inline mr-2" />
+                    Role
+                  </label>
+                  <select
+                    value={newMember.role}
+                    onChange={(e) => setNewMember({...newMember, role: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {roleOptions.map(role => (
+                      <option key={role} value={role}>{role}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <MapPin className="w-4 h-4 inline mr-2" />
+                    Region Access
+                  </label>
+                  <select
+                    value={newMember.regionAccess}
+                    onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select region</option>
+                    {regionOptions.map(region => (
+                      <option key={region} value={region}>{region}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Calendar className="w-4 h-4 inline mr-2" />
+                    Access Expiry (Optional)
+                  </label>
+                  <input
+                    type="date"
+                    value={newMember.accessExpiry}
+                    onChange={(e) => setNewMember({...newMember, accessExpiry: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={newMember.twoFactorEnabled}
+                      onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Enable Two-Factor Authentication</span>
+                  </label>
+                  
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={newMember.forcePasswordReset}
+                      onChange={(e) => setNewMember({...newMember, forcePasswordReset: e.target.checked})}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Force Password Reset on First Login</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddMember}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
+                >
+                  <Save className="w-4 h-4" />
+                  Add Member
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Member Modal */}
+      {showEditModal && selectedMember && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">Edit Team Member</h2>
+                <button
+                  onClick={() => setShowEditModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                  <input
+                    type="text"
+                    value={newMember.name}
+                    onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <input
+                    type="email"
+                    value={newMember.email}
+                    onChange={(e) => setNewMember({...newMember, email: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                  <select
+                    value={newMember.role}
+                    onChange={(e) => setNewMember({...newMember, role: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {roleOptions.map(role => (
+                      <option key={role} value={role}>{role}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Region Access</label>
+                  <select
+                    value={newMember.regionAccess}
+                    onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {regionOptions.map(region => (
+                      <option key={region} value={region}>{region}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={newMember.twoFactorEnabled}
+                      onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Two-Factor Authentication</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => setShowEditModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdateMember}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2"
+                >
+                  <Save className="w-4 h-4" />
+                  Update Member
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

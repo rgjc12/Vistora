@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from "react";
 import {
   Search,
-  Filter,
   Plus,
   Download,
   MoreVertical,
   Edit,
-  Eye,
   Trash2,
   UserMinus,
   Calendar,
@@ -18,7 +16,6 @@ import {
   User,
   Mail,
   MapPin,
-  Clock,
   Activity,
 } from "lucide-react";
 

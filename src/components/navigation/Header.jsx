@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "../../styles/index.css";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../buttons/PrimaryButton";
 import SmallerButton from "../buttons/SmallerButton";
-import { AlignJustify } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import { useSelector } from "react-redux";
 import SignOutModal from "../ui/SignOutModal";

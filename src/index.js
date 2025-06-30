@@ -9,7 +9,7 @@ import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage"; // 👈 Import
 import LoginPage from "./pages/Auth/LoginPage"; // optional, if separated
 import "./styles/index.css";
 //import Profile from "./pages/Profile/Profile";
-import DashboardMainPage from "./pages/Dashboard/Provider Dash/DashboardMainPage";
+
 import { store } from "./store/store";
 import { Provider } from "react-redux";
 import ClaimsSummaryPage from "./pages/Dashboard/Provider Dash/ClaimsSummaryPage";

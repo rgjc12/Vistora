@@ -1,7 +1,7 @@
 import { AlignJustify, X } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SmallerButton from "../buttons/SmallerButton";
+
 import PrimaryButton from "../buttons/PrimaryButton";
 import { useSelector } from "react-redux";
 import SignOutModal from "../ui/SignOutModal";

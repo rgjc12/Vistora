@@ -903,91 +903,186 @@ const TeamManagement = () => {
 
       {/* Edit Member Modal */}
       {showEditModal && selectedMember && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="p-8">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-semibold text-gray-900">Edit Team Member</h2>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-lg flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto shadow-2xl border border-gray-100">
+            {/* Modal Header */}
+            <div className="relative bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 p-8 border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className={`w-16 h-16 ${selectedMember.color} rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg`}>
+                    {selectedMember.avatar}
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-1">Edit Team Member</h2>
+                    <p className="text-gray-600">Update member information and permissions</p>
+                  </div>
+                </div>
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-150"
+                  className="p-3 hover:bg-white/80 rounded-2xl transition-all duration-200 group"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-6 h-6 text-gray-400 group-hover:text-gray-600" />
                 </button>
               </div>
+            </div>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Name</label>
-                  <input
-                    type="text"
-                    value={newMember.name}
-                    onChange={(e) => setNewMember({...newMember, name: e.target.value})}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  />
+            <div className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Personal Information Section */}
+                <div className="md:col-span-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <User className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Personal Information
+                  </h3>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Email</label>
-                  <input
-                    type="email"
-                    value={newMember.email}
-                    onChange={(e) => setNewMember({...newMember, email: e.target.value})}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Role</label>
-                  <select
-                    value={newMember.role}
-                    onChange={(e) => setNewMember({...newMember, role: e.target.value})}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  >
-                    {roleOptions.map(role => (
-                      <option key={role} value={role}>{role}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Region Access</label>
-                  <select
-                    value={newMember.regionAccess}
-                    onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  >
-                    {regionOptions.map(region => (
-                      <option key={region} value={region}>{region}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="pt-4 border-t border-gray-100">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={newMember.twoFactorEnabled}
-                      onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3"
-                    />
-                    <span className="text-sm text-gray-700">Two-Factor Authentication</span>
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Full Name *
                   </label>
+                  <div className="relative">
+                    <User className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={newMember.name}
+                      onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+                      className="w-full border-2 border-gray-200 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50/50 hover:bg-white hover:border-gray-300"
+                      placeholder="Enter full name"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
+                    <input
+                      type="email"
+                      value={newMember.email}
+                      onChange={(e) => setNewMember({...newMember, email: e.target.value})}
+                      className="w-full border-2 border-gray-200 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50/50 hover:bg-white hover:border-gray-300"
+                      placeholder="Enter email address"
+                    />
+                  </div>
+                </div>
+
+                {/* Access & Permissions Section */}
+                <div className="md:col-span-2 mt-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Shield className="w-4 h-4 text-purple-600" />
+                    </div>
+                    Access & Permissions
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Role *
+                  </label>
+                  <div className="relative">
+                    <Shield className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2 z-10" />
+                    <select
+                      value={newMember.role}
+                      onChange={(e) => setNewMember({...newMember, role: e.target.value})}
+                      className="w-full border-2 border-gray-200 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50/50 hover:bg-white hover:border-gray-300 appearance-none"
+                    >
+                      {roleOptions.map(role => (
+                        <option key={role} value={role}>{role}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Region Access *
+                  </label>
+                  <div className="relative">
+                    <MapPin className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2 z-10" />
+                    <select
+                      value={newMember.regionAccess}
+                      onChange={(e) => setNewMember({...newMember, regionAccess: e.target.value})}
+                      className="w-full border-2 border-gray-200 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50/50 hover:bg-white hover:border-gray-300 appearance-none"
+                    >
+                      {regionOptions.map(region => (
+                        <option key={region} value={region}>{region}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Security Settings Section */}
+                <div className="md:col-span-2 mt-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Shield className="w-4 h-4 text-green-600" />
+                    </div>
+                    Security Settings
+                  </h3>
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6">
+                    <label className="flex items-start gap-4 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={newMember.twoFactorEnabled}
+                        onChange={(e) => setNewMember({...newMember, twoFactorEnabled: e.target.checked})}
+                        className="mt-1 rounded-lg border-2 border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2 w-5 h-5"
+                      />
+                      <div>
+                        <span className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
+                          Two-Factor Authentication
+                        </span>
+                        <p className="text-xs text-gray-600 mt-1">
+                          Adds an extra layer of security to the account
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Member Status */}
+                <div className="md:col-span-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                      <User className="w-4 h-4 text-amber-600" />
+                    </div>
+                    Current Status
+                  </h3>
+                  <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-2xl">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">Status:</span>
+                      <span className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(selectedMember.status)}`}>
+                        <div className={`w-2 h-2 rounded-full ${selectedMember.status === "Active" ? "bg-green-500" : "bg-red-400"}`}></div>
+                        {selectedMember.status}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">Last Active:</span>
+                      <span className="text-sm text-gray-600">{formatTimeAgo(selectedMember.lastActive)}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex gap-4 mt-8 pt-6 border-t border-gray-100">
+              {/* Action Buttons */}
+              <div className="flex gap-4 mt-10 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="flex-1 px-6 py-3 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
+                  className="flex-1 px-8 py-4 border-2 border-gray-200 text-gray-700 rounded-2xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleUpdateMember}
-                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                  className="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl font-semibold"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="w-5 h-5" />
                   Update Member
                 </button>
               </div>

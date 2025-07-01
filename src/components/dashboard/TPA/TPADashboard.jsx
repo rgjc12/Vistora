@@ -4,11 +4,16 @@ import {
   Bell, 
   AlertTriangle, 
   FileText, 
+  Shield, 
+  Users, 
   CheckCircle,
   Clock,
   Flag,
   ArrowUpRight,
+  TrendingUp,
+  TrendingDown,
   MessageSquare,
+  Calendar,
   MoreHorizontal
 } from "lucide-react";
 

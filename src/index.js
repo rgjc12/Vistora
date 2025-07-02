@@ -33,6 +33,7 @@ import AppealsManagementPage from "./pages/Dashboard/TPA-Dash/AppealsManagementP
 import TeamManagementPage from "./pages/Dashboard/TPA-Dash/TeamManagementPage";
 import SettingsPage from "./pages/Dashboard/TPA-Dash/SettingsPage";
 import DashboardRedirect from "./pages/Dashboard/DashboardRedirect";
+import AllNotificationsPage from "./pages/Dashboard/General/AllNotificationsPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -80,12 +81,16 @@ root.render(
                 element={<NotificationsPage />}
               />
               <Route
+                path="/dashboard/general/notifications"
+                element={<AllNotificationsPage />}
+              />
+              <Route
                 path="/dashboard/provider/help"
                 element={<HelpAndSupportPage />}
               />
               <Route
-                path="/dashboard/provider/profile"
-                element={<ProfilePage />}
+                path="/dashboard/provider/settings"
+                element={<DasboardSettingsPage />}
               />
               {/* Provider */}
               {/* TPA */}

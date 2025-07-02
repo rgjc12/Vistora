@@ -50,19 +50,8 @@ const TPADashboard = () => {
   };
 
   const handleViewAllNotifications = () => {
-    // For now, we'll create a detailed modal showing all notifications
-    // In the future, this could navigate to a dedicated notifications page
-    setShowNotificationModal(true);
-    setSelectedNotification({
-      id: 'all',
-      type: 'info',
-      title: 'All Notifications',
-      time: 'Current',
-      icon: Bell,
-      description: 'View all your notifications in one place. You have ' + notifications.length + ' total notifications.',
-      priority: 'Medium',
-      actionRequired: 'Review All',
-    });
+    // Navigate to a dedicated all notifications view
+    navigate("/dashboard/general/notifications");
   };
 
   const handleReviewNewClaims = () => {

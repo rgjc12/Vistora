@@ -795,8 +795,8 @@ const TPADashboard = () => {
                         notification.type === 'warning' ? 'bg-amber-100 text-amber-600 group-hover:bg-amber-200' :
                         notification.type === 'info' ? 'bg-blue-100 text-blue-600 group-hover:bg-blue-200' :
                         'bg-purple-100 text-purple-600 group-hover:bg-purple-200'
-                      }`} style={{ padding: '0.2083vw' }}>
-                        <IconComponent style={{ width: '0.4167vw', height: '0.4167vw' }} />
+                      }`} style={{ padding: '0.3125vw' }}>
+                        <IconComponent style={{ width: '1.2vw', height: '1.2vw' }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
@@ -808,9 +808,9 @@ const TPADashboard = () => {
                             <button 
                               onClick={() => handleNotificationClick(notification)}
                               className="rounded-lg hover:bg-blue-200 transition-all duration-200 group-hover:scale-110"
-                              style={{ padding: '0.1042vw' }}
+                              style={{ padding: '0.2083vw' }}
                             >
-                              <ArrowUpRight style={{ width: '0.4167vw', height: '0.4167vw' }} className="text-gray-400 group-hover:text-blue-600" />
+                              <ArrowUpRight style={{ width: '1.0vw', height: '1.0vw' }} className="text-gray-400 group-hover:text-blue-600" />
                             </button>
                           </div>
                         </div>
@@ -855,8 +855,8 @@ const TPADashboard = () => {
                   className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
-                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
-                    <AlertTriangle style={{ width: '0.625vw', height: '0.625vw' }} />
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.3125vw' }}>
+                    <AlertTriangle style={{ width: '1.25vw', height: '1.25vw' }} />
                   </div>
                   Review New Claims
                 </span>
@@ -867,8 +867,8 @@ const TPADashboard = () => {
                   className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
-                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
-                    <Flag style={{ width: '0.625vw', height: '0.625vw' }} />
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.3125vw' }}>
+                    <Flag style={{ width: '1.25vw', height: '1.25vw' }} />
                   </div>
                   Go to Flagged Claims
                 </span>
@@ -879,8 +879,8 @@ const TPADashboard = () => {
                   className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
-                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
-                    <MessageSquare style={{ width: '0.625vw', height: '0.625vw' }} />
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.3125vw' }}>
+                    <MessageSquare style={{ width: '1.25vw', height: '1.25vw' }} />
                   </div>
                   Add Team Member
                 </span>

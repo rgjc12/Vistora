@@ -36,6 +36,7 @@ const TPADashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("Month");
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
 
   const handleNotificationClick = (notification) => {
     setSelectedNotification(notification);
@@ -446,78 +447,83 @@ const TPADashboard = () => {
                 </button>
               </div>
               
-              {/* Animated Donut Chart */}
-              <motion.div 
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="h-64"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={riskScoreData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={90}
-                      paddingAngle={5}
-                      dataKey="value"
-                      animationBegin={800}
-                      animationDuration={1500}
-                    >
-                      {riskScoreData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                        border: 'none',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </motion.div>
+              {/* Redesigned Donut Chart with Center Data */}
+              <div className="relative">
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="h-64"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={riskScoreData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={70}
+                        outerRadius={100}
+                        paddingAngle={3}
+                        dataKey="value"
+                        animationBegin={800}
+                        animationDuration={1500}
+                        strokeWidth={2}
+                        stroke="#ffffff"
+                      >
+                        {riskScoreData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                          border: 'none',
+                          borderRadius: '12px',
+                          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </motion.div>
 
-              {/* Center Value */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1.2 }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-12 text-center"
-              >
-                <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  24.25
-                </div>
-                <div className="text-sm text-gray-600 font-medium">Avg Risk</div>
-              </motion.div>
+                {/* Center Value - Positioned absolutely in center */}
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1.2 }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center"
+                >
+                  <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    24.25
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">Avg Risk</div>
+                </motion.div>
+              </div>
 
-              {/* Enhanced Legend */}
-              <div className="space-y-3 mt-4">
+              {/* Enhanced Legend with percentages */}
+              <div className="grid grid-cols-2 gap-3 mt-6">
                 {riskScoreData.map((item, index) => (
                   <motion.div 
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 1.4 + (index * 0.1) }}
-                    className="flex items-center justify-between p-2 bg-white/60 backdrop-blur-sm rounded-lg border border-gray-200/50"
+                    className="flex items-center justify-between p-3 bg-white/70 backdrop-blur-sm rounded-lg border border-gray-200/50"
                   >
                     <div className="flex items-center gap-2">
                       <div 
-                        className="w-4 h-4 rounded-full shadow-sm" 
+                        className="w-3 h-3 rounded-full shadow-sm" 
                         style={{ backgroundColor: item.color }}
                       ></div>
                       <span className="text-sm font-medium text-gray-700">{item.type}</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900">{item.value}%</span>
+                    <span className="text-lg font-bold text-gray-900">{item.value}%</span>
                   </motion.div>
                 ))}
               </div>
               
               <motion.button 
+                onClick={() => setShowAnalyticsModal(true)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full mt-6 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -915,6 +921,209 @@ const TPADashboard = () => {
                 <button 
                   onClick={closeNotificationModal}
                   className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Analytics Modal */}
+      {showAnalyticsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl">
+                    <Activity className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Detailed Risk Analytics</h2>
+                    <p className="text-sm text-gray-500">Comprehensive AI-powered fraud detection insights</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setShowAnalyticsModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                >
+                  <span className="text-2xl text-gray-400 hover:text-gray-600">×</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-8">
+              {/* Overview Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200">
+                  <div className="text-3xl font-bold text-red-600">127</div>
+                  <div className="text-sm text-red-700 font-medium">High Risk Claims</div>
+                  <div className="text-xs text-red-500 mt-1">↑ 12% from last month</div>
+                </div>
+                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border border-yellow-200">
+                  <div className="text-3xl font-bold text-yellow-600">89</div>
+                  <div className="text-sm text-yellow-700 font-medium">Medium Risk Claims</div>
+                  <div className="text-xs text-yellow-500 mt-1">↓ 5% from last month</div>
+                </div>
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+                  <div className="text-3xl font-bold text-green-600">94.2%</div>
+                  <div className="text-sm text-green-700 font-medium">Detection Accuracy</div>
+                  <div className="text-xs text-green-500 mt-1">↑ 2.1% from last month</div>
+                </div>
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+                  <div className="text-3xl font-bold text-blue-600">$2.4M</div>
+                  <div className="text-sm text-blue-700 font-medium">Fraud Prevented</div>
+                  <div className="text-xs text-blue-500 mt-1">↑ 18% from last month</div>
+                </div>
+              </div>
+
+              {/* Risk Distribution by Provider */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Risk Distribution by Provider Type</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={[
+                      { provider: 'Hospitals', high: 45, medium: 23, low: 12 },
+                      { provider: 'Clinics', high: 32, medium: 41, low: 8 },
+                      { provider: 'Specialists', high: 28, medium: 18, low: 15 },
+                      { provider: 'Labs', high: 22, medium: 7, low: 3 }
+                    ]}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis dataKey="provider" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="high" stackId="a" fill="#ef4444" name="High Risk" />
+                      <Bar dataKey="medium" stackId="a" fill="#f59e0b" name="Medium Risk" />
+                      <Bar dataKey="low" stackId="a" fill="#10b981" name="Low Risk" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Fraud Detection Timeline</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={[
+                      { week: 'Week 1', detected: 23, prevented: 21, falsePos: 2 },
+                      { week: 'Week 2', detected: 31, prevented: 28, falsePos: 3 },
+                      { week: 'Week 3', detected: 28, prevented: 26, falsePos: 2 },
+                      { week: 'Week 4', detected: 35, prevented: 33, falsePos: 2 }
+                    ]}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis dataKey="week" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="detected" stroke="#8b5cf6" strokeWidth={3} name="Detected" />
+                      <Line type="monotone" dataKey="prevented" stroke="#10b981" strokeWidth={3} name="Prevented" />
+                      <Line type="monotone" dataKey="falsePos" stroke="#ef4444" strokeWidth={3} name="False Positives" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* AI Model Performance */}
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
+                <h3 className="text-lg font-bold text-gray-900 mb-6">AI Model Performance Metrics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-white p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">97.8%</div>
+                    <div className="text-sm text-gray-600">Precision Rate</div>
+                    <div className="text-xs text-green-500 mt-1">↑ 0.8% this week</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">94.2%</div>
+                    <div className="text-sm text-gray-600">Recall Rate</div>
+                    <div className="text-xs text-green-500 mt-1">↑ 1.2% this week</div>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">96.0%</div>
+                    <div className="text-sm text-gray-600">F1 Score</div>
+                    <div className="text-xs text-green-500 mt-1">↑ 1.0% this week</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Risk Factors Analysis */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Top Risk Factors</h3>
+                  <div className="space-y-4">
+                    {[
+                      { factor: 'Unusual billing patterns', score: 8.7, trend: 'up' },
+                      { factor: 'Provider history', score: 7.9, trend: 'stable' },
+                      { factor: 'Claim timing anomalies', score: 7.2, trend: 'down' },
+                      { factor: 'Patient demographics', score: 6.8, trend: 'up' },
+                      { factor: 'Service code patterns', score: 6.3, trend: 'stable' }
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg">
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900">{item.factor}</div>
+                          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                            <div 
+                              className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full" 
+                              style={{ width: `${item.score * 10}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                        <div className="ml-4 text-right">
+                          <div className="text-lg font-bold text-gray-900">{item.score}</div>
+                          <div className={`text-xs ${
+                            item.trend === 'up' ? 'text-red-500' : 
+                            item.trend === 'down' ? 'text-green-500' : 
+                            'text-gray-500'
+                          }`}>
+                            {item.trend === 'up' ? '↑' : item.trend === 'down' ? '↓' : '→'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Fraud Patterns</h3>
+                  <div className="space-y-4">
+                    {[
+                      { pattern: 'Duplicate claims across providers', cases: 23, severity: 'High' },
+                      { pattern: 'Unbundling of services', cases: 18, severity: 'Medium' },
+                      { pattern: 'Phantom billing', cases: 12, severity: 'High' },
+                      { pattern: 'Upcoding procedures', cases: 15, severity: 'Medium' },
+                      { pattern: 'Identity theft claims', cases: 8, severity: 'High' }
+                    ].map((item, index) => (
+                      <div key={index} className="p-3 bg-white rounded-lg border-l-4 border-red-500">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">{item.pattern}</div>
+                            <div className="text-xs text-gray-500 mt-1">{item.cases} cases detected</div>
+                          </div>
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            item.severity === 'High' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {item.severity}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-6 border-t border-gray-200">
+                <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg">
+                  Export Report
+                </button>
+                <button className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg">
+                  Schedule Analysis
+                </button>
+                <button 
+                  onClick={() => setShowAnalyticsModal(false)}
+                  className="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
                 >
                   Close
                 </button>

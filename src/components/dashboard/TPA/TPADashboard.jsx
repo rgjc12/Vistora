@@ -189,43 +189,43 @@ const TPADashboard = () => {
   
 
   return (
-    <div className="w-full space-y-6 bg-gray-50 min-h-screen p-6">
+    <div className="w-full space-y-6 bg-gray-50 min-h-screen" style={{ padding: '0.625vw' }}>
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
         </div>
-        <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
-          <AlertTriangle className="w-4 h-4" />
+        <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 rounded-full text-sm" style={{ padding: '0.3125vw 0.1875vw' }}>
+          <AlertTriangle style={{ width: '0.4167vw', height: '0.4167vw' }} />
           Alert: 2 Claims Require your attention
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4" style={{ gap: '0.625vw' }}>
         {/* Left Content - Claims Summary and Charts */}
-        <div className="xl:col-span-3 space-y-6">
+        <div className="xl:col-span-3" style={{ display: 'flex', flexDirection: 'column', gap: '0.625vw' }}>
           {/* Summary Widgets Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" style={{ gap: '0.625vw' }}>
             {/* Claims by Status */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-100 border border-emerald-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-emerald-100 hover:to-teal-200">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-100 border border-emerald-200 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-emerald-100 hover:to-teal-200" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '0.4167vw' }}>
                 <h3 className="text-lg font-bold text-gray-800">Claims by Status</h3>
-                <div className="p-2 bg-emerald-200 rounded-xl">
-                  <CheckCircle className="w-5 h-5 text-emerald-700" />
+                <div className="bg-emerald-200 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <CheckCircle style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-emerald-700" />
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4167vw' }}>
+                <div className="flex items-center justify-between bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                    <div className="bg-green-500 rounded-full" style={{ width: '0.3125vw', height: '0.3125vw', marginRight: '0.3125vw' }}></div>
                     <span className="text-base font-semibold text-gray-700">Approved</span>
                   </div>
                   <span className="text-2xl font-bold text-green-600">24</span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+                <div className="flex items-center justify-between bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                    <div className="bg-red-500 rounded-full" style={{ width: '0.3125vw', height: '0.3125vw', marginRight: '0.3125vw' }}></div>
                     <span className="text-base font-semibold text-gray-700">Flagged</span>
                   </div>
                   <span className="text-2xl font-bold text-red-600">6</span>
@@ -234,60 +234,60 @@ const TPADashboard = () => {
             </div>
 
             {/* Fraud Alerts */}
-            <div className="bg-gradient-to-br from-red-50 to-orange-100 border border-red-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-red-100 hover:to-orange-200">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-gradient-to-br from-red-50 to-orange-100 border border-red-200 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-red-100 hover:to-orange-200" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '0.4167vw' }}>
                 <h3 className="text-lg font-bold text-gray-800">Fraud Alerts</h3>
-                <div className="p-2 bg-red-200 rounded-xl">
-                  <AlertTriangle className="w-5 h-5 text-red-700" />
+                <div className="bg-red-200 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <AlertTriangle style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-red-700" />
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
+                <div className="bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="flex items-center justify-between">
                     <span className="text-base font-semibold text-gray-700">Total flagged</span>
                     <span className="text-3xl font-bold text-red-600">{fraudAlerts.total}</span>
                   </div>
-                  <div className="text-sm text-gray-600 mt-2">AI/Manual detection</div>
+                  <div className="text-sm text-gray-600" style={{ marginTop: '0.2083vw' }}>AI/Manual detection</div>
                 </div>
               </div>
             </div>
 
             {/* Top Providers */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-blue-100 hover:to-indigo-200">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-blue-100 hover:to-indigo-200" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '0.4167vw' }}>
                 <h3 className="text-lg font-bold text-gray-800">Top Providers</h3>
-                <div className="p-2 bg-blue-200 rounded-xl">
-                  <FileText className="w-5 h-5 text-blue-700" />
+                <div className="bg-blue-200 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <FileText style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-blue-700" />
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
+                <div className="bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="text-lg font-bold text-gray-800">{topProvider.name}</div>
                   <div className="text-3xl font-bold text-blue-600">{topProvider.claimCount}</div>
-                  <div className="text-sm text-gray-600 mt-1">Claims processed</div>
+                  <div className="text-sm text-gray-600" style={{ marginTop: '0.1042vw' }}>Claims processed</div>
                 </div>
               </div>
             </div>
 
             {/* Claim Volume */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-100 border border-purple-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-purple-100 hover:to-pink-200">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-100 border border-purple-200 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-purple-100 hover:to-pink-200" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '0.4167vw' }}>
                 <h3 className="text-lg font-bold text-gray-800">Claim Volume</h3>
-                <div className="p-2 bg-purple-200 rounded-xl">
-                  <Clock className="w-5 h-5 text-purple-700" />
+                <div className="bg-purple-200 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <Clock style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-purple-700" />
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4167vw' }}>
+                <div className="flex items-center justify-between bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                    <div className="bg-yellow-500 rounded-full" style={{ width: '0.3125vw', height: '0.3125vw', marginRight: '0.3125vw' }}></div>
                     <span className="text-base font-semibold text-gray-700">Pending</span>
                   </div>
                   <span className="text-2xl font-bold text-yellow-600">5</span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+                <div className="flex items-center justify-between bg-white/60 rounded-xl backdrop-blur-sm" style={{ padding: '0.3125vw' }}>
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                    <div className="bg-purple-500 rounded-full" style={{ width: '0.3125vw', height: '0.3125vw', marginRight: '0.3125vw' }}></div>
                     <span className="text-base font-semibold text-gray-700">Forwarded</span>
                   </div>
                   <span className="text-2xl font-bold text-purple-600">5</span>
@@ -297,36 +297,38 @@ const TPADashboard = () => {
           </div>
 
           {/* Enhanced Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3" style={{ gap: '0.625vw' }}>
             {/* Advanced Claim Analytics Chart */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-2 bg-gradient-to-br from-white to-blue-50/30 p-6 rounded-2xl shadow-lg border border-blue-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+              className="lg:col-span-2 bg-gradient-to-br from-white to-blue-50/30 rounded-2xl shadow-lg border border-blue-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+              style={{ padding: '0.625vw' }}
             >
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-                    <TrendingUp className="w-5 h-5 text-white" />
+              <div className="flex justify-between items-center" style={{ marginBottom: '0.625vw' }}>
+                <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl" style={{ padding: '0.2083vw' }}>
+                    <TrendingUp style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Claims Analytics Dashboard</h3>
                     <p className="text-sm text-gray-600">Real-time insights & fraud detection</p>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex" style={{ gap: '0.2083vw' }}>
                   {["Year", "Quarter", "Month"].map((period) => (
                     <motion.button
                       key={period}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setSelectedPeriod(period)}
-                      className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 ${
+                      className={`text-sm font-semibold rounded-xl transition-all duration-300 ${
                         selectedPeriod === period
                           ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                           : "bg-white/60 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200"
                       }`}
+                      style={{ padding: '0.4167vw' }}
                     >
                       {period}
                     </motion.button>
@@ -340,7 +342,7 @@ const TPADashboard = () => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="h-80"
+                style={{ height: '20vw' }}
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartDataByPeriod[selectedPeriod]}>
@@ -370,13 +372,13 @@ const TPADashboard = () => {
                       contentStyle={{
                         backgroundColor: 'rgba(255, 255, 255, 0.95)',
                         border: 'none',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-                        backdropFilter: 'blur(10px)'
+                        borderRadius: '0.75vw',
+                        boxShadow: '0 0.625vw 1.5625vw rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(0.625vw)'
                       }}
                     />
                     <Legend 
-                      wrapperStyle={{ paddingTop: '20px' }}
+                      wrapperStyle={{ paddingTop: '1.25vw' }}
                     />
                     <Area
                       type="monotone"
@@ -403,20 +405,20 @@ const TPADashboard = () => {
                 </ResponsiveContainer>
               </motion.div>
               
-              <div className="mt-4 grid grid-cols-3 gap-4">
-                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-blue-200/50">
+              <div className="grid grid-cols-3" style={{ marginTop: '0.4167vw', gap: '0.4167vw' }}>
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-blue-200/50" style={{ padding: '0.3125vw' }}>
                   <div className="text-2xl font-bold text-blue-600">
                     {chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.claims, 0).toLocaleString()}
                   </div>
                   <div className="text-sm text-gray-600">Total Claims</div>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-red-200/50">
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-red-200/50" style={{ padding: '0.3125vw' }}>
                   <div className="text-2xl font-bold text-red-600">
                     {chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.fraudCases, 0)}
                   </div>
                   <div className="text-sm text-gray-600">Fraud Cases</div>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-green-200/50">
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-green-200/50" style={{ padding: '0.3125vw' }}>
                   <div className="text-2xl font-bold text-green-600">
                     {Math.round(chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.approvalRate, 0) / chartDataByPeriod[selectedPeriod].length)}%
                   </div>
@@ -430,20 +432,21 @@ const TPADashboard = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-gradient-to-br from-white to-purple-50/30 p-6 rounded-2xl shadow-lg border border-purple-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+              className="bg-gradient-to-br from-white to-purple-50/30 rounded-2xl shadow-lg border border-purple-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+              style={{ padding: '0.625vw' }}
             >
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl">
-                    <Activity className="w-5 h-5 text-white" />
+              <div className="flex justify-between items-center" style={{ marginBottom: '0.625vw' }}>
+                <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl" style={{ padding: '0.2083vw' }}>
+                    <Activity style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-white" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-gray-900">Risk Analysis</h3>
                     <p className="text-sm text-gray-600">AI-Powered Detection</p>
                   </div>
                 </div>
-                <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200">
-                  <MoreHorizontal className="w-5 h-5 text-gray-400" />
+                <button className="hover:bg-gray-100 rounded-xl transition-colors duration-200" style={{ padding: '0.2083vw' }}>
+                  <MoreHorizontal style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-gray-400" />
                 </button>
               </div>
               
@@ -453,7 +456,7 @@ const TPADashboard = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
-                  className="h-64"
+                  style={{ height: '16.6667vw' }}
                 >
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -478,8 +481,8 @@ const TPADashboard = () => {
                         contentStyle={{
                           backgroundColor: 'rgba(255, 255, 255, 0.95)',
                           border: 'none',
-                          borderRadius: '12px',
-                          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                          borderRadius: '0.75vw',
+                          boxShadow: '0 0.625vw 1.5625vw rgba(0, 0, 0, 0.1)'
                         }}
                       />
                     </PieChart>
@@ -501,19 +504,24 @@ const TPADashboard = () => {
               </div>
 
               {/* Enhanced Legend with percentages */}
-              <div className="grid grid-cols-2 gap-3 mt-6">
+              <div className="grid grid-cols-2" style={{ gap: '0.3125vw', marginTop: '0.625vw' }}>
                 {riskScoreData.map((item, index) => (
                   <motion.div 
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 1.4 + (index * 0.1) }}
-                    className="flex items-center justify-between p-3 bg-white/70 backdrop-blur-sm rounded-lg border border-gray-200/50"
+                    className="flex items-center justify-between bg-white/70 backdrop-blur-sm rounded-lg border border-gray-200/50"
+                    style={{ padding: '0.3125vw' }}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center" style={{ gap: '0.2083vw' }}>
                       <div 
-                        className="w-3 h-3 rounded-full shadow-sm" 
-                        style={{ backgroundColor: item.color }}
+                        className="rounded-full shadow-sm" 
+                        style={{ 
+                          width: '0.3125vw', 
+                          height: '0.3125vw',
+                          backgroundColor: item.color 
+                        }}
                       ></div>
                       <span className="text-sm font-medium text-gray-700">{item.type}</span>
                     </div>
@@ -526,7 +534,8 @@ const TPADashboard = () => {
                 onClick={() => setShowAnalyticsModal(true)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full mt-6 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                style={{ marginTop: '0.625vw', padding: '0.4167vw' }}
               >
                 View Detailed Analysis
               </motion.button>
@@ -538,13 +547,14 @@ const TPADashboard = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+            className="grid grid-cols-1 lg:grid-cols-2"
+            style={{ gap: '0.625vw', marginBottom: '0.625vw' }}
           >
             {/* Claims Processing Timeline */}
-            <div className="bg-gradient-to-br from-white to-green-50/30 p-6 rounded-2xl shadow-lg border border-green-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl">
-                  <Clock className="w-5 h-5 text-white" />
+            <div className="bg-gradient-to-br from-white to-green-50/30 rounded-2xl shadow-lg border border-green-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center" style={{ gap: '0.3125vw', marginBottom: '0.625vw' }}>
+                <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <Clock style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900">Processing Timeline</h3>
@@ -556,7 +566,7 @@ const TPADashboard = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.8 }}
-                className="h-64"
+                style={{ height: '16.6667vw' }}
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={[
@@ -583,8 +593,8 @@ const TPADashboard = () => {
                       contentStyle={{
                         backgroundColor: 'rgba(255, 255, 255, 0.95)',
                         border: 'none',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                        borderRadius: '0.75vw',
+                        boxShadow: '0 0.625vw 1.5625vw rgba(0, 0, 0, 0.1)'
                       }}
                     />
                     <Bar 
@@ -609,10 +619,10 @@ const TPADashboard = () => {
             </div>
 
             {/* Fraud Detection Efficiency */}
-            <div className="bg-gradient-to-br from-white to-orange-50/30 p-6 rounded-2xl shadow-lg border border-orange-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl">
-                  <AlertTriangle className="w-5 h-5 text-white" />
+            <div className="bg-gradient-to-br from-white to-orange-50/30 rounded-2xl shadow-lg border border-orange-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2" style={{ padding: '0.625vw' }}>
+              <div className="flex items-center" style={{ gap: '0.3125vw', marginBottom: '0.625vw' }}>
+                <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <AlertTriangle style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900">Detection Accuracy</h3>
@@ -624,7 +634,7 @@ const TPADashboard = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 1 }}
-                className="h-64"
+                style={{ height: '16.6667vw' }}
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={[
@@ -652,8 +662,8 @@ const TPADashboard = () => {
                       contentStyle={{
                         backgroundColor: 'rgba(255, 255, 255, 0.95)',
                         border: 'none',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                        borderRadius: '0.75vw',
+                        boxShadow: '0 0.625vw 1.5625vw rgba(0, 0, 0, 0.1)'
                       }}
                     />
                     <Legend />
@@ -684,12 +694,12 @@ const TPADashboard = () => {
           </motion.div>
 
           {/* Highlights Section */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Highlights</h3>
-            <div className="space-y-3">
+          <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1" style={{ padding: '0.625vw' }}>
+            <h3 className="text-lg font-semibold text-gray-900" style={{ marginBottom: '0.4167vw' }}>Highlights</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
               {highlights.map((highlight, index) => (
-                <div key={index} className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                <div key={index} className="flex items-start" style={{ gap: '0.2083vw' }}>
+                  <div className="bg-blue-600 rounded-full flex-shrink-0" style={{ width: '0.2083vw', height: '0.2083vw', marginTop: '0.2083vw' }}></div>
                   <div className="text-sm text-gray-700">
                     {highlight.text}{" "}
                     <button className="text-blue-600 hover:text-blue-800 underline">
@@ -700,12 +710,12 @@ const TPADashboard = () => {
               ))}
             </div>
             
-            <div className="mt-6">
-              <h4 className="font-semibold text-gray-900 mb-3">AI Smart Suggestions</h4>
-              <div className="space-y-3">
+            <div style={{ marginTop: '0.625vw' }}>
+              <h4 className="font-semibold text-gray-900" style={{ marginBottom: '0.3125vw' }}>AI Smart Suggestions</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
                 {aiSuggestions.map((suggestion, index) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <div key={index} className="flex items-start" style={{ gap: '0.2083vw' }}>
+                    <div className="bg-green-500 rounded-full flex-shrink-0" style={{ width: '0.2083vw', height: '0.2083vw', marginTop: '0.2083vw' }}></div>
                     <div className="text-sm text-gray-700">
                       {suggestion.text}{" "}
                       {suggestion.link && (
@@ -722,61 +732,63 @@ const TPADashboard = () => {
         </div>
 
         {/* Right Sidebar - Notifications and Quick Actions */}
-        <div className="xl:col-span-1 space-y-6">
+        <div className="xl:col-span-1" style={{ display: 'flex', flexDirection: 'column', gap: '0.625vw' }}>
           {/* Notifications Panel */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-xl">
-                  <Bell className="w-5 h-5 text-blue-600" />
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1" style={{ padding: '0.625vw' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '0.625vw' }}>
+              <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                <div className="bg-blue-100 rounded-xl" style={{ padding: '0.2083vw' }}>
+                  <Bell style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs font-semibold">
+              <div className="flex items-center" style={{ gap: '0.2083vw' }}>
+                <span className="bg-red-100 text-red-600 rounded-full text-xs font-semibold" style={{ padding: '0.1042vw 0.2083vw' }}>
                   {notifications.filter(n => n.priority === 'High').length} urgent
                 </span>
               </div>
             </div>
             
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
               {notifications.map((notification) => {
                 const IconComponent = notification.icon;
                 return (
                   <div 
                     key={notification.id} 
-                    className="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-4 hover:from-blue-50 hover:to-indigo-50 hover:border-blue-200 cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-md"
+                    className="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl hover:from-blue-50 hover:to-indigo-50 hover:border-blue-200 cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-md"
+                    style={{ padding: '0.4167vw' }}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className={`p-2 rounded-xl transition-all duration-200 ${
+                    <div className="flex items-start" style={{ gap: '0.3125vw' }}>
+                      <div className={`rounded-xl transition-all duration-200 ${
                         notification.type === 'warning' ? 'bg-amber-100 text-amber-600 group-hover:bg-amber-200' :
                         notification.type === 'info' ? 'bg-blue-100 text-blue-600 group-hover:bg-blue-200' :
                         'bg-purple-100 text-purple-600 group-hover:bg-purple-200'
-                      }`}>
-                        <IconComponent className="w-4 h-4" />
+                      }`} style={{ padding: '0.2083vw' }}>
+                        <IconComponent style={{ width: '0.4167vw', height: '0.4167vw' }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
                           <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-900 transition-colors duration-200">{notification.title}</p>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center" style={{ gap: '0.2083vw' }}>
                             {notification.priority === 'High' && (
-                              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                              <div className="bg-red-500 rounded-full animate-pulse" style={{ width: '0.2083vw', height: '0.2083vw' }}></div>
                             )}
                             <button 
                               onClick={() => handleNotificationClick(notification)}
-                              className="p-1 rounded-lg hover:bg-blue-200 transition-all duration-200 group-hover:scale-110"
+                              className="rounded-lg hover:bg-blue-200 transition-all duration-200 group-hover:scale-110"
+                              style={{ padding: '0.1042vw' }}
                             >
-                              <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600" />
+                              <ArrowUpRight style={{ width: '0.4167vw', height: '0.4167vw' }} className="text-gray-400 group-hover:text-blue-600" />
                             </button>
                           </div>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
+                        <p className="text-xs text-gray-500" style={{ marginTop: '0.1042vw' }}>{notification.time}</p>
                         {notification.priority && (
-                          <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full mt-2 ${
+                          <span className={`inline-block text-xs font-medium rounded-full ${
                             notification.priority === 'High' ? 'bg-red-100 text-red-700' :
                             notification.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
                             'bg-green-100 text-green-700'
-                          }`}>
+                          }`} style={{ padding: '0.1042vw 0.2083vw', marginTop: '0.2083vw' }}>
                             {notification.priority} Priority
                           </span>
                         )}
@@ -787,48 +799,48 @@ const TPADashboard = () => {
               })}
             </div>
             
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <button className="w-full text-center text-sm font-medium text-blue-600 hover:text-blue-800 py-2 rounded-lg hover:bg-blue-50 transition-all duration-200">
+            <div className="border-t border-gray-200" style={{ marginTop: '0.4167vw', paddingTop: '0.4167vw' }}>
+              <button className="w-full text-center text-sm font-medium text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-all duration-200" style={{ padding: '0.2083vw' }}>
                 View All Notifications
               </button>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-gradient-to-br from-slate-50 to-gray-100 border border-gray-200 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg">
-                <CheckCircle className="w-6 h-6 text-white" />
+          <div className="bg-gradient-to-br from-slate-50 to-gray-100 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1" style={{ padding: '0.625vw' }}>
+            <div className="flex items-center" style={{ gap: '0.3125vw', marginBottom: '0.625vw' }}>
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg" style={{ padding: '0.3125vw' }}>
+                <CheckCircle style={{ width: '0.625vw', height: '0.625vw' }} className="text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">Quick Actions</h3>
             </div>
             
-            <div className="space-y-5">
-              <button className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5208vw' }}>
+              <button className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                <span className="relative flex items-center justify-center gap-3">
-                  <div className="p-2 bg-white/20 rounded-lg">
-                    <AlertTriangle className="w-6 h-6" />
+                <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
+                    <AlertTriangle style={{ width: '0.625vw', height: '0.625vw' }} />
                   </div>
                   Review New Claims
                 </span>
               </button>
               
-              <button className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400">
+              <button className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                <span className="relative flex items-center justify-center gap-3">
-                  <div className="p-2 bg-white/20 rounded-lg">
-                    <Flag className="w-6 h-6" />
+                <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
+                    <Flag style={{ width: '0.625vw', height: '0.625vw' }} />
                   </div>
                   Go to Flagged Claims
                 </span>
               </button>
               
-              <button className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400">
+              <button className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                <span className="relative flex items-center justify-center gap-3">
-                  <div className="p-2 bg-white/20 rounded-lg">
-                    <MessageSquare className="w-6 h-6" />
+                <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
+                    <MessageSquare style={{ width: '0.625vw', height: '0.625vw' }} />
                   </div>
                   Add Team Member
                 </span>
@@ -840,18 +852,18 @@ const TPADashboard = () => {
 
       {/* Notification Detail Modal */}
       {showNotificationModal && selectedNotification && (
-        <div className="fixed inset-[-5vw] bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ inset: '-5vw', padding: '0.4167vw' }}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl">
+            <div className="sticky top-0 bg-white border-b border-gray-200 rounded-t-2xl" style={{ padding: '0.625vw' }}>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`p-3 rounded-xl ${
+                <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                  <div className={`rounded-xl ${
                     selectedNotification.type === 'warning' ? 'bg-amber-100 text-amber-600' :
                     selectedNotification.type === 'info' ? 'bg-blue-100 text-blue-600' :
                     'bg-purple-100 text-purple-600'
-                  }`}>
-                    <selectedNotification.icon className="w-6 h-6" />
+                  }`} style={{ padding: '0.3125vw' }}>
+                    <selectedNotification.icon style={{ width: '0.625vw', height: '0.625vw' }} />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">{selectedNotification.title}</h2>
@@ -860,7 +872,8 @@ const TPADashboard = () => {
                 </div>
                 <button 
                   onClick={closeNotificationModal}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                  className="hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                  style={{ padding: '0.2083vw' }}
                 >
                   <span className="text-2xl text-gray-400 hover:text-gray-600">×</span>
                 </button>
@@ -868,37 +881,37 @@ const TPADashboard = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 space-y-6">
+            <div style={{ padding: '0.625vw', display: 'flex', flexDirection: 'column', gap: '0.625vw' }}>
               {/* Priority Badge */}
-              <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+              <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                <span className={`rounded-full text-sm font-semibold ${
                   selectedNotification.priority === 'High' ? 'bg-red-100 text-red-700' :
                   selectedNotification.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
                   'bg-green-100 text-green-700'
-                }`}>
+                }`} style={{ padding: '0.3125vw' }}>
                   {selectedNotification.priority} Priority
                 </span>
                 {selectedNotification.priority === 'High' && (
-                  <div className="flex items-center gap-1 text-red-600">
-                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                  <div className="flex items-center text-red-600" style={{ gap: '0.1042vw' }}>
+                    <div className="bg-red-500 rounded-full animate-pulse" style={{ width: '0.2083vw', height: '0.2083vw' }}></div>
                     <span className="text-sm font-medium">Requires Immediate Action</span>
                   </div>
                 )}
               </div>
 
               {/* Description */}
-              <div className="bg-gray-50 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Details</h3>
+              <div className="bg-gray-50 rounded-xl" style={{ padding: '0.4167vw' }}>
+                <h3 className="font-semibold text-gray-900" style={{ marginBottom: '0.2083vw' }}>Details</h3>
                 <p className="text-gray-700 leading-relaxed">{selectedNotification.description}</p>
               </div>
 
               {/* Additional Info */}
               {selectedNotification.claimIds && (
-                <div className="bg-blue-50 rounded-xl p-4">
-                  <h3 className="font-semibold text-blue-900 mb-2">Related Claims</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div className="bg-blue-50 rounded-xl" style={{ padding: '0.4167vw' }}>
+                  <h3 className="font-semibold text-blue-900" style={{ marginBottom: '0.2083vw' }}>Related Claims</h3>
+                  <div className="flex flex-wrap" style={{ gap: '0.2083vw' }}>
                     {selectedNotification.claimIds.map((claimId) => (
-                      <span key={claimId} className="bg-blue-200 text-blue-800 px-3 py-1 rounded-lg text-sm font-medium">
+                      <span key={claimId} className="bg-blue-200 text-blue-800 rounded-lg text-sm font-medium" style={{ padding: '0.3125vw' }}>
                         #{claimId}
                       </span>
                     ))}
@@ -907,20 +920,21 @@ const TPADashboard = () => {
               )}
 
               {selectedNotification.sender && (
-                <div className="bg-purple-50 rounded-xl p-4">
-                  <h3 className="font-semibold text-purple-900 mb-2">From</h3>
+                <div className="bg-purple-50 rounded-xl" style={{ padding: '0.4167vw' }}>
+                  <h3 className="font-semibold text-purple-900" style={{ marginBottom: '0.2083vw' }}>From</h3>
                   <p className="text-purple-800 font-medium">{selectedNotification.sender}</p>
                 </div>
               )}
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
-                <button className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg">
+              <div className="flex" style={{ gap: '0.3125vw', paddingTop: '0.4167vw' }}>
+                <button className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg" style={{ padding: '0.3125vw 0.4167vw' }}>
                   {selectedNotification.actionRequired}
                 </button>
                 <button 
                   onClick={closeNotificationModal}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+                  className="border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+                  style={{ padding: '0.3125vw 0.625vw' }}
                 >
                   Close
                 </button>
@@ -932,14 +946,14 @@ const TPADashboard = () => {
 
       {/* Detailed Analytics Modal */}
       {showAnalyticsModal && (
-        <div className="fixed inset-[-5vw] bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ inset: '-5vw', padding: '0.4167vw' }}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl">
+            <div className="sticky top-0 bg-white border-b border-gray-200 rounded-t-2xl" style={{ padding: '0.625vw' }}>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl">
-                    <Activity className="w-6 h-6 text-white" />
+                <div className="flex items-center" style={{ gap: '0.3125vw' }}>
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl" style={{ padding: '0.3125vw' }}>
+                    <Activity style={{ width: '0.625vw', height: '0.625vw' }} className="text-white" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">Detailed Risk Analytics</h2>
@@ -948,7 +962,8 @@ const TPADashboard = () => {
                 </div>
                 <button 
                   onClick={() => setShowAnalyticsModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                  className="hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                  style={{ padding: '0.2083vw' }}
                 >
                   <span className="text-2xl text-gray-400 hover:text-gray-600">×</span>
                 </button>
@@ -956,35 +971,35 @@ const TPADashboard = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 space-y-8">
+            <div style={{ padding: '0.625vw', display: 'flex', flexDirection: 'column', gap: '0.8333vw' }}>
               {/* Overview Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200">
+              <div className="grid grid-cols-1 md:grid-cols-4" style={{ gap: '0.625vw' }}>
+                <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl border border-red-200" style={{ padding: '0.625vw' }}>
                   <div className="text-3xl font-bold text-red-600">127</div>
                   <div className="text-sm text-red-700 font-medium">High Risk Claims</div>
-                  <div className="text-xs text-red-500 mt-1">↑ 12% from last month</div>
+                  <div className="text-xs text-red-500" style={{ marginTop: '0.1042vw' }}>↑ 12% from last month</div>
                 </div>
-                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border border-yellow-200">
+                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl border border-yellow-200" style={{ padding: '0.625vw' }}>
                   <div className="text-3xl font-bold text-yellow-600">89</div>
                   <div className="text-sm text-yellow-700 font-medium">Medium Risk Claims</div>
-                  <div className="text-xs text-yellow-500 mt-1">↓ 5% from last month</div>
+                  <div className="text-xs text-yellow-500" style={{ marginTop: '0.1042vw' }}>↓ 5% from last month</div>
                 </div>
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200" style={{ padding: '0.625vw' }}>
                   <div className="text-3xl font-bold text-green-600">94.2%</div>
                   <div className="text-sm text-green-700 font-medium">Detection Accuracy</div>
-                  <div className="text-xs text-green-500 mt-1">↑ 2.1% from last month</div>
+                  <div className="text-xs text-green-500" style={{ marginTop: '0.1042vw' }}>↑ 2.1% from last month</div>
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border border-blue-200" style={{ padding: '0.625vw' }}>
                   <div className="text-3xl font-bold text-blue-600">$2.4M</div>
                   <div className="text-sm text-blue-700 font-medium">Fraud Prevented</div>
-                  <div className="text-xs text-blue-500 mt-1">↑ 18% from last month</div>
+                  <div className="text-xs text-blue-500" style={{ marginTop: '0.1042vw' }}>↑ 18% from last month</div>
                 </div>
               </div>
 
               {/* Risk Distribution by Provider */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-gray-50 p-6 rounded-xl">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Risk Distribution by Provider Type</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '0.8333vw' }}>
+                <div className="bg-gray-50 rounded-xl" style={{ padding: '0.625vw' }}>
+                  <h3 className="text-lg font-bold text-gray-900" style={{ marginBottom: '0.4167vw' }}>Risk Distribution by Provider Type</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={[
                       { provider: 'Hospitals', high: 45, medium: 23, low: 12 },
@@ -1004,8 +1019,8 @@ const TPADashboard = () => {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-xl">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Fraud Detection Timeline</h3>
+                <div className="bg-gray-50 rounded-xl" style={{ padding: '0.625vw' }}>
+                  <h3 className="text-lg font-bold text-gray-900" style={{ marginBottom: '0.4167vw' }}>Fraud Detection Timeline</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={[
                       { week: 'Week 1', detected: 23, prevented: 21, falsePos: 2 },
@@ -1027,32 +1042,32 @@ const TPADashboard = () => {
               </div>
 
               {/* AI Model Performance */}
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
-                <h3 className="text-lg font-bold text-gray-900 mb-6">AI Model Performance Metrics</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white p-4 rounded-lg">
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-200" style={{ padding: '0.625vw' }}>
+                <h3 className="text-lg font-bold text-gray-900" style={{ marginBottom: '0.625vw' }}>AI Model Performance Metrics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '0.625vw' }}>
+                  <div className="bg-white rounded-lg" style={{ padding: '0.4167vw' }}>
                     <div className="text-2xl font-bold text-purple-600">97.8%</div>
                     <div className="text-sm text-gray-600">Precision Rate</div>
-                    <div className="text-xs text-green-500 mt-1">↑ 0.8% this week</div>
+                    <div className="text-xs text-green-500" style={{ marginTop: '0.1042vw' }}>↑ 0.8% this week</div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg">
+                  <div className="bg-white rounded-lg" style={{ padding: '0.4167vw' }}>
                     <div className="text-2xl font-bold text-purple-600">94.2%</div>
                     <div className="text-sm text-gray-600">Recall Rate</div>
-                    <div className="text-xs text-green-500 mt-1">↑ 1.2% this week</div>
+                    <div className="text-xs text-green-500" style={{ marginTop: '0.1042vw' }}>↑ 1.2% this week</div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg">
+                  <div className="bg-white rounded-lg" style={{ padding: '0.4167vw' }}>
                     <div className="text-2xl font-bold text-purple-600">96.0%</div>
                     <div className="text-sm text-gray-600">F1 Score</div>
-                    <div className="text-xs text-green-500 mt-1">↑ 1.0% this week</div>
+                    <div className="text-xs text-green-500" style={{ marginTop: '0.1042vw' }}>↑ 1.0% this week</div>
                   </div>
                 </div>
               </div>
 
               {/* Risk Factors Analysis */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-gray-50 p-6 rounded-xl">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Top Risk Factors</h3>
-                  <div className="space-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '0.8333vw' }}>
+                <div className="bg-gray-50 rounded-xl" style={{ padding: '0.625vw' }}>
+                  <h3 className="text-lg font-bold text-gray-900" style={{ marginBottom: '0.4167vw' }}>Top Risk Factors</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4167vw' }}>
                     {[
                       { factor: 'Unusual billing patterns', score: 8.7, trend: 'up' },
                       { factor: 'Provider history', score: 7.9, trend: 'stable' },
@@ -1060,17 +1075,20 @@ const TPADashboard = () => {
                       { factor: 'Patient demographics', score: 6.8, trend: 'up' },
                       { factor: 'Service code patterns', score: 6.3, trend: 'stable' }
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg">
+                      <div key={index} className="flex items-center justify-between bg-white rounded-lg" style={{ padding: '0.3125vw' }}>
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900">{item.factor}</div>
-                          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                          <div className="w-full bg-gray-200 rounded-full" style={{ height: '0.2083vw', marginTop: '0.2083vw' }}>
                             <div 
-                              className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full" 
-                              style={{ width: `${item.score * 10}%` }}
+                              className="bg-gradient-to-r from-red-500 to-orange-500 rounded-full" 
+                              style={{ 
+                                width: `${item.score * 10}%`,
+                                height: '0.2083vw'
+                              }}
                             ></div>
                           </div>
                         </div>
-                        <div className="ml-4 text-right">
+                        <div className="text-right" style={{ marginLeft: '0.4167vw' }}>
                           <div className="text-lg font-bold text-gray-900">{item.score}</div>
                           <div className={`text-xs ${
                             item.trend === 'up' ? 'text-red-500' : 
@@ -1085,9 +1103,9 @@ const TPADashboard = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-xl">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Fraud Patterns</h3>
-                  <div className="space-y-4">
+                <div className="bg-gray-50 rounded-xl" style={{ padding: '0.625vw' }}>
+                  <h3 className="text-lg font-bold text-gray-900" style={{ marginBottom: '0.4167vw' }}>Recent Fraud Patterns</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4167vw' }}>
                     {[
                       { pattern: 'Duplicate claims across providers', cases: 23, severity: 'High' },
                       { pattern: 'Unbundling of services', cases: 18, severity: 'Medium' },
@@ -1095,15 +1113,15 @@ const TPADashboard = () => {
                       { pattern: 'Upcoding procedures', cases: 15, severity: 'Medium' },
                       { pattern: 'Identity theft claims', cases: 8, severity: 'High' }
                     ].map((item, index) => (
-                      <div key={index} className="p-3 bg-white rounded-lg border-l-4 border-red-500">
+                      <div key={index} className="bg-white rounded-lg border-l-4 border-red-500" style={{ padding: '0.3125vw' }}>
                         <div className="flex justify-between items-start">
                           <div>
                             <div className="text-sm font-medium text-gray-900">{item.pattern}</div>
-                            <div className="text-xs text-gray-500 mt-1">{item.cases} cases detected</div>
+                            <div className="text-xs text-gray-500" style={{ marginTop: '0.1042vw' }}>{item.cases} cases detected</div>
                           </div>
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          <span className={`text-xs font-medium rounded-full ${
                             item.severity === 'High' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                          }`}>
+                          }`} style={{ padding: '0.1042vw 0.2083vw' }}>
                             {item.severity}
                           </span>
                         </div>
@@ -1114,16 +1132,17 @@ const TPADashboard = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4 pt-6 border-t border-gray-200">
-                <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg">
+              <div className="flex border-t border-gray-200" style={{ gap: '0.4167vw', paddingTop: '0.625vw' }}>
+                <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg" style={{ padding: '0.3125vw 0.625vw' }}>
                   Export Report
                 </button>
-                <button className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg">
+                <button className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg" style={{ padding: '0.3125vw 0.625vw' }}>
                   Schedule Analysis
                 </button>
                 <button 
                   onClick={() => setShowAnalyticsModal(false)}
-                  className="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+                  className="border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+                  style={{ padding: '0.3125vw 0.8333vw' }}
                 >
                   Close
                 </button>

@@ -1,5 +1,23 @@
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
 import { 
   Bell, 
   AlertTriangle, 
@@ -9,7 +27,9 @@ import {
   Flag,
   ArrowUpRight,
   MessageSquare,
-  MoreHorizontal
+  MoreHorizontal,
+  TrendingUp,
+  Activity
 } from "lucide-react";
 
 const TPADashboard = () => {
@@ -46,21 +66,39 @@ const TPADashboard = () => {
     claimCount: 18
   };
 
-  // Mock chart data for claim volumes
-  const chartData = [
-    { month: "Jan", value: 150 },
-    { month: "Feb", value: 400 },
-    { month: "Mar", value: 800 },
-    { month: "Apr", value: 550 },
-    { month: "May", value: 950 },
-    { month: "Jun", value: 850 },
-    { month: "Jul", value: 600 },
-    { month: "Aug", value: 750 },
-    { month: "Sep", value: 800 },
-    { month: "Oct", value: 650 },
-    { month: "Nov", value: 250 },
-    { month: "Dec", value: 300 },
-  ];
+  // Enhanced chart data for different periods
+  const chartDataByPeriod = {
+    Year: [
+      { name: "2020", claims: 12400, fraudCases: 340, approvalRate: 87 },
+      { name: "2021", claims: 15200, fraudCases: 410, approvalRate: 85 },
+      { name: "2022", claims: 18900, fraudCases: 520, approvalRate: 88 },
+      { name: "2023", claims: 22100, fraudCases: 630, approvalRate: 90 },
+      { name: "2024", claims: 26800, fraudCases: 720, approvalRate: 92 },
+      { name: "2025", claims: 31200, fraudCases: 850, approvalRate: 89 },
+    ],
+    Quarter: [
+      { name: "Q1 2024", claims: 6200, fraudCases: 180, approvalRate: 91 },
+      { name: "Q2 2024", claims: 7400, fraudCases: 220, approvalRate: 88 },
+      { name: "Q3 2024", claims: 6800, fraudCases: 195, approvalRate: 93 },
+      { name: "Q4 2024", claims: 6400, fraudCases: 175, approvalRate: 90 },
+      { name: "Q1 2025", claims: 7800, fraudCases: 240, approvalRate: 89 },
+      { name: "Q2 2025", claims: 8100, fraudCases: 260, approvalRate: 87 },
+    ],
+    Month: [
+      { name: "Jan", claims: 2100, fraudCases: 65, approvalRate: 88 },
+      { name: "Feb", claims: 1950, fraudCases: 58, approvalRate: 90 },
+      { name: "Mar", claims: 2250, fraudCases: 72, approvalRate: 87 },
+      { name: "Apr", claims: 2400, fraudCases: 78, approvalRate: 89 },
+      { name: "May", claims: 2600, fraudCases: 85, approvalRate: 86 },
+      { name: "Jun", claims: 2300, fraudCases: 68, approvalRate: 91 },
+      { name: "Jul", claims: 2150, fraudCases: 62, approvalRate: 92 },
+      { name: "Aug", claims: 2050, fraudCases: 59, approvalRate: 90 },
+      { name: "Sep", claims: 2400, fraudCases: 74, approvalRate: 88 },
+      { name: "Oct", claims: 2500, fraudCases: 81, approvalRate: 87 },
+      { name: "Nov", claims: 2200, fraudCases: 67, approvalRate: 89 },
+      { name: "Dec", claims: 1900, fraudCases: 55, approvalRate: 93 },
+    ]
+  };
 
   // Mock notifications data
   const notifications = [
@@ -147,7 +185,7 @@ const TPADashboard = () => {
     }
   ];
 
-  const maxValue = Math.max(...chartData.map(d => d.value));
+  
 
   return (
     <div className="w-full space-y-6 bg-gray-50 min-h-screen p-6">
@@ -257,154 +295,387 @@ const TPADashboard = () => {
             </div>
           </div>
 
-          {/* Charts Section */}
+          {/* Enhanced Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Claim Volume Trends Chart */}
-            <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
+            {/* Advanced Claim Analytics Chart */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:col-span-2 bg-gradient-to-br from-white to-blue-50/30 p-6 rounded-2xl shadow-lg border border-blue-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+            >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Claim Volume Trends</h3>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Claims Analytics Dashboard</h3>
+                    <p className="text-sm text-gray-600">Real-time insights & fraud detection</p>
+                  </div>
+                </div>
                 <div className="flex gap-2">
                   {["Year", "Quarter", "Month"].map((period) => (
-                    <button
+                    <motion.button
                       key={period}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => setSelectedPeriod(period)}
-                      className={`px-3 py-1 text-sm rounded ${
+                      className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-300 ${
                         selectedPeriod === period
-                          ? "bg-gray-900 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                          : "bg-white/60 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200"
                       }`}
                     >
                       {period}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
               
-              {/* Simple Line Chart */}
-              <div className="relative h-64">
-                <svg className="w-full h-full" viewBox="0 0 800 250">
-                  {/* Grid lines */}
-                  {[0, 200, 400, 600, 800, 1000].map((value, index) => (
-                    <g key={value}>
-                      <line
-                        x1="60"
-                        y1={220 - (value / 1000) * 180}
-                        x2="760"
-                        y2={220 - (value / 1000) * 180}
-                        stroke="#f3f4f6"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x="45"
-                        y={225 - (value / 1000) * 180}
-                        className="text-xs fill-gray-500"
-                        textAnchor="end"
-                      >
-                        {value}
-                      </text>
-                    </g>
-                  ))}
-                  
-                  {/* Chart line */}
-                  <polyline
-                    fill="none"
-                    stroke="#8b5cf6"
-                    strokeWidth="3"
-                    points={chartData.map((point, index) => 
-                      `${80 + (index * 55)},${220 - (point.value / maxValue) * 180}`
-                    ).join(' ')}
-                  />
-                  
-                  {/* Data points */}
-                  {chartData.map((point, index) => (
-                    <circle
-                      key={index}
-                      cx={80 + (index * 55)}
-                      cy={220 - (point.value / maxValue) * 180}
-                      r="4"
-                      fill="#8b5cf6"
+              {/* Advanced Multi-Line Chart */}
+              <motion.div 
+                key={selectedPeriod}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="h-80"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chartDataByPeriod[selectedPeriod]}>
+                    <defs>
+                      <linearGradient id="claimsGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                      </linearGradient>
+                      <linearGradient id="fraudGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
                     />
-                  ))}
-                  
-                  {/* X-axis labels */}
-                  {chartData.map((point, index) => (
-                    <text
-                      key={index}
-                      x={80 + (index * 55)}
-                      y="240"
-                      className="text-xs fill-gray-500"
-                      textAnchor="middle"
-                    >
-                      {point.month}
-                    </text>
-                  ))}
-                </svg>
-                <div className="absolute bottom-2 right-4 text-xs text-gray-500">
-                  Claim Volumes 2025
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: 'none',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(10px)'
+                      }}
+                    />
+                    <Legend 
+                      wrapperStyle={{ paddingTop: '20px' }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="claims"
+                      stroke="#3b82f6"
+                      fillOpacity={1}
+                      fill="url(#claimsGradient)"
+                      strokeWidth={3}
+                      name="Total Claims"
+                      animationDuration={2000}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="fraudCases"
+                      stroke="#ef4444"
+                      fillOpacity={1}
+                      fill="url(#fraudGradient)"
+                      strokeWidth={3}
+                      name="Fraud Cases"
+                      animationDuration={2000}
+                      animationDelay={500}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </motion.div>
+              
+              <div className="mt-4 grid grid-cols-3 gap-4">
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-blue-200/50">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.claims, 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Total Claims</div>
+                </div>
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-red-200/50">
+                  <div className="text-2xl font-bold text-red-600">
+                    {chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.fraudCases, 0)}
+                  </div>
+                  <div className="text-sm text-gray-600">Fraud Cases</div>
+                </div>
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-green-200/50">
+                  <div className="text-2xl font-bold text-green-600">
+                    {Math.round(chartDataByPeriod[selectedPeriod].reduce((sum, item) => sum + item.approvalRate, 0) / chartDataByPeriod[selectedPeriod].length)}%
+                  </div>
+                  <div className="text-sm text-gray-600">Avg Approval</div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Risk Score Breakdown */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
+            {/* Enhanced Risk Score Breakdown */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="bg-gradient-to-br from-white to-purple-50/30 p-6 rounded-2xl shadow-lg border border-purple-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2 backdrop-blur-sm"
+            >
               <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Risk Score Breakdown</h3>
-                  <p className="text-sm text-gray-500">Risk Score Distribution</p>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl">
+                    <Activity className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Risk Analysis</h3>
+                    <p className="text-sm text-gray-600">AI-Powered Detection</p>
+                  </div>
                 </div>
-                <button className="text-gray-400 hover:text-gray-600">
-                  <MoreHorizontal className="w-5 h-5" />
+                <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200">
+                  <MoreHorizontal className="w-5 h-5 text-gray-400" />
                 </button>
               </div>
               
-              {/* Donut Chart */}
-              <div className="relative w-48 h-48 mx-auto mb-4">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-                  {riskScoreData.map((item, index) => {
-                    const total = riskScoreData.reduce((sum, d) => sum + d.value, 0);
-                    const percentage = (item.value / total) * 100;
-                    const circumference = 2 * Math.PI * 70;
-                    const strokeDasharray = (percentage / 100) * circumference;
-                    const strokeDashoffset = riskScoreData
-                      .slice(0, index)
-                      .reduce((offset, d) => offset - ((d.value / total) * circumference), circumference);
-                    
-                    return (
-                      <circle
-                        key={index}
-                        cx="100"
-                        cy="100"
-                        r="70"
-                        fill="transparent"
-                        stroke={item.color}
-                        strokeWidth="20"
-                        strokeDasharray={`${strokeDasharray} ${circumference}`}
-                        strokeDashoffset={strokeDashoffset}
-                        className="transition-all duration-300"
-                      />
-                    );
-                  })}
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="text-2xl font-bold text-gray-900">Avg 24.25</div>
-                </div>
-              </div>
+              {/* Animated Donut Chart */}
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="h-64"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={riskScoreData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={5}
+                      dataKey="value"
+                      animationBegin={800}
+                      animationDuration={1500}
+                    >
+                      {riskScoreData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: 'none',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </motion.div>
 
-              {/* Legend */}
-              <div className="space-y-2">
+              {/* Center Value */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-12 text-center"
+              >
+                <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  24.25
+                </div>
+                <div className="text-sm text-gray-600 font-medium">Avg Risk</div>
+              </motion.div>
+
+              {/* Enhanced Legend */}
+              <div className="space-y-3 mt-4">
                 {riskScoreData.map((item, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm">
-                    <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: item.color }}></div>
-                    <span className="text-gray-600">{item.type}</span>
-                  </div>
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 1.4 + (index * 0.1) }}
+                    className="flex items-center justify-between p-2 bg-white/60 backdrop-blur-sm rounded-lg border border-gray-200/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div 
+                        className="w-4 h-4 rounded-full shadow-sm" 
+                        style={{ backgroundColor: item.color }}
+                      ></div>
+                      <span className="text-sm font-medium text-gray-700">{item.type}</span>
+                    </div>
+                    <span className="text-sm font-bold text-gray-900">{item.value}%</span>
+                  </motion.div>
                 ))}
               </div>
               
-              <button className="w-full mt-4 text-sm text-blue-600 hover:text-blue-800 font-medium">
-                See more
-              </button>
-            </div>
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mt-6 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                View Detailed Analysis
+              </motion.button>
+            </motion.div>
           </div>
+
+          {/* Additional Analytics Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"
+          >
+            {/* Claims Processing Timeline */}
+            <div className="bg-gradient-to-br from-white to-green-50/30 p-6 rounded-2xl shadow-lg border border-green-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl">
+                  <Clock className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Processing Timeline</h3>
+                  <p className="text-sm text-gray-600">Average processing times</p>
+                </div>
+              </div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="h-64"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={[
+                    { stage: 'Submitted', avgHours: 0.5, maxHours: 2 },
+                    { stage: 'Review', avgHours: 24, maxHours: 72 },
+                    { stage: 'Investigation', avgHours: 96, maxHours: 168 },
+                    { stage: 'Decision', avgHours: 12, maxHours: 48 },
+                    { stage: 'Payment', avgHours: 48, maxHours: 120 }
+                  ]}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                    <XAxis 
+                      dataKey="stage" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 11 }}
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      label={{ value: 'Hours', angle: -90, position: 'insideLeft' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: 'none',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Bar 
+                      dataKey="avgHours" 
+                      fill="#22c55e" 
+                      radius={[4, 4, 0, 0]}
+                      animationDuration={1500}
+                      name="Average Time"
+                    />
+                    <Bar 
+                      dataKey="maxHours" 
+                      fill="#16a34a" 
+                      radius={[4, 4, 0, 0]}
+                      animationDuration={1500}
+                      animationDelay={300}
+                      name="Maximum Time"
+                      opacity={0.6}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </div>
+
+            {/* Fraud Detection Efficiency */}
+            <div className="bg-gradient-to-br from-white to-orange-50/30 p-6 rounded-2xl shadow-lg border border-orange-100/50 hover:shadow-xl transition-all duration-500 ease-in-out hover:-translate-y-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl">
+                  <AlertTriangle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Detection Accuracy</h3>
+                  <p className="text-sm text-gray-600">AI vs Manual detection</p>
+                </div>
+              </div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1 }}
+                className="h-64"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={[
+                    { month: 'Jan', aiAccuracy: 94, manualAccuracy: 87, falsePositives: 6 },
+                    { month: 'Feb', aiAccuracy: 95, manualAccuracy: 89, falsePositives: 5 },
+                    { month: 'Mar', aiAccuracy: 96, manualAccuracy: 88, falsePositives: 4 },
+                    { month: 'Apr', aiAccuracy: 97, manualAccuracy: 90, falsePositives: 3 },
+                    { month: 'May', aiAccuracy: 97, manualAccuracy: 91, falsePositives: 3 },
+                    { month: 'Jun', aiAccuracy: 98, manualAccuracy: 89, falsePositives: 2 }
+                  ]}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                    <XAxis 
+                      dataKey="month" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      domain={[80, 100]}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: 'none',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="aiAccuracy" 
+                      stroke="#f97316" 
+                      strokeWidth={3}
+                      dot={{ fill: '#f97316', strokeWidth: 2, r: 4 }}
+                      animationDuration={2000}
+                      name="AI Accuracy %"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="manualAccuracy" 
+                      stroke="#dc2626" 
+                      strokeWidth={3}
+                      strokeDasharray="5 5"
+                      dot={{ fill: '#dc2626', strokeWidth: 2, r: 4 }}
+                      animationDuration={2000}
+                      animationDelay={500}
+                      name="Manual Accuracy %"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </div>
+          </motion.div>
 
           {/* Highlights Section */}
           <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">

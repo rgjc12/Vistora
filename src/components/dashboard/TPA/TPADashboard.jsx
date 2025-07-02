@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   LineChart,
   Line,
@@ -49,8 +50,19 @@ const TPADashboard = () => {
   };
 
   const handleViewAllNotifications = () => {
-    // Navigate to the all notifications route
-    navigate("/dashboard/tpa/allNotifications");
+    // For now, we'll create a detailed modal showing all notifications
+    // In the future, this could navigate to a dedicated notifications page
+    setShowNotificationModal(true);
+    setSelectedNotification({
+      id: 'all',
+      type: 'info',
+      title: 'All Notifications',
+      time: 'Current',
+      icon: Bell,
+      description: 'View all your notifications in one place. You have ' + notifications.length + ' total notifications.',
+      priority: 'Medium',
+      actionRequired: 'Review All',
+    });
   };
 
   const handleReviewNewClaims = () => {
@@ -59,8 +71,8 @@ const TPADashboard = () => {
   };
 
   const handleGoToFlaggedClaims = () => {
-    // Navigate to the flagged claims route
-    navigate("/dasboard/tpa/flaggedClaims");
+    // Navigate to the flagged claims route (fixed typo)
+    navigate("/dashboard/tpa/flaggedClaims");
   };
 
   const handleAddTeamMember = () => {

@@ -770,7 +770,7 @@ const TPADashboard = () => {
             <div className="flex items-center justify-between" style={{ marginBottom: '0.625vw' }}>
               <div className="flex items-center" style={{ gap: '0.3125vw' }}>
                 <div className="bg-blue-100 rounded-xl" style={{ padding: '0.2083vw' }}>
-                  <Bell style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-blue-600" />
+                  <Bell style={{ width: '1.5vw', height: '1.5vw' }} className="text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
               </div>

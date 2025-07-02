@@ -17,11 +17,22 @@ const TPADashboard = () => {
 
   // Mock data for dashboard widgets
   const claimsData = [
-    { type: "Approved Claims", count: 5, date: "June 2025", color: "bg-green-600", icon: CheckCircle },
+    { type: "Approved Claims", count: 24, date: "June 2025", color: "bg-green-600", icon: CheckCircle },
     { type: "Pending Claims", count: 5, date: "June 2025", color: "bg-yellow-600", icon: Clock },
-    { type: "Flagged Claims", count: 5, date: "June 2025", color: "bg-red-600", icon: Flag },
+    { type: "Flagged Claims", count: 6, date: "June 2025", color: "bg-red-600", icon: Flag },
     { type: "Forwarded Claims", count: 5, date: "June 2025", color: "bg-purple-600", icon: ArrowUpRight },
   ];
+
+  // Mock data for additional summary widgets
+  const fraudAlerts = {
+    total: 9,
+    flagged: 9
+  };
+
+  const topProvider = {
+    name: "City Medical Center",
+    claimCount: 18
+  };
 
   // Mock chart data for claim volumes
   const chartData = [
@@ -127,24 +138,73 @@ const TPADashboard = () => {
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         {/* Left Content - Claims Summary and Charts */}
         <div className="xl:col-span-3 space-y-6">
-          {/* Claims Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {claimsData.map((claim, index) => {
-              const IconComponent = claim.icon;
-              return (
-                <div 
-                  key={index} 
-                  className={`${claim.color} text-white p-6 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:brightness-110`}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <IconComponent className="w-7 h-7 transition-transform duration-300 ease-in-out hover:rotate-12" />
+          {/* Summary Widgets Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {/* Claims by Status */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Claims by Status</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                    <span className="text-base font-semibold text-gray-700">Approved</span>
                   </div>
-                  <div className="text-4xl font-bold mb-2 transition-all duration-300">{claim.count}</div>
-                  <div className="text-base font-semibold opacity-95 transition-opacity duration-300 hover:opacity-100">{claim.type}</div>
-                  <div className="text-sm opacity-80 mt-3 font-medium">{claim.date}</div>
+                  <span className="text-2xl font-bold text-green-600">24</span>
                 </div>
-              );
-            })}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Flag className="w-5 h-5 text-red-600 mr-2" />
+                    <span className="text-base font-semibold text-gray-700">Flagged</span>
+                  </div>
+                  <span className="text-2xl font-bold text-red-600">6</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Fraud Alerts */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Fraud Alerts</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-semibold text-gray-700">Total flagged</span>
+                  <span className="text-2xl font-bold text-red-600">{fraudAlerts.total}</span>
+                </div>
+                <div className="text-sm text-gray-500">AI/Manual detection</div>
+              </div>
+            </div>
+
+            {/* Top Providers */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Top Providers</h3>
+              <div className="space-y-3">
+                <div>
+                  <div className="text-lg font-bold text-gray-900">{topProvider.name}</div>
+                  <div className="text-2xl font-bold text-blue-600">{topProvider.claimCount}</div>
+                </div>
+                <div className="text-sm text-gray-500">Claims processed</div>
+              </div>
+            </div>
+
+            {/* Claim Volume */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Claim Volume</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Clock className="w-5 h-5 text-yellow-600 mr-2" />
+                    <span className="text-base font-semibold text-gray-700">Pending</span>
+                  </div>
+                  <span className="text-2xl font-bold text-yellow-600">5</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <ArrowUpRight className="w-5 h-5 text-purple-600 mr-2" />
+                    <span className="text-base font-semibold text-gray-700">Forwarded</span>
+                  </div>
+                  <span className="text-2xl font-bold text-purple-600">5</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Charts Section */}

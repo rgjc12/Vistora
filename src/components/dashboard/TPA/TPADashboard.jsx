@@ -132,13 +132,16 @@ const TPADashboard = () => {
             {claimsData.map((claim, index) => {
               const IconComponent = claim.icon;
               return (
-                <div key={index} className={`${claim.color} text-white p-6 rounded-lg shadow-lg`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <IconComponent className="w-6 h-6" />
+                <div 
+                  key={index} 
+                  className={`${claim.color} text-white p-6 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:brightness-110`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <IconComponent className="w-7 h-7 transition-transform duration-300 ease-in-out hover:rotate-12" />
                   </div>
-                  <div className="text-3xl font-bold mb-1">{claim.count}</div>
-                  <div className="text-sm opacity-90">{claim.type}</div>
-                  <div className="text-xs opacity-75 mt-2">{claim.date}</div>
+                  <div className="text-4xl font-bold mb-2 transition-all duration-300">{claim.count}</div>
+                  <div className="text-base font-semibold opacity-95 transition-opacity duration-300 hover:opacity-100">{claim.type}</div>
+                  <div className="text-sm opacity-80 mt-3 font-medium">{claim.date}</div>
                 </div>
               );
             })}
@@ -147,7 +150,7 @@ const TPADashboard = () => {
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Claim Volume Trends Chart */}
-            <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm">
+            <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">Claim Volume Trends</h3>
                 <div className="flex gap-2">
@@ -233,7 +236,7 @@ const TPADashboard = () => {
             </div>
 
             {/* Risk Score Breakdown */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Risk Score Breakdown</h3>
@@ -294,7 +297,7 @@ const TPADashboard = () => {
           </div>
 
           {/* Highlights Section */}
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Highlights</h3>
             <div className="space-y-3">
               {highlights.map((highlight, index) => (
@@ -334,7 +337,7 @@ const TPADashboard = () => {
         {/* Right Sidebar - Notifications and Quick Actions */}
         <div className="xl:col-span-1 space-y-6">
           {/* Notifications Panel */}
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
               <Bell className="w-5 h-5 text-gray-400" />
@@ -344,7 +347,7 @@ const TPADashboard = () => {
               {notifications.map((notification) => {
                 const IconComponent = notification.icon;
                 return (
-                  <div key={notification.id} className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <div key={notification.id} className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition-all duration-200 ease-in-out hover:scale-102 hover:shadow-sm">
                     <div className={`p-1 rounded-full ${
                       notification.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
                       notification.type === 'info' ? 'bg-blue-100 text-blue-600' :
@@ -364,19 +367,19 @@ const TPADashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             
             <div className="space-y-3">
-              <button className="w-full bg-red-50 text-red-700 border border-red-200 py-3 px-4 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
+              <button className="w-full bg-red-50 text-red-700 border border-red-200 py-3 px-4 rounded-xl hover:bg-red-100 transition-all duration-300 ease-in-out text-base font-semibold hover:scale-105 hover:shadow-md transform">
                 Review New Claims
               </button>
               
-              <button className="w-full bg-white text-gray-700 border border-gray-300 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
+              <button className="w-full bg-white text-gray-700 border border-gray-300 py-3 px-4 rounded-xl hover:bg-gray-50 transition-all duration-300 ease-in-out text-base font-semibold hover:scale-105 hover:shadow-md transform">
                 View Flagged Claims
               </button>
               
-              <button className="w-full bg-white text-gray-700 border border-gray-300 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
+              <button className="w-full bg-white text-gray-700 border border-gray-300 py-3 px-4 rounded-xl hover:bg-gray-50 transition-all duration-300 ease-in-out text-base font-semibold hover:scale-105 hover:shadow-md transform">
                 Add Team Member
               </button>
             </div>

@@ -169,19 +169,24 @@ const TPADashboard = () => {
           {/* Summary Widgets Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {/* Claims by Status */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Claims by Status</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-100 border border-emerald-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-emerald-100 hover:to-teal-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-800">Claims by Status</h3>
+                <div className="p-2 bg-emerald-200 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-emerald-700" />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
                   <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
                     <span className="text-base font-semibold text-gray-700">Approved</span>
                   </div>
                   <span className="text-2xl font-bold text-green-600">24</span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
                   <div className="flex items-center">
-                    <Flag className="w-5 h-5 text-red-600 mr-2" />
+                    <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
                     <span className="text-base font-semibold text-gray-700">Flagged</span>
                   </div>
                   <span className="text-2xl font-bold text-red-600">6</span>
@@ -190,43 +195,60 @@ const TPADashboard = () => {
             </div>
 
             {/* Fraud Alerts */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Fraud Alerts</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-base font-semibold text-gray-700">Total flagged</span>
-                  <span className="text-2xl font-bold text-red-600">{fraudAlerts.total}</span>
+            <div className="bg-gradient-to-br from-red-50 to-orange-100 border border-red-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-red-100 hover:to-orange-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-800">Fraud Alerts</h3>
+                <div className="p-2 bg-red-200 rounded-xl">
+                  <AlertTriangle className="w-5 h-5 text-red-700" />
                 </div>
-                <div className="text-sm text-gray-500">AI/Manual detection</div>
+              </div>
+              <div className="space-y-3">
+                <div className="p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-base font-semibold text-gray-700">Total flagged</span>
+                    <span className="text-3xl font-bold text-red-600">{fraudAlerts.total}</span>
+                  </div>
+                  <div className="text-sm text-gray-600 mt-2">AI/Manual detection</div>
+                </div>
               </div>
             </div>
 
             {/* Top Providers */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Top Providers</h3>
-              <div className="space-y-3">
-                <div>
-                  <div className="text-lg font-bold text-gray-900">{topProvider.name}</div>
-                  <div className="text-2xl font-bold text-blue-600">{topProvider.claimCount}</div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-blue-100 hover:to-indigo-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-800">Top Providers</h3>
+                <div className="p-2 bg-blue-200 rounded-xl">
+                  <FileText className="w-5 h-5 text-blue-700" />
                 </div>
-                <div className="text-sm text-gray-500">Claims processed</div>
+              </div>
+              <div className="space-y-3">
+                <div className="p-3 bg-white/60 rounded-xl backdrop-blur-sm">
+                  <div className="text-lg font-bold text-gray-800">{topProvider.name}</div>
+                  <div className="text-3xl font-bold text-blue-600">{topProvider.claimCount}</div>
+                  <div className="text-sm text-gray-600 mt-1">Claims processed</div>
+                </div>
               </div>
             </div>
 
             {/* Claim Volume */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Claim Volume</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-100 border border-purple-200 rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl hover:-translate-y-2 hover:from-purple-100 hover:to-pink-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-800">Claim Volume</h3>
+                <div className="p-2 bg-purple-200 rounded-xl">
+                  <Clock className="w-5 h-5 text-purple-700" />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
                   <div className="flex items-center">
-                    <Clock className="w-5 h-5 text-yellow-600 mr-2" />
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
                     <span className="text-base font-semibold text-gray-700">Pending</span>
                   </div>
                   <span className="text-2xl font-bold text-yellow-600">5</span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-3 bg-white/60 rounded-xl backdrop-blur-sm">
                   <div className="flex items-center">
-                    <ArrowUpRight className="w-5 h-5 text-purple-600 mr-2" />
+                    <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
                     <span className="text-base font-semibold text-gray-700">Forwarded</span>
                   </div>
                   <span className="text-2xl font-bold text-purple-600">5</span>
@@ -496,44 +518,42 @@ const TPADashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1">
+          <div className="bg-gradient-to-br from-slate-50 to-gray-100 border border-gray-200 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-green-100 rounded-xl">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg">
+                <CheckCircle className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Quick Actions</h3>
+              <h3 className="text-xl font-bold text-gray-900">Quick Actions</h3>
             </div>
             
-            <div className="space-y-4">
-              <button className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-4 px-4 rounded-xl transition-all duration-300 ease-in-out text-base font-bold hover:scale-105 hover:shadow-lg transform shadow-md relative overflow-hidden group">
-                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                <span className="relative flex items-center justify-center gap-2">
-                  <AlertTriangle className="w-5 h-5" />
+            <div className="space-y-5">
+              <button className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400">
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                <span className="relative flex items-center justify-center gap-3">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <AlertTriangle className="w-6 h-6" />
+                  </div>
                   Review New Claims
                 </span>
               </button>
               
-              <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-4 px-4 rounded-xl transition-all duration-300 ease-in-out text-base font-bold hover:scale-105 hover:shadow-lg transform shadow-md relative overflow-hidden group">
-                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                <span className="relative flex items-center justify-center gap-2">
-                  <Flag className="w-5 h-5" />
-                  View Flagged Claims
+              <button className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400">
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                <span className="relative flex items-center justify-center gap-3">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <Flag className="w-6 h-6" />
+                  </div>
+                  Go to Flagged Claims
                 </span>
               </button>
               
-              <button className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white py-4 px-4 rounded-xl transition-all duration-300 ease-in-out text-base font-bold hover:scale-105 hover:shadow-lg transform shadow-md relative overflow-hidden group">
-                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                <span className="relative flex items-center justify-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
+              <button className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white py-5 px-6 rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400">
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                <span className="relative flex items-center justify-center gap-3">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <MessageSquare className="w-6 h-6" />
+                  </div>
                   Add Team Member
-                </span>
-              </button>
-              
-              <button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-4 px-4 rounded-xl transition-all duration-300 ease-in-out text-base font-bold hover:scale-105 hover:shadow-lg transform shadow-md relative overflow-hidden group">
-                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                <span className="relative flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Generate Report
                 </span>
               </button>
             </div>

@@ -133,7 +133,7 @@ const AllNotificationsPage = () => {
             className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors duration-200"
             style={{ padding: '0.3125vw' }}
           >
-            <ArrowLeft style={{ width: '0.625vw', height: '0.625vw' }} className="text-gray-600" />
+            <ArrowLeft style={{ width: '0.8333vw', height: '0.8333vw' }} className="text-gray-600" />
           </button>
           <div className="bg-blue-100 rounded-xl" style={{ padding: '0.3125vw' }}>
             <Bell style={{ width: '0.8333vw', height: '0.8333vw' }} className="text-blue-600" />

@@ -803,7 +803,7 @@ const TPADashboard = () => {
                           <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-900 transition-colors duration-200">{notification.title}</p>
                           <div className="flex items-center" style={{ gap: '0.2083vw' }}>
                             {notification.priority === 'High' && (
-                              <div className="bg-red-500 rounded-full animate-pulse" style={{ width: '0.2083vw', height: '0.2083vw' }}></div>
+                              <div className="bg-red-500 rounded-full animate-pulse" style={{ width: '0.5208vw', height: '0.5208vw' }}></div>
                             )}
                             <button 
                               onClick={() => handleNotificationClick(notification)}

@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -37,6 +36,7 @@ const TPADashboard = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleNotificationClick = (notification) => {
     setSelectedNotification(notification);
@@ -46,6 +46,26 @@ const TPADashboard = () => {
   const closeNotificationModal = () => {
     setShowNotificationModal(false);
     setSelectedNotification(null);
+  };
+
+  const handleViewAllNotifications = () => {
+    // Navigate to the all notifications route
+    navigate("/dashboard/tpa/allNotifications");
+  };
+
+  const handleReviewNewClaims = () => {
+    // Navigate to the review claims route
+    navigate("/dashboard/tpa/claimsReview");
+  };
+
+  const handleGoToFlaggedClaims = () => {
+    // Navigate to the flagged claims route
+    navigate("/dasboard/tpa/flaggedClaims");
+  };
+
+  const handleAddTeamMember = () => {
+    // Navigate to the team management route
+    navigate("/dashboard/tpa/teamManagement");
   };
 
   // Mock data for dashboard widgets
@@ -186,7 +206,7 @@ const TPADashboard = () => {
     }
   ];
 
-  
+
 
   return (
     <div className="w-full space-y-6 bg-gray-50 min-h-screen" style={{ padding: '0.625vw' }}>
@@ -335,7 +355,7 @@ const TPADashboard = () => {
                   ))}
                 </div>
               </div>
-              
+
               {/* Advanced Multi-Line Chart */}
               <motion.div 
                 key={selectedPeriod}
@@ -404,7 +424,7 @@ const TPADashboard = () => {
                   </AreaChart>
                 </ResponsiveContainer>
               </motion.div>
-              
+
               <div className="grid grid-cols-3" style={{ marginTop: '0.4167vw', gap: '0.4167vw' }}>
                 <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-blue-200/50" style={{ padding: '0.3125vw' }}>
                   <div className="text-2xl font-bold text-blue-600">
@@ -449,7 +469,7 @@ const TPADashboard = () => {
                   <MoreHorizontal style={{ width: '0.5208vw', height: '0.5208vw' }} className="text-gray-400" />
                 </button>
               </div>
-              
+
               {/* Redesigned Donut Chart with Center Data */}
               <div className="relative">
                 <motion.div 
@@ -529,7 +549,7 @@ const TPADashboard = () => {
                   </motion.div>
                 ))}
               </div>
-              
+
               <motion.button 
                 onClick={() => setShowAnalyticsModal(true)}
                 whileHover={{ scale: 1.02 }}
@@ -561,7 +581,7 @@ const TPADashboard = () => {
                   <p className="text-sm text-gray-600">Average processing times</p>
                 </div>
               </div>
-              
+
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -629,7 +649,7 @@ const TPADashboard = () => {
                   <p className="text-sm text-gray-600">AI vs Manual detection</p>
                 </div>
               </div>
-              
+
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -709,7 +729,7 @@ const TPADashboard = () => {
                 </div>
               ))}
             </div>
-            
+
             <div style={{ marginTop: '0.625vw' }}>
               <h4 className="font-semibold text-gray-900" style={{ marginBottom: '0.3125vw' }}>AI Smart Suggestions</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
@@ -748,7 +768,7 @@ const TPADashboard = () => {
                 </span>
               </div>
             </div>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3125vw' }}>
               {notifications.map((notification) => {
                 const IconComponent = notification.icon;
@@ -798,9 +818,11 @@ const TPADashboard = () => {
                 );
               })}
             </div>
-            
+
             <div className="border-t border-gray-200" style={{ marginTop: '0.4167vw', paddingTop: '0.4167vw' }}>
-              <button className="w-full text-center text-sm font-medium text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-all duration-200" style={{ padding: '0.2083vw' }}>
+              <button 
+                  onClick={handleViewAllNotifications}
+                  className="w-full text-center text-sm font-medium text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-all duration-200" style={{ padding: '0.2083vw' }}>
                 View All Notifications
               </button>
             </div>
@@ -814,9 +836,11 @@ const TPADashboard = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900">Quick Actions</h3>
             </div>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5208vw' }}>
-              <button className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400" style={{ padding: '0.5208vw 0.625vw' }}>
+              <button 
+                  onClick={handleReviewNewClaims}
+                  className="w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-emerald-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
                   <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
@@ -825,8 +849,10 @@ const TPADashboard = () => {
                   Review New Claims
                 </span>
               </button>
-              
-              <button className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400" style={{ padding: '0.5208vw 0.625vw' }}>
+
+              <button 
+                  onClick={handleGoToFlaggedClaims}
+                  className="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-600 hover:from-red-600 hover:via-pink-600 hover:to-rose-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-red-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
                   <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
@@ -835,8 +861,10 @@ const TPADashboard = () => {
                   Go to Flagged Claims
                 </span>
               </button>
-              
-              <button className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400" style={{ padding: '0.5208vw 0.625vw' }}>
+
+              <button 
+                  onClick={handleAddTeamMember}
+                  className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-700 text-white rounded-2xl transition-all duration-300 ease-in-out text-lg font-bold hover:scale-[1.02] hover:shadow-2xl transform shadow-lg relative overflow-hidden group border border-purple-400" style={{ padding: '0.5208vw 0.625vw' }}>
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
                 <span className="relative flex items-center justify-center" style={{ gap: '0.3125vw' }}>
                   <div className="bg-white/20 rounded-lg" style={{ padding: '0.2083vw' }}>
